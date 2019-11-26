@@ -1,0 +1,14 @@
+disabled_rules:
+  - force_try
+
+line_length: 150
+
+cyclomatic_complexity: 12
+
+identifier_name:
+  excluded:
+    - id
+
+excluded:
+  - Specs
+  - Pods
