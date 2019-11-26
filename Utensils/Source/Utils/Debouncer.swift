@@ -20,12 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-#import <Foundation/Foundation.h>
+import Foundation
 
-//! Project version number for Utensils.
+protocol DebouncerProtocol {
+}
 
-FOUNDATION_EXPORT double UtensilsVersionNumber;
-
-//! Project version string for Utensils.
-
-FOUNDATION_EXPORT const unsigned char UtensilsVersionString[];
+class Debouncer: DebouncerProtocol {
+}
