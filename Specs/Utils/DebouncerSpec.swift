@@ -1,18 +1,54 @@
 import Quick
 import Nimble
+import Capsule
 @testable import Utensils
 
 class DebouncerSpec: QuickSpec {
     override func spec() {
         describe("Debouncer") {
             var subject: Debouncer!
+            
+            var fakeDispatchQueueWrapper: FakeDispatchQueueWrapper!
+            var fakeDispatchWorkItemWrapperBuilder: FakeDispatchWorkItemWrapperBuilder!
 
             beforeEach {
-                subject = Debouncer()
+                fakeDispatchQueueWrapper = FakeDispatchQueueWrapper()
+                fakeDispatchWorkItemWrapperBuilder = FakeDispatchWorkItemWrapperBuilder()
+                fakeDispatchWorkItemWrapperBuilder.shouldUseDispatchWorkItemWrappersArray = true
+                
+                subject = Debouncer(dispatchQueueWrapper: fakeDispatchQueueWrapper,
+                                    dispatchWorkItemWrapperBuilder: fakeDispatchWorkItemWrapperBuilder)
             }
+
             
-            it("exists") {
-                expect(subject).toNot(beNil())
+            describe("#debounce(seconds:qos:execute:)") {
+                var previousDispatchWorkItemWrapper: FakeDispatchWorkItemWrapper!
+                                
+                beforeEach {
+                    previousDispatchWorkItemWrapper = (subject.currentDispatchWorkItemWrapper as! FakeDispatchWorkItemWrapper)
+                                        
+                    subject.debounce(seconds: 33.33, qos: .userInteractive) { }
+                }
+                
+                it("cancels previous work item wrapper execution") {
+                    expect(previousDispatchWorkItemWrapper.didCancel).to(beTruthy())
+                }
+                
+                it("creates a new work item wrapper to execute") {
+                    let updatedDispatchWorkItemWrapper = (subject.currentDispatchWorkItemWrapper as! FakeDispatchWorkItemWrapper)
+                    
+                    expect(updatedDispatchWorkItemWrapper === previousDispatchWorkItemWrapper).toNot(beTruthy())
+                }
+                
+                it("dispatches the new work item wrapper using debounce seconds and qos") {
+                    expect(fakeDispatchQueueWrapper.capturedAsyncAfterSecondsDouble).to(equal(33.33))
+                    expect(fakeDispatchQueueWrapper.capturedAsyncAfterQOS).to(equal(.userInteractive))
+                    
+                    let actualDispatchWorkItemWrapper = (fakeDispatchQueueWrapper.capturedAsyncAfterDispatchWorkItemWrapper as! FakeDispatchWorkItemWrapper)
+                    let updatedDispatchWorkItemWrapper = (subject.currentDispatchWorkItemWrapper as! FakeDispatchWorkItemWrapper)
+                    
+                    expect(actualDispatchWorkItemWrapper === updatedDispatchWorkItemWrapper).to(beTruthy())
+                }
             }
         }
     }

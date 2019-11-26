@@ -22,5 +22,22 @@
 
 import Foundation
 
-class FakeDebouncer: DebouncerProtocol {
+public class FakeDebouncer: DebouncerProtocol {
+    // MARK: - Captured properties
+    
+    public var capturedDebounceSeconds: Double?
+    public var capturedDebounceQOS: DispatchQoS?
+    public var capturedDebounceExectution: (() -> Void)?
+    
+    // MARK: - Init methods
+    
+    public init() { }
+    
+    // MARK: - <DebouncerProtocol>
+    
+    public func debounce(seconds: Double, qos: DispatchQoS, execute: @escaping () -> Void) {
+        capturedDebounceSeconds = seconds
+        capturedDebounceQOS = qos
+        capturedDebounceExectution = execute
+    }
 }

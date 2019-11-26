@@ -21,9 +21,39 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
-protocol DebouncerProtocol {
+public protocol DebouncerProtocol {
+    func debounce(seconds: Double, qos: DispatchQoS, execute: @escaping () -> Void)
 }
 
-class Debouncer: DebouncerProtocol {
+public class Debouncer: DebouncerProtocol {
+    // MARK: - Private properties
+    
+    private let dispatchQueueWrapper: DispatchQueueWrapperProtocol
+    private let dispatchWorkItemWrapperBuilder: DispatchWorkItemWrapperBuilderProtocol
+    
+    private(set) lazy var currentDispatchWorkItemWrapper: DispatchWorkItemWrapperProtocol = {
+        let workItemWrapper = dispatchWorkItemWrapperBuilder.build(qos: .userInteractive, work: { })
+        
+        return workItemWrapper
+    }()
+        
+    // MARK: - Init methods
+    
+    public init(dispatchQueueWrapper: DispatchQueueWrapperProtocol = DispatchQueueWrapper(),
+                dispatchWorkItemWrapperBuilder: DispatchWorkItemWrapperBuilderProtocol = DispatchWorkItemWrapperBuilder()) {
+        self.dispatchQueueWrapper = dispatchQueueWrapper
+        self.dispatchWorkItemWrapperBuilder = dispatchWorkItemWrapperBuilder
+    }
+    
+    // MARK: - Public methods
+    
+    public func debounce(seconds: Double = 0.1, qos: DispatchQoS, execute: @escaping () -> Void) {
+        currentDispatchWorkItemWrapper.cancel()
+
+        currentDispatchWorkItemWrapper = dispatchWorkItemWrapperBuilder.build(qos: qos, work: execute)
+
+        dispatchQueueWrapper.asyncAfter(seconds: seconds, qos: qos, dispatchWorkItemWrapper: currentDispatchWorkItemWrapper)
+    }
 }
