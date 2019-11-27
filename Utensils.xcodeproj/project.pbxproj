@@ -10,6 +10,9 @@
 		135F8B24864A5F30E6A29131 /* Pods_Specs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6AEDCB7A77793D6849DD9E0 /* Pods_Specs.framework */; };
 		15C62B81019C7EC192784E9A /* Pods_Utensils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFFF1C07A0B87A5350505963 /* Pods_Utensils.framework */; };
 		9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9406829D238D7F24004278CB /* DebouncerSpec.swift */; };
+		940682A8238EC926004278CB /* Directory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682A7238EC926004278CB /* Directory.swift */; };
+		940682AC238EE03A004278CB /* DirectorySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682AB238EE03A004278CB /* DirectorySpec.swift */; };
+		940682B0238EE79E004278CB /* FakeDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682AF238EE79E004278CB /* FakeDirectory.swift */; };
 		94341AFE238CCECF00BC8355 /* Utensils.h in Headers */ = {isa = PBXBuildFile; fileRef = 94341AFC238CCECF00BC8355 /* Utensils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		944A010D238D7B6700957702 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A010C238D7B6700957702 /* Debouncer.swift */; };
 		944A0110238D7BA600957702 /* FakeDebouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A010F238D7BA600957702 /* FakeDebouncer.swift */; };
@@ -31,6 +34,9 @@
 		2C8107B3228DC8AD8DAFF86E /* Pods-Utensils.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Utensils.release.xcconfig"; path = "Target Support Files/Pods-Utensils/Pods-Utensils.release.xcconfig"; sourceTree = "<group>"; };
 		3A6F222921BB88AC6112B781 /* Pods-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Specs.release.xcconfig"; path = "Target Support Files/Pods-Specs/Pods-Specs.release.xcconfig"; sourceTree = "<group>"; };
 		9406829D238D7F24004278CB /* DebouncerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncerSpec.swift; sourceTree = "<group>"; };
+		940682A7238EC926004278CB /* Directory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Directory.swift; sourceTree = "<group>"; };
+		940682AB238EE03A004278CB /* DirectorySpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectorySpec.swift; sourceTree = "<group>"; };
+		940682AF238EE79E004278CB /* FakeDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDirectory.swift; sourceTree = "<group>"; };
 		94341AF9238CCECF00BC8355 /* Utensils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Utensils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94341AFC238CCECF00BC8355 /* Utensils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utensils.h; sourceTree = "<group>"; };
 		94341AFD238CCECF00BC8355 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -83,12 +89,37 @@
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		9406829F238D7FAE004278CB /* Utils */ = {
+		9406829F238D7FAE004278CB /* Tools */ = {
 			isa = PBXGroup;
 			children = (
 				9406829D238D7F24004278CB /* DebouncerSpec.swift */,
 			);
-			path = Utils;
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		940682A9238EE01C004278CB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				940682AE238EE792004278CB /* Fakes */,
+				940682A7238EC926004278CB /* Directory.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		940682AA238EE021004278CB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				940682AB238EE03A004278CB /* DirectorySpec.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		940682AE238EE792004278CB /* Fakes */ = {
+			isa = PBXGroup;
+			children = (
+				940682AF238EE79E004278CB /* FakeDirectory.swift */,
+			);
+			path = Fakes;
 			sourceTree = "<group>";
 		};
 		94341AEF238CCECF00BC8355 = {
@@ -132,7 +163,8 @@
 			isa = PBXGroup;
 			children = (
 				94341AFC238CCECF00BC8355 /* Utensils.h */,
-				944A0111238D7BB900957702 /* Utils */,
+				940682A9238EE01C004278CB /* Models */,
+				944A0111238D7BB900957702 /* Tools */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -145,19 +177,20 @@
 			path = Fakes;
 			sourceTree = "<group>";
 		};
-		944A0111238D7BB900957702 /* Utils */ = {
+		944A0111238D7BB900957702 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
 				944A010E238D7B9900957702 /* Fakes */,
 				944A010C238D7B6700957702 /* Debouncer.swift */,
 			);
-			path = Utils;
+			path = Tools;
 			sourceTree = "<group>";
 		};
 		944A011A238D7CBD00957702 /* Specs */ = {
 			isa = PBXGroup;
 			children = (
-				9406829F238D7FAE004278CB /* Utils */,
+				940682AA238EE021004278CB /* Models */,
+				9406829F238D7FAE004278CB /* Tools */,
 				9406829C238D7D0E004278CB /* Supporting Files */,
 			);
 			path = Specs;
@@ -369,6 +402,8 @@
 			files = (
 				944A0110238D7BA600957702 /* FakeDebouncer.swift in Sources */,
 				944A010D238D7B6700957702 /* Debouncer.swift in Sources */,
+				940682B0238EE79E004278CB /* FakeDirectory.swift in Sources */,
+				940682A8238EC926004278CB /* Directory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +411,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				940682AC238EE03A004278CB /* DirectorySpec.swift in Sources */,
 				9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
