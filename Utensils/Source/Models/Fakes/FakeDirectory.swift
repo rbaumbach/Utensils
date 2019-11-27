@@ -19,6 +19,10 @@ public class FakeDirectory: DirectoryProtocol {
     
     public var stubbedURL = URL(string: "file:///fake-directory/extra-fake-directory")!
     
+    // MARK: - Init methods
+    
+    public init() { }
+    
     // MARK: - <DirectoryProtocol>
     
     public func url() -> URL {

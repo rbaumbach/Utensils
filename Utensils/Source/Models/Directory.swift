@@ -23,11 +23,11 @@
 import Foundation
 import Capsule
 
-protocol DirectoryProtocol {
+public protocol DirectoryProtocol {
     func url() -> URL
 }
 
-struct Directory: Equatable, Hashable {
+public struct Directory: Equatable, Hashable {
     // MARK: - Public Enums
     
     public enum SystemDirectory: Equatable, Hashable {
