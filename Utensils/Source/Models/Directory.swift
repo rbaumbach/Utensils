@@ -27,7 +27,7 @@ protocol DirectoryProtocol {
     func url() -> URL
 }
 
-public class Directory: Equatable, Hashable {
+struct Directory: Equatable, Hashable {
     // MARK: - Public Enums
     
     public enum SystemDirectory: Equatable, Hashable {
