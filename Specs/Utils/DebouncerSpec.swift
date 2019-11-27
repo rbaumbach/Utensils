@@ -21,13 +21,13 @@ class DebouncerSpec: QuickSpec {
             }
 
             
-            describe("#debounce(seconds:qos:execute:)") {
+            describe("#mainDebounce(seconds:qos:execute:)") {
                 var previousDispatchWorkItemWrapper: FakeDispatchWorkItemWrapper!
                                 
                 beforeEach {
                     previousDispatchWorkItemWrapper = (subject.currentDispatchWorkItemWrapper as! FakeDispatchWorkItemWrapper)
                                         
-                    subject.debounce(seconds: 33.33, qos: .userInteractive) { }
+                    subject.mainDebounce(seconds: 33.33) { }
                 }
                 
                 it("cancels previous work item wrapper execution") {
@@ -41,10 +41,9 @@ class DebouncerSpec: QuickSpec {
                 }
                 
                 it("dispatches the new work item wrapper using debounce seconds and qos") {
-                    expect(fakeDispatchQueueWrapper.capturedAsyncAfterSecondsDouble).to(equal(33.33))
-                    expect(fakeDispatchQueueWrapper.capturedAsyncAfterQOS).to(equal(.userInteractive))
+                    expect(fakeDispatchQueueWrapper.capturedMainAfterWorkItemWrapperSecondsDouble).to(equal(33.33))
                     
-                    let actualDispatchWorkItemWrapper = (fakeDispatchQueueWrapper.capturedAsyncAfterDispatchWorkItemWrapper as! FakeDispatchWorkItemWrapper)
+                    let actualDispatchWorkItemWrapper = (fakeDispatchQueueWrapper.capturedMainAfterWorkItemWrapperSecondsDoubleProtocol as! FakeDispatchWorkItemWrapper)
                     let updatedDispatchWorkItemWrapper = (subject.currentDispatchWorkItemWrapper as! FakeDispatchWorkItemWrapper)
                     
                     expect(actualDispatchWorkItemWrapper === updatedDispatchWorkItemWrapper).to(beTruthy())
