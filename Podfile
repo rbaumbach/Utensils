@@ -5,7 +5,7 @@ use_frameworks!
 inhibit_all_warnings!
 
 def shared_pods
-  pod 'Capsule', '0.0.7'
+  pod 'Capsule', '0.0.8'
 end
 
 target :Utensils do

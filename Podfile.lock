@@ -1,11 +1,11 @@
 PODS:
-  - Capsule (0.0.7)
+  - Capsule (0.0.8)
   - Nimble (8.0.4)
   - Quick (2.2.0)
   - SwiftLint (0.31.0)
 
 DEPENDENCIES:
-  - Capsule (= 0.0.7)
+  - Capsule (= 0.0.8)
   - Nimble (= 8.0.4)
   - Quick (= 2.2.0)
   - SwiftLint (= 0.31.0)
@@ -18,11 +18,11 @@ SPEC REPOS:
     - SwiftLint
 
 SPEC CHECKSUMS:
-  Capsule: b7aa49428dfc18855fde15731a7ba8fa04d69e2d
+  Capsule: 6fb71b302e9c2e22f9b92e9b370b3b2e0f6c3260
   Nimble: 18d5360282923225d62b09d781f63abc1a0111fc
   Quick: 7fb19e13be07b5dfb3b90d4f9824c855a11af40e
   SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
 
-PODFILE CHECKSUM: abc7f5496b1326e02cdf8f74867b6fe8bfb8478d
+PODFILE CHECKSUM: f00b2534555533205df3abe0d92dd24c0a7dafaf
 
 COCOAPODS: 1.8.4
