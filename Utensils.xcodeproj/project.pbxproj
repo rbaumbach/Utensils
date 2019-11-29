@@ -17,6 +17,9 @@
 		944A010D238D7B6700957702 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A010C238D7B6700957702 /* Debouncer.swift */; };
 		944A0110238D7BA600957702 /* FakeDebouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A010F238D7BA600957702 /* FakeDebouncer.swift */; };
 		944A011E238D7CBD00957702 /* Utensils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94341AF9238CCECF00BC8355 /* Utensils.framework */; };
+		946AB17123903B2C003D0016 /* Trunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946AB17023903B2C003D0016 /* Trunk.swift */; };
+		946AB17323903B48003D0016 /* FakeTrunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946AB17223903B48003D0016 /* FakeTrunk.swift */; };
+		946AB1792390568C003D0016 /* TrunkSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946AB1782390568C003D0016 /* TrunkSpec.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,9 @@
 		944A010F238D7BA600957702 /* FakeDebouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDebouncer.swift; sourceTree = "<group>"; };
 		944A0119238D7CBD00957702 /* Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Specs.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		944A011D238D7CBD00957702 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		946AB17023903B2C003D0016 /* Trunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trunk.swift; sourceTree = "<group>"; };
+		946AB17223903B48003D0016 /* FakeTrunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTrunk.swift; sourceTree = "<group>"; };
+		946AB1782390568C003D0016 /* TrunkSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrunkSpec.swift; sourceTree = "<group>"; };
 		A549590B733FCDA00A8D606F /* Pods-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Specs.debug.xcconfig"; path = "Target Support Files/Pods-Specs/Pods-Specs.debug.xcconfig"; sourceTree = "<group>"; };
 		C6AEDCB7A77793D6849DD9E0 /* Pods_Specs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Specs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFFF1C07A0B87A5350505963 /* Pods_Utensils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Utensils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				9406829D238D7F24004278CB /* DebouncerSpec.swift */,
+				946AB1782390568C003D0016 /* TrunkSpec.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -173,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				944A010F238D7BA600957702 /* FakeDebouncer.swift */,
+				946AB17223903B48003D0016 /* FakeTrunk.swift */,
 			);
 			path = Fakes;
 			sourceTree = "<group>";
@@ -182,6 +190,7 @@
 			children = (
 				944A010E238D7B9900957702 /* Fakes */,
 				944A010C238D7B6700957702 /* Debouncer.swift */,
+				946AB17023903B2C003D0016 /* Trunk.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -400,10 +409,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				946AB17123903B2C003D0016 /* Trunk.swift in Sources */,
 				944A0110238D7BA600957702 /* FakeDebouncer.swift in Sources */,
 				944A010D238D7B6700957702 /* Debouncer.swift in Sources */,
 				940682B0238EE79E004278CB /* FakeDirectory.swift in Sources */,
 				940682A8238EC926004278CB /* Directory.swift in Sources */,
+				946AB17323903B48003D0016 /* FakeTrunk.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +422,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				946AB1792390568C003D0016 /* TrunkSpec.swift in Sources */,
 				940682AC238EE03A004278CB /* DirectorySpec.swift in Sources */,
 				9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */,
 			);

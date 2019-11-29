@@ -19,7 +19,6 @@ class DebouncerSpec: QuickSpec {
                 subject = Debouncer(dispatchQueueWrapper: fakeDispatchQueueWrapper,
                                     dispatchWorkItemWrapperBuilder: fakeDispatchWorkItemWrapperBuilder)
             }
-
             
             describe("#mainDebounce(seconds:qos:execute:)") {
                 var previousDispatchWorkItemWrapper: FakeDispatchWorkItemWrapper!
