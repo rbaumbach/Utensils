@@ -26,7 +26,7 @@ You can also use [Carthage](https://github.com/Carthage/Carthage) to manually ad
 
 ## What tools?
 
-* A debouncer:
+* A `Debouncer`:
 
 ```
 let debouncer = Debouncer()
@@ -36,10 +36,20 @@ debouncer.mainDebounce(seconds: 0.1) {
 }
 ```
 
-* A directory:
+* A `Directory`:
 
 ```
 let directory = Directory(.temp(additionalPath: "filez/"))
+```
+
+* A persistence tool called `Trunk`
+
+```
+let trunk = Trunk()
+
+trunk.save(data: [0, 1, 2, 3, 4])
+
+let arrayOfInts: [Int]? = trunk.load()
 ```
 
 And more to come...
