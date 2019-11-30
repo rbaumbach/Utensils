@@ -22,8 +22,12 @@
 
 import Foundation
 
-public class FakeTrunk<T>: TrunkProtocol {
+public class FakeTrunk: TrunkProtocol {
     // MARK: - Captured properties
+    
+    public var capturedOutputFormat: Trunk.OutputFormat?
+    
+    public var capturedDateFormat: Trunk.DateFormat?
     
     public var capturedSaveData: Any?
     public var capturedSaveDirectory: Directory?
@@ -34,13 +38,37 @@ public class FakeTrunk<T>: TrunkProtocol {
     
     // MARK: - Stubbed properties
     
-    public var stubbedLoadData: T?
+    public var stubbedOutputFormat = Trunk.OutputFormat.default
+    
+    public var stubbedDateFormat = Trunk.DateFormat.default
+    
+    public var stubbedLoadData: Any?
     
     // MARK: - Init methods
     
     public init() { }
     
     // MARK: - <TrunkProtocol>
+    
+    public var outputFormat: Trunk.OutputFormat {
+        get {
+            return stubbedOutputFormat
+        }
+        
+        set(newOutputFormat) {
+            capturedOutputFormat = newOutputFormat
+        }
+    }
+    
+    public var dateFormat: Trunk.DateFormat {
+        get {
+            return stubbedDateFormat
+        }
+        
+        set(newDateFormat) {
+            capturedDateFormat = newDateFormat
+        }
+    }
     
     public func save<T: Codable>(data: T, directory: Directory, filename: String) {
         capturedSaveData = data

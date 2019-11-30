@@ -24,19 +24,56 @@ import Foundation
 import Capsule
 
 public protocol TrunkProtocol {
+    var outputFormat: Trunk.OutputFormat { get set }
+    var dateFormat: Trunk.DateFormat { get set }
+    
     func save<T: Codable>(data: T, directory: Directory, filename: String)
     func load<T: Codable>(directory: Directory, filename: String) -> T?
 }
 
 public class Trunk: TrunkProtocol {
+    // MARK: - Public enums
+    
+    public enum OutputFormat {
+        case `default`
+        case pretty
+    }
+
+    public enum DateFormat {        
+        case `default`
+        case iso8601
+    }
+    
     // MARK: - Private constants
     
     private let fileExtension = ".json"
     
     // MARK: - Private properties
     
-    private let jsonCodableWrapper: JSONCodableWrapperProtocol
+    private var jsonCodableWrapper: JSONCodableWrapperProtocol
     private let dataWrapper: DataWrapperProtocol
+    
+    // MARK: - Public properties
+    
+    public var outputFormat: OutputFormat {
+        get {
+            return OutputFormat(rawValue: jsonCodableWrapper.outputFormatting)!
+        }
+
+        set(newOutputFormat) {
+            jsonCodableWrapper.outputFormatting = newOutputFormat.rawValue
+        }
+    }
+    
+    public var dateFormat: DateFormat {
+        get {
+            return DateFormat(rawValue: jsonCodableWrapper.dateFormat)!
+        }
+        
+        set(newDateFormat) {
+            jsonCodableWrapper.dateFormat = newDateFormat.rawValue
+        }
+    }
     
     // MARK: - Init methods
     

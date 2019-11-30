@@ -23,6 +23,26 @@ class TrunkSpec: QuickSpec {
                 subject = Trunk(jsonCodableWrapper: fakeJSONCodableWrapper,
                                 dataWrapper: fakeDataWrapper)
             }
+            
+            describe("output format") {
+                beforeEach {
+                    subject.outputFormat = .pretty
+                }
+                
+                it("updates the internal jsonCodableWrapper outputForrmatting internally") {
+                    expect(fakeJSONCodableWrapper.capturedOutputFormatting).to(equal(.pretty))
+                }
+            }
+            
+            describe("date format") {
+                beforeEach {
+                    subject.dateFormat = .iso8601
+                }
+                
+                it("updates the internal jsonCodableWrapper dateFormat internally") {
+                    expect(fakeJSONCodableWrapper.capturedDateFormat).to(equal(.iso8601))
+                }
+            }
 
             describe("save(data:directory:filename:)") {
                 describe("when data can NOT be encoded to data") {
