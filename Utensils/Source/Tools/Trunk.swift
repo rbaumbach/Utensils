@@ -28,7 +28,10 @@ public protocol TrunkProtocol {
     var dateFormat: Trunk.DateFormat { get set }
     
     func save<T: Codable>(data: T, directory: Directory, filename: String)
+    func save<T: Codable>(data: T, directory: Directory, filename: String, completionHandler: @escaping () -> Void)
+    
     func load<T: Codable>(directory: Directory, filename: String) -> T?
+    func load<T: Codable>(directory: Directory, filename: String, completionHandler: @escaping (T?) -> Void)
 }
 
 public class Trunk: TrunkProtocol {
