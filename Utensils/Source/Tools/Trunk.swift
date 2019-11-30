@@ -52,6 +52,7 @@ public class Trunk: TrunkProtocol {
     
     private var jsonCodableWrapper: JSONCodableWrapperProtocol
     private let dataWrapper: DataWrapperProtocol
+    private let dispatchQueueWrapper: DispatchQueueWrapperProtocol
     
     // MARK: - Public properties
     
@@ -78,14 +79,18 @@ public class Trunk: TrunkProtocol {
     // MARK: - Init methods
     
     public init(jsonCodableWrapper: JSONCodableWrapperProtocol = JSONCodableWrapper(),
-                dataWrapper: DataWrapperProtocol = DataWrapper()) {
+                dataWrapper: DataWrapperProtocol = DataWrapper(),
+                dispatchQueueWrapper: DispatchQueueWrapperProtocol = DispatchQueueWrapper()) {
         self.jsonCodableWrapper = jsonCodableWrapper
         self.dataWrapper = dataWrapper
+        self.dispatchQueueWrapper = dispatchQueueWrapper
     }
     
     // MARK: - Public methods
     
-    public func save<T: Codable>(data: T, directory: Directory, filename: String) {
+    public func save<T: Codable>(data: T,
+                                 directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
+                                 filename: String = "trunk") {
         guard let encodedJSONData = try? jsonCodableWrapper.encode(data) else {
             return
         }
@@ -97,7 +102,21 @@ public class Trunk: TrunkProtocol {
         } catch { }
     }
     
-    public func load<T: Codable>(directory: Directory, filename: String) -> T? {
+    public func save<T: Codable>(data: T,
+                                 directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
+                                 filename: String = "trunk",
+                                 completionHandler: @escaping () -> Void) {
+        dispatchQueueWrapper.globalAsync(qos: .background) { [weak self] in
+            self?.save(data: data, directory: directory, filename: filename)
+
+            self?.dispatchQueueWrapper.mainAsync {
+                completionHandler()
+            }
+        }
+    }
+    
+    public func load<T: Codable>(directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
+                                 filename: String = "trunk") -> T? {
         let fullFileURL = buildFullFileURL(directory: directory, filename: filename)
         
         guard let jsonData = try? dataWrapper.loadData(contentsOfPath: fullFileURL) else {
@@ -109,6 +128,18 @@ public class Trunk: TrunkProtocol {
         }
         
         return modelData
+    }
+    
+    public func load<T: Codable>(directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
+                                 filename: String = "trunk",
+                                 completionHandler: @escaping (T?) -> Void) {
+        dispatchQueueWrapper.globalAsync(qos: .background) { [weak self] in
+            let modelData: T? = self?.load(directory: directory, filename: filename)
+            
+            self?.dispatchQueueWrapper.mainAsync {
+                completionHandler(modelData)
+            }
+        }
     }
     
     // MARK: - Private methods

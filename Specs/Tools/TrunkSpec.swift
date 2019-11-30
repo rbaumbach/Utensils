@@ -11,17 +11,20 @@ class TrunkSpec: QuickSpec {
             var fakeJSONCodableWrapper: FakeJSONCodableWrapper!
             var fakeDataWrapper: FakeDataWrapper!
             var fakeFileManager: FakeFileManager!
+            var fakeDispatchQueueWrapper: FakeDispatchQueueWrapper!
             var directory: Directory!
 
             beforeEach {
                 fakeJSONCodableWrapper = FakeJSONCodableWrapper()
                 fakeDataWrapper = FakeDataWrapper()
                 fakeFileManager = FakeFileManager()
+                fakeDispatchQueueWrapper = FakeDispatchQueueWrapper()
                 
                 directory = Directory(fileManager: fakeFileManager)
 
                 subject = Trunk(jsonCodableWrapper: fakeJSONCodableWrapper,
-                                dataWrapper: fakeDataWrapper)
+                                dataWrapper: fakeDataWrapper,
+                                dispatchQueueWrapper: fakeDispatchQueueWrapper)
             }
             
             describe("output format") {
@@ -44,7 +47,7 @@ class TrunkSpec: QuickSpec {
                 }
             }
 
-            describe("save(data:directory:filename:)") {
+            describe("#save(data:directory:filename:)") {
                 describe("when data can NOT be encoded to data") {
                     beforeEach {
                         fakeJSONCodableWrapper.shouldThrowEncodeException = true
@@ -90,7 +93,7 @@ class TrunkSpec: QuickSpec {
                                          filename: "array-of-ints")
                         }
 
-                        it("is saved") {
+                        it("saves the data to disk") {
                             let typeSafeCapturedEncodeValue = fakeJSONCodableWrapper.capturedEncodeValue as! [Int]
 
                             expect(typeSafeCapturedEncodeValue).to(equal([0, 1, 2, 3, 4]))
@@ -104,8 +107,41 @@ class TrunkSpec: QuickSpec {
                     }
                 }
             }
+            
+            describe("#save(data:directory:filename:completionHandler:)") {
+                var didComplete: Bool!
+                
+                beforeEach {
+                    didComplete = false
+                    
+                    subject.save(data: [0, 1, 2, 3, 4], directory: directory) {
+                        didComplete = true
+                    }
+                    
+                    fakeDispatchQueueWrapper.capturedGlobalAsyncCompletionHandler?()
+                    fakeDispatchQueueWrapper.capturedMainAsyncCompletionHandler?()
+                }
+                
+                it("saves the data to disk on a background queue") {
+                    expect(fakeDispatchQueueWrapper.capturedGlobalAsyncQOS).to(equal(.background))
+                    
+                    let typeSafeCapturedEncodeValue = fakeJSONCodableWrapper.capturedEncodeValue as! [Int]
 
-            describe("load(directory:filename:)") {
+                    expect(typeSafeCapturedEncodeValue).to(equal([0, 1, 2, 3, 4]))
+                    
+                    expect(fakeDataWrapper.capturedWriteData).to(equal(fakeJSONCodableWrapper.stubbedEncodeData))
+                    
+                    let expectedURL = directory.url().appendingPathComponent("trunk.json")
+                    
+                    expect(fakeDataWrapper.capturedWriteURL).to(equal(expectedURL))
+                }
+                
+                it("executes the completion handler on the main queue") {
+                    expect(didComplete).to(beTruthy())
+                }
+            }
+
+            describe("#load(directory:filename:)") {
                 var modelData: [Int]!
                 
                 describe("when the data can NOT be loaded from disk") {
@@ -168,6 +204,37 @@ class TrunkSpec: QuickSpec {
                             expect(modelData).to(equal([0, 1, 2, 3, 4]))
                         }
                     }
+                }
+            }
+            
+            describe("#load(directory:filename:completionHandler:)") {
+                var capturedModelData: [Int]!
+                
+                beforeEach {
+                    fakeJSONCodableWrapper.stubbedDecodedData = [0, 1, 2, 3, 4]
+                    
+                    subject.load(directory: directory) { modelData in
+                        capturedModelData = modelData
+                    }
+                    
+                    fakeDispatchQueueWrapper.capturedGlobalAsyncCompletionHandler?()
+                    fakeDispatchQueueWrapper.capturedMainAsyncCompletionHandler?()
+                }
+                
+                it("returns the model data that was retrieved from disk on a background queue") {
+                    expect(fakeDispatchQueueWrapper.capturedGlobalAsyncQOS).to(equal(.background))
+
+                    let expectedURL = directory.url().appendingPathComponent("trunk.json")
+                    
+                    expect(fakeDataWrapper.capturedLoadDataURL).to(equal(expectedURL))
+                    
+                    expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to(equal("Array<Int>.Type"))
+                    expect(fakeJSONCodableWrapper.capturedDecodeData).to(equal(fakeDataWrapper.stubbedLoadData))
+                }
+                
+                it("executes the completion handler with model data on the main queue") {
+                    
+                    expect(capturedModelData).to(equal([0, 1, 2, 3, 4]))
                 }
             }
         }
