@@ -30,7 +30,7 @@ class TrunkSpec: QuickSpec {
                 }
                 
                 it("updates the internal jsonCodableWrapper outputForrmatting internally") {
-                    expect(fakeJSONCodableWrapper.capturedOutputFormatting).to(equal(.pretty))
+                    expect(fakeJSONCodableWrapper.capturedOutputFormat).to(equal(.pretty))
                 }
             }
             

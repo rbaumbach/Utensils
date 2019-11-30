@@ -57,11 +57,11 @@ public class Trunk: TrunkProtocol {
     
     public var outputFormat: OutputFormat {
         get {
-            return OutputFormat(rawValue: jsonCodableWrapper.outputFormatting)!
+            return OutputFormat(rawValue: jsonCodableWrapper.outputFormat)!
         }
 
         set(newOutputFormat) {
-            jsonCodableWrapper.outputFormatting = newOutputFormat.rawValue
+            jsonCodableWrapper.outputFormat = newOutputFormat.rawValue
         }
     }
     
