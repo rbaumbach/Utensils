@@ -30,10 +30,12 @@ public protocol DebouncerProtocol {
 public class Debouncer: DebouncerProtocol {
     // MARK: - Private properties
     
-    public let dispatchQueueWrapper: DispatchQueueWrapperProtocol
-    public let dispatchWorkItemWrapperBuilder: DispatchWorkItemWrapperBuilderProtocol
+    private let dispatchQueueWrapper: DispatchQueueWrapperProtocol
+    private let dispatchWorkItemWrapperBuilder: DispatchWorkItemWrapperBuilderProtocol
+    
+    // MARK: - Internal readonly properties
         
-    private(set) lazy var currentDispatchWorkItemWrapper: DispatchWorkItemWrapperProtocol = {
+    internal private(set) lazy var currentDispatchWorkItemWrapper: DispatchWorkItemWrapperProtocol = {
         let workItemWrapper = dispatchWorkItemWrapperBuilder.build(qos: .unspecified, work: { })
         
         return workItemWrapper
