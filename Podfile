@@ -5,11 +5,11 @@ use_frameworks!
 inhibit_all_warnings!
 
 def shared_pods
-  pod 'Capsule', '~> 0.0.12'
+  pod 'Capsule', '~> 0.1.0'
 end
 
 target :Utensils do
-  pod 'SwiftLint', '0.31.0'
+  pod 'SwiftLint', '0.37.0'
 
   shared_pods
 end
