@@ -12,27 +12,15 @@ class AppLaunchViewControllerSpec: QuickSpec {
         describe("AppLaunchViewController") {
             var subject: AppLaunchViewController!
             
-            var frameworkBundle: Bundle!
-            var testBundle: Bundle!
-            
             var fakeDelegate: FakeAppLaunchViewControllerDelegate!
 
             beforeEach {
                 fakeDelegate = FakeAppLaunchViewControllerDelegate()
-                
-                frameworkBundle = Bundle.utensils
-                
-                testBundle = Bundle(for: type(of: self))
             }
             
             describe("when the default storyboard is used (delegate version)") {
                 beforeEach {
-                    let storyboard = UIStoryboard(name: "AppLaunchViewController",
-                                                  bundle: frameworkBundle)
-
-                    subject = storyboard.instantiateInitialViewController()
-
-                    subject.delegate = fakeDelegate
+                    subject = AppLaunchViewController(delegate: fakeDelegate)
 
                     _ = subject.view
                 }
@@ -62,7 +50,7 @@ class AppLaunchViewControllerSpec: QuickSpec {
                 }
             }
 
-            describe("when the default storyboard is used (closure version)") {
+            describe("when the default storyboard is used (handler version)") {
                 var onLaunchFunction: AppLaunchViewController.OnLaunchHandler!
                 var onCompletionFunction: (() -> Void)!
 
@@ -84,13 +72,8 @@ class AppLaunchViewControllerSpec: QuickSpec {
                         didCallOnCompletionFunction = true
                     }
 
-                    let storyboard = UIStoryboard(name: "AppLaunchViewController",
-                                                  bundle: frameworkBundle)
-
-                    subject = storyboard.instantiateInitialViewController()
-
-                    subject.onLaunch = onLaunchFunction
-                    subject.onCompletion = onCompletionFunction
+                    subject = AppLaunchViewController(onLaunch: onLaunchFunction,
+                                                      onCompletion: onCompletionFunction)
 
                     _ = subject.view
                 }
@@ -118,10 +101,7 @@ class AppLaunchViewControllerSpec: QuickSpec {
 
             describe("when a custom storyboard name is used (delegate version)") {
                 beforeEach {
-                    subject = UIStoryboard(name: "CustomAppLaunchViewController",
-                                           bundle: testBundle).instantiateInitialViewController()
-
-                    subject.delegate = fakeDelegate
+                    subject = AppLaunchViewController(delegate: fakeDelegate)
                     
                     _ = subject.view
                 }
@@ -151,7 +131,7 @@ class AppLaunchViewControllerSpec: QuickSpec {
                 }
             }
             
-            describe("when a custom storyboard name is used (closure version)") {
+            describe("when a custom storyboard name is used (handler version)") {
                 var onLaunchFunction: AppLaunchViewController.OnLaunchHandler!
                 var onCompletionFunction: (() -> Void)!
                 
@@ -173,11 +153,8 @@ class AppLaunchViewControllerSpec: QuickSpec {
                         didCallOnCompletionFunction = true
                     }
                     
-                    subject = UIStoryboard(name: "CustomAppLaunchViewController",
-                                           bundle: testBundle).instantiateInitialViewController()
-                    
-                    subject.onLaunch = onLaunchFunction
-                    subject.onCompletion = onCompletionFunction
+                    subject = AppLaunchViewController(onLaunch: onLaunchFunction,
+                                                      onCompletion: onCompletionFunction)
 
                     _ = subject.view
                 }

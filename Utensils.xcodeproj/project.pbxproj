@@ -22,7 +22,6 @@
 		946AB17323903B48003D0016 /* FakeTrunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946AB17223903B48003D0016 /* FakeTrunk.swift */; };
 		946AB1792390568C003D0016 /* TrunkSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946AB1782390568C003D0016 /* TrunkSpec.swift */; };
 		94DB463C239330FE00D0C0A2 /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB463B239330FE00D0C0A2 /* AppLaunchViewController.swift */; };
-		94DB463E239343F500D0C0A2 /* AppLaunchViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94DB463D239343F500D0C0A2 /* AppLaunchViewController.storyboard */; };
 		94DB4641239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB4640239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift */; };
 		94DB464623947BC700D0C0A2 /* CustomAppLaunchViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94DB464523947BC700D0C0A2 /* CustomAppLaunchViewController.storyboard */; };
 		94DB466F2394872E00D0C0A2 /* FakeAppLaunchViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB466E2394872E00D0C0A2 /* FakeAppLaunchViewControllerDelegate.swift */; };
@@ -59,7 +58,6 @@
 		946AB17223903B48003D0016 /* FakeTrunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTrunk.swift; sourceTree = "<group>"; };
 		946AB1782390568C003D0016 /* TrunkSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrunkSpec.swift; sourceTree = "<group>"; };
 		94DB463B239330FE00D0C0A2 /* AppLaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
-		94DB463D239343F500D0C0A2 /* AppLaunchViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AppLaunchViewController.storyboard; sourceTree = "<group>"; };
 		94DB4640239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunchViewControllerSpec.swift; sourceTree = "<group>"; };
 		94DB464523947BC700D0C0A2 /* CustomAppLaunchViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = CustomAppLaunchViewController.storyboard; sourceTree = "<group>"; };
 		94DB466E2394872E00D0C0A2 /* FakeAppLaunchViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeAppLaunchViewControllerDelegate.swift; sourceTree = "<group>"; };
@@ -236,7 +234,6 @@
 		94DB463A239330E800D0C0A2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				94DB463D239343F500D0C0A2 /* AppLaunchViewController.storyboard */,
 				94DB463B239330FE00D0C0A2 /* AppLaunchViewController.swift */,
 			);
 			path = ViewControllers;
@@ -371,7 +368,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94DB463E239343F500D0C0A2 /* AppLaunchViewController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,7 +641,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.6;
+				MARKETING_VERSION = 0.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = teamthick.utensils;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -675,7 +671,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.6;
+				MARKETING_VERSION = 0.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = teamthick.utensils;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
