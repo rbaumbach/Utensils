@@ -28,8 +28,7 @@ platform :ios do
               config_file: ".swiftlint.yml",
               executable: "Pods/SwiftLint/swiftlint")
 
-    scan(scheme: "Utensils",
-         output_style: "rspec")
+    scan(scheme: "Utensils")
   end
 
   after_all do |lane|

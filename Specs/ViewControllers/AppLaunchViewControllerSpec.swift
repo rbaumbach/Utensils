@@ -21,6 +21,7 @@ class AppLaunchViewControllerSpec: QuickSpec {
                 fakeDelegate = FakeAppLaunchViewControllerDelegate()
                 
                 frameworkBundle = Bundle.utensils
+                print("Utensils bundle: \(frameworkBundle)")
                 
                 testBundle = Bundle(for: type(of: self))
             }
