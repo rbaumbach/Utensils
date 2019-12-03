@@ -32,16 +32,6 @@ public class AppLaunchViewController: UIViewController {
     
     public typealias OnLaunchHandler = (() -> Void) -> Void
     
-    // MARK: - Public static properties
-    
-    public static var bundle: Bundle {
-        let thisClass = AppLaunchViewController.self
-        
-        let bundle = Bundle(for: thisClass)
-        
-        return bundle
-    }
-    
     // MARK: - Public properties
     
     public weak var delegate: AppLaunchViewControllerDelegate?

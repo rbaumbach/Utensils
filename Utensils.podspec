@@ -13,5 +13,5 @@ Pod::Spec.new do |spec|
   spec.swift_version         = '5.1.2'
   spec.ios.resource_bundle   = { 'Utensils' => 'Utensils/Source/**/*.{storyboard}' }
 
-  spec.dependency 'Capsule', '~> 0.1.0'
+  spec.dependency 'Capsule', '~> 0.1.1'
 end

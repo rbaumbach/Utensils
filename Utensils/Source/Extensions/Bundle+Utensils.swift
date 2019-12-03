@@ -22,13 +22,13 @@
 
 import Foundation
 
-private class PrivateBundleExtensionClass { }
+private class PrivateUtensilsBundleExtensionClass { }
 
 public extension Bundle {
     static var utensils: Bundle {
-        let thisClass = PrivateBundleExtensionClass.self
+        let privateUtensilsClass = PrivateUtensilsBundleExtensionClass.self
         
-        let bundle = Bundle(for: thisClass)
+        let bundle = Bundle(for: privateUtensilsClass)
         
         return bundle
     }

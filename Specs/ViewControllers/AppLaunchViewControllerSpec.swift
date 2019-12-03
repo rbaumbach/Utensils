@@ -20,7 +20,8 @@ class AppLaunchViewControllerSpec: QuickSpec {
             beforeEach {
                 fakeDelegate = FakeAppLaunchViewControllerDelegate()
                 
-                frameworkBundle = AppLaunchViewController.bundle
+                frameworkBundle = Bundle.utensils
+                
                 testBundle = Bundle(for: type(of: self))
             }
             
