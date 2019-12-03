@@ -42,7 +42,7 @@ debouncer.mainDebounce(seconds: 0.1) {
 let directory = Directory(.temp(additionalPath: "filez/"))
 ```
 
-* A persistence tool called `Trunk`
+* A persistence tool called `Trunk`:
 
 ```
 let trunk = Trunk()
@@ -51,6 +51,30 @@ trunk.save(data: [0, 1, 2, 3, 4])
 
 let arrayOfInts: [Int]? = trunk.load()
 ```
+
+* An `AppLaunchViewController`
+
+Using the default storyboard:
+
+```
+let storyboard = UIStoryboard(name: "AppLaunchViewController", bundle: Bundle.utensils)
+
+let appLaunchViewController = storyboard.instantiateInitialViewController() as! AppLaunchViewController
+appLaunchViewController.delegate = self
+```
+
+Using a custom user supplied storyboard:
+
+```
+let storyboard = UIStoryboard(name: "CustomAppLaunchViewController", bundle: nil)
+
+let appLaunchViewController = storyboard.instantiateInitialViewController() as! AppLaunchViewController
+appLaunchViewController.delegate = self
+```
+
+Note: The custom storyboard must have it's custom class set to `AppLaunchViewController`.
+
+Additional Note: There are also "closure" properties that can be used, `onLaunch` and `onCompletion`, instead of the `delegate`.
 
 And more to come...
 
