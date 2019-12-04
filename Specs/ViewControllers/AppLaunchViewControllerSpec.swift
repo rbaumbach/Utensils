@@ -3,83 +3,26 @@ import Nimble
 import Capsule
 @testable import Utensils
 
-func whateverFunction(onLaunch: @escaping AppLaunchViewController.OnLaunchHandler) {
-    print("FECES")
-}
-
 class AppLaunchViewControllerSpec: QuickSpec {
     override func spec() {
         describe("AppLaunchViewController") {
             var subject: AppLaunchViewController!
             
-            var fakeDelegate: FakeAppLaunchViewControllerDelegate!
+            describe("when the default launching view is used") {
+                var didLaunchWork: Bool!
 
-            beforeEach {
-                fakeDelegate = FakeAppLaunchViewControllerDelegate()
-            }
-            
-            describe("when the default storyboard is used (delegate version)") {
                 beforeEach {
-                    subject = AppLaunchViewController(delegate: fakeDelegate)
+                    didLaunchWork = false
+                    
+                    subject = AppLaunchViewController() {
+                        didLaunchWork = true
+                    }
 
                     _ = subject.view
                 }
 
-                it("loads properly") {
-                    expect(subject).toNot(beNil())
-                }
-
-                describe("when the view did appear") {
-                    beforeEach {
-                        subject.viewDidAppear(false)
-                    }
-
-                    it("calls the delegates 'didStartLaunching' method") {
-                        expect(fakeDelegate.capturedDidStartLaunchingCompletionHandler).toNot(beNil())
-                    }
-
-                    describe("when the delegate calls the completionHandler of ''didStartLaunching'") {
-                        beforeEach {
-                            fakeDelegate.capturedDidStartLaunchingCompletionHandler?()
-                        }
-
-                        it("calls the delegates 'didFinishLaunching' method'") {
-                            expect(fakeDelegate.didFinishLaunchingCalled).to(beTruthy())
-                        }
-                    }
-                }
-            }
-
-            describe("when the default storyboard is used (handler version)") {
-                var onLaunchFunction: AppLaunchViewController.OnLaunchHandler!
-                var onCompletionFunction: (() -> Void)!
-
-                var didCallOnLaunchFuntion: Bool!
-                var didCallOnCompletionFunction: Bool!
-
-                beforeEach {
-                    didCallOnLaunchFuntion = false
-
-                    onLaunchFunction = { completionHandler in
-                        didCallOnLaunchFuntion = true
-
-                        completionHandler()
-                    }
-
-                    didCallOnCompletionFunction = false
-
-                    onCompletionFunction = {
-                        didCallOnCompletionFunction = true
-                    }
-
-                    subject = AppLaunchViewController(onLaunch: onLaunchFunction,
-                                                      onCompletion: onCompletionFunction)
-
-                    _ = subject.view
-                }
-
-                it("loads properly") {
-                    expect(subject).toNot(beNil())
+                it("loads the default launch view") {
+                    expect(subject.view).to(beAnInstanceOf(DefaultAppLaunchView.self))
                 }
 
                 describe("when the view did appear") {
@@ -87,98 +30,49 @@ class AppLaunchViewControllerSpec: QuickSpec {
                         _ = subject.viewDidAppear(false)
                     }
 
-                    it("calls the onLaunch function") {
-                        expect(didCallOnLaunchFuntion).to(beTruthy())
-                    }
-
-                    describe("when onLaunch function calls onLaunch function") {
-                        it("calls the onCompletion function") {
-                            expect(didCallOnCompletionFunction).to(beTruthy())
-                        }
-                    }
-                }
-            }
-
-            describe("when a custom storyboard name is used (delegate version)") {
-                beforeEach {
-                    subject = AppLaunchViewController(delegate: fakeDelegate)
-                    
-                    _ = subject.view
-                }
-                
-                it("loads properly") {
-                    expect(subject).toNot(beNil())
-                }
-                
-                describe("when the view did appear") {
-                    beforeEach {
-                        subject.viewDidAppear(false)
-                    }
-                    
-                    it("calls the delegates 'didStartLaunching' method") {
-                        expect(fakeDelegate.capturedDidStartLaunchingCompletionHandler).toNot(beNil())
-                    }
-                    
-                    describe("when the delegate calls the completionHandler of ''didStartLaunching'") {
-                        beforeEach {
-                            fakeDelegate.capturedDidStartLaunchingCompletionHandler?()
-                        }
-                        
-                        it("calls the delegates 'didFinishLaunching' method'") {
-                            expect(fakeDelegate.didFinishLaunchingCalled).to(beTruthy())
-                        }
+                    it("executes the launch work") {
+                        expect(didLaunchWork).to(beTruthy())
                     }
                 }
             }
             
-            describe("when a custom storyboard name is used (handler version)") {
-                var onLaunchFunction: AppLaunchViewController.OnLaunchHandler!
-                var onCompletionFunction: (() -> Void)!
-                
-                var didCallOnLaunchFuntion: Bool!
-                var didCallOnCompletionFunction: Bool!
-                                
-                beforeEach {
-                    didCallOnLaunchFuntion = false
-                    
-                    onLaunchFunction = { completionHandler in
-                        didCallOnLaunchFuntion = true
+            describe("when a custom launching view is used") {
+                var didLaunchWork: Bool!
 
-                        completionHandler()
+                beforeEach {
+                    didLaunchWork = false
+                    
+                    subject = AppLaunchViewController() {
+                        didLaunchWork = true
                     }
                     
-                    didCallOnCompletionFunction = false
-                    
-                    onCompletionFunction = {
-                        didCallOnCompletionFunction = true
-                    }
-                    
-                    subject = AppLaunchViewController(onLaunch: onLaunchFunction,
-                                                      onCompletion: onCompletionFunction)
+                    subject.customLaunchView = CustomView()
 
                     _ = subject.view
                 }
-                
-                it("loads properly") {
-                    expect(subject).toNot(beNil())
+
+                it("loads the custom launching view") {
+                    expect(subject.view).to(beAnInstanceOf(CustomView.self))
                 }
-                
+
                 describe("when the view did appear") {
                     beforeEach {
                         _ = subject.viewDidAppear(false)
                     }
-                    
-                    it("calls the onLaunch function") {
-                        expect(didCallOnLaunchFuntion).to(beTruthy())
-                    }
-                    
-                    describe("when onLaunch function calls onLaunch function") {
-                        it("calls the onCompletion function") {
-                            expect(didCallOnCompletionFunction).to(beTruthy())
-                        }
+
+                    it("executes the launch work") {
+                        expect(didLaunchWork).to(beTruthy())
                     }
                 }
             }
         }
     }
 }
+
+/*
+ 
+ Notes: Override loadView() in the view lifecycle if you specify a nil nibName in init(nibname:bundle:), or else
+ The system will attempt to fetch a nib in various ways.
+ https://developer.apple.com/documentation/uikit/uiviewcontroller/1621487-nibname
+ 
+ */

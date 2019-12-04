@@ -22,55 +22,48 @@
 
 import UIKit
 
-public protocol AppLaunchViewControllerDelegate: class {
-    func workToExecute()
-}
-
-public class AppLaunchViewController: UIViewController {
-    // MARK: - Private properties
-
-    private var launchWork: (() -> Void)?
-    
-    // MARK: - Public properties
-    
-    public var customLaunchView: UIView?
-    public weak var delegate: AppLaunchViewControllerDelegate?
-    
+class DefaultAppLaunchView: UIView {
     // MARK: - Init methods
     
-    public convenience init(launchWork: @escaping () -> Void) {
-        self.init(nibName: nil, bundle: nil)
+    init() {
+        super.init(frame: .zero)
         
-        self.launchWork = launchWork
+        setup()
     }
     
-    public convenience init(delegate: AppLaunchViewControllerDelegate) {
-        self.init(nibName: nil, bundle: nil)
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
         
-        self.delegate = delegate
+        setup()
     }
     
-    // MARK: - View lifecycle
+    // MARK: - Private properties
     
-    public override func loadView() {
-        super.loadView()
+    private func setup() {
+        self.backgroundColor = .black
+        
+        setupActivityIndicatorView()
+    }
+    
+    private func setupActivityIndicatorView() {
+        let activityIndicatorView = UIActivityIndicatorView()
+        
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(activityIndicatorView)
+        
+        NSLayoutConstraint.activate([
+            activityIndicatorView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            self.bottomAnchor.constraint(equalTo: activityIndicatorView.bottomAnchor, constant: 50.0)
+        ])
 
-        setupLoadingView()
-    }
-    
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        launchWork?()
-    }
-    
-    // MARK: - Private methods
-    
-    private func setupLoadingView() {
-        if let customLoadingView = customLaunchView {
-            view = customLoadingView
+        if #available(iOS 13.0, *) {
+            activityIndicatorView.style = .large
         } else {
-            view = DefaultAppLaunchView()
+            activityIndicatorView.style = .whiteLarge
         }
+        
+        activityIndicatorView.color = .white
+        activityIndicatorView.startAnimating()
+        activityIndicatorView.hidesWhenStopped = true
     }
 }
