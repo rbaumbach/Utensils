@@ -54,22 +54,20 @@ let arrayOfInts: [Int]? = trunk.load()
 
 * An `AppLaunchViewController`
 
-Using the default storyboard:
+Using the default launch view:
 
 ```
-let appLaunchViewController = AppLaunchViewController(delegate: self)
+let appLaunchViewController = AppLaunchViewController { print("I'm launching!") }
 ```
 
 Using a custom user supplied storyboard:
 
 ```
-let appLaunchViewController = AppLaunchViewController(delegate: self)
+let appLaunchViewController = AppLaunchViewController { print("I'm launching!") }
 appLaunchViewController.customLoadingView = fancyBrandedLoadingView
 ```
 
-Note: The custom view will be anchored to all 4 corners of view controllers safe area for iOS 11 >, or the view controllers view otherwise.
-
-Additional Note: There are also "handler" properties that can be used, `onLaunch` and `onCompletion`, instead of the `delegate`.
+Note: The custom view will be anchored to all 4 corners of view controller
 
 And more to come...
 
