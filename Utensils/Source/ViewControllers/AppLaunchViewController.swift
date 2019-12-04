@@ -34,7 +34,6 @@ public class AppLaunchViewController: UIViewController {
     // MARK: - Public properties
     
     public var customLaunchView: UIView?
-    public weak var delegate: AppLaunchViewControllerDelegate?
     
     // MARK: - Init methods
     
@@ -43,13 +42,7 @@ public class AppLaunchViewController: UIViewController {
         
         self.launchWork = launchWork
     }
-    
-    public convenience init(delegate: AppLaunchViewControllerDelegate) {
-        self.init(nibName: nil, bundle: nil)
         
-        self.delegate = delegate
-    }
-    
     // MARK: - View lifecycle
     
     public override func loadView() {
