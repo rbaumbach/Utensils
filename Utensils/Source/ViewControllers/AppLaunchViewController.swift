@@ -22,10 +22,6 @@
 
 import UIKit
 
-public protocol AppLaunchViewControllerDelegate: class {
-    func workToExecute()
-}
-
 public class AppLaunchViewController: UIViewController {
     // MARK: - Private properties
 
