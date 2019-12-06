@@ -17,7 +17,6 @@
 		940F9C6C239748270028937B /* DefaultAppLaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9C6B239748270028937B /* DefaultAppLaunchView.swift */; };
 		940F9C6E23974A060028937B /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9C6D23974A060028937B /* CustomView.swift */; };
 		940F9DB22399CA940028937B /* Capsule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940F9DB12399CA940028937B /* Capsule.framework */; };
-		940F9DB32399CA940028937B /* Capsule.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 940F9DB12399CA940028937B /* Capsule.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		94341AFE238CCECF00BC8355 /* Utensils.h in Headers */ = {isa = PBXBuildFile; fileRef = 94341AFC238CCECF00BC8355 /* Utensils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		944A010D238D7B6700957702 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A010C238D7B6700957702 /* Debouncer.swift */; };
 		944A0110238D7BA600957702 /* FakeDebouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A010F238D7BA600957702 /* FakeDebouncer.swift */; };
@@ -39,20 +38,6 @@
 			remoteInfo = Utensils;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		940F9DB42399CA940028937B /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				940F9DB32399CA940028937B /* Capsule.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0F65C3E235F028D5409A1E1C /* Pods-Utensils.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Utensils.debug.xcconfig"; path = "Target Support Files/Pods-Utensils/Pods-Utensils.debug.xcconfig"; sourceTree = "<group>"; };
@@ -307,7 +292,6 @@
 				94341AF6238CCECF00BC8355 /* Frameworks */,
 				94341AF7238CCECF00BC8355 /* Resources */,
 				944A010A238CD5DC00957702 /* SwiftLint Run Script */,
-				940F9DB42399CA940028937B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
