@@ -9,7 +9,7 @@ Pod::Spec.new do |spec|
   spec.requires_arc          = true
   spec.platform              = :ios
   spec.ios.deployment_target = '10.0'
-  spec.source_files          = 'Utensils/Source/**/*.{swift}'
+  spec.source_files          = 'Sources/Utensils/**/*.{swift}'
   spec.swift_version         = '5.1.2'
 
   spec.dependency 'Capsule', '~> 0.1.1'

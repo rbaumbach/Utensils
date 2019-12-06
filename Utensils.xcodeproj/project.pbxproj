@@ -10,23 +10,23 @@
 		135F8B24864A5F30E6A29131 /* Pods_Specs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6AEDCB7A77793D6849DD9E0 /* Pods_Specs.framework */; };
 		8FF8E56D809DB5E0171C46A3 /* Pods_Utensils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFFF1C07A0B87A5350505963 /* Pods_Utensils.framework */; };
 		9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9406829D238D7F24004278CB /* DebouncerSpec.swift */; };
-		940682A8238EC926004278CB /* Directory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682A7238EC926004278CB /* Directory.swift */; };
 		940682AC238EE03A004278CB /* DirectorySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682AB238EE03A004278CB /* DirectorySpec.swift */; };
-		940682B0238EE79E004278CB /* FakeDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682AF238EE79E004278CB /* FakeDirectory.swift */; };
-		940F9C5B2396B1A10028937B /* Bundle+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9C5A2396B1A10028937B /* Bundle+Utensils.swift */; };
-		940F9C6C239748270028937B /* DefaultAppLaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9C6B239748270028937B /* DefaultAppLaunchView.swift */; };
 		940F9C6E23974A060028937B /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9C6D23974A060028937B /* CustomView.swift */; };
 		940F9DB22399CA940028937B /* Capsule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940F9DB12399CA940028937B /* Capsule.framework */; };
+		940F9DEF239B141F0028937B /* Bundle+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DEE239B141F0028937B /* Bundle+Utensils.swift */; };
+		940F9DF3239B143E0028937B /* FakeDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DF2239B143E0028937B /* FakeDirectory.swift */; };
+		940F9DF5239B14440028937B /* Directory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DF4239B14440028937B /* Directory.swift */; };
+		940F9DFA239B14630028937B /* FakeDebouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DF8239B14630028937B /* FakeDebouncer.swift */; };
+		940F9DFB239B14630028937B /* FakeTrunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DF9239B14630028937B /* FakeTrunk.swift */; };
+		940F9DFF239B146D0028937B /* Trunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DFC239B146D0028937B /* Trunk.swift */; };
+		940F9E00239B146D0028937B /* Trunk+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DFD239B146D0028937B /* Trunk+Utensils.swift */; };
+		940F9E01239B146D0028937B /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DFE239B146D0028937B /* Debouncer.swift */; };
+		940F9E05239B147F0028937B /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9E03239B147F0028937B /* AppLaunchViewController.swift */; };
+		940F9E06239B147F0028937B /* DefaultAppLaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9E04239B147F0028937B /* DefaultAppLaunchView.swift */; };
 		94341AFE238CCECF00BC8355 /* Utensils.h in Headers */ = {isa = PBXBuildFile; fileRef = 94341AFC238CCECF00BC8355 /* Utensils.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		944A010D238D7B6700957702 /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A010C238D7B6700957702 /* Debouncer.swift */; };
-		944A0110238D7BA600957702 /* FakeDebouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944A010F238D7BA600957702 /* FakeDebouncer.swift */; };
 		944A011E238D7CBD00957702 /* Utensils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94341AF9238CCECF00BC8355 /* Utensils.framework */; };
-		946AB17123903B2C003D0016 /* Trunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946AB17023903B2C003D0016 /* Trunk.swift */; };
-		946AB17323903B48003D0016 /* FakeTrunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946AB17223903B48003D0016 /* FakeTrunk.swift */; };
 		946AB1792390568C003D0016 /* TrunkSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946AB1782390568C003D0016 /* TrunkSpec.swift */; };
-		94DB463C239330FE00D0C0A2 /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB463B239330FE00D0C0A2 /* AppLaunchViewController.swift */; };
 		94DB4641239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB4640239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift */; };
-		94E7A86E23920E4500C3A04F /* Trunk+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E7A86D23920E4500C3A04F /* Trunk+Utensils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,26 +44,26 @@
 		2C8107B3228DC8AD8DAFF86E /* Pods-Utensils.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Utensils.release.xcconfig"; path = "Target Support Files/Pods-Utensils/Pods-Utensils.release.xcconfig"; sourceTree = "<group>"; };
 		3A6F222921BB88AC6112B781 /* Pods-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Specs.release.xcconfig"; path = "Target Support Files/Pods-Specs/Pods-Specs.release.xcconfig"; sourceTree = "<group>"; };
 		9406829D238D7F24004278CB /* DebouncerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncerSpec.swift; sourceTree = "<group>"; };
-		940682A7238EC926004278CB /* Directory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Directory.swift; sourceTree = "<group>"; };
 		940682AB238EE03A004278CB /* DirectorySpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectorySpec.swift; sourceTree = "<group>"; };
-		940682AF238EE79E004278CB /* FakeDirectory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDirectory.swift; sourceTree = "<group>"; };
-		940F9C5A2396B1A10028937B /* Bundle+Utensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Utensils.swift"; sourceTree = "<group>"; };
-		940F9C6B239748270028937B /* DefaultAppLaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAppLaunchView.swift; sourceTree = "<group>"; };
 		940F9C6D23974A060028937B /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		940F9DB12399CA940028937B /* Capsule.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Capsule.framework; path = Carthage/Build/iOS/Capsule.framework; sourceTree = "<group>"; };
+		940F9DEE239B141F0028937B /* Bundle+Utensils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Utensils.swift"; sourceTree = "<group>"; };
+		940F9DF2239B143E0028937B /* FakeDirectory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeDirectory.swift; sourceTree = "<group>"; };
+		940F9DF4239B14440028937B /* Directory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Directory.swift; sourceTree = "<group>"; };
+		940F9DF8239B14630028937B /* FakeDebouncer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeDebouncer.swift; sourceTree = "<group>"; };
+		940F9DF9239B14630028937B /* FakeTrunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeTrunk.swift; sourceTree = "<group>"; };
+		940F9DFC239B146D0028937B /* Trunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trunk.swift; sourceTree = "<group>"; };
+		940F9DFD239B146D0028937B /* Trunk+Utensils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Trunk+Utensils.swift"; sourceTree = "<group>"; };
+		940F9DFE239B146D0028937B /* Debouncer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
+		940F9E03239B147F0028937B /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
+		940F9E04239B147F0028937B /* DefaultAppLaunchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAppLaunchView.swift; sourceTree = "<group>"; };
 		94341AF9238CCECF00BC8355 /* Utensils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Utensils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94341AFC238CCECF00BC8355 /* Utensils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utensils.h; sourceTree = "<group>"; };
 		94341AFD238CCECF00BC8355 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		944A010C238D7B6700957702 /* Debouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
-		944A010F238D7BA600957702 /* FakeDebouncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeDebouncer.swift; sourceTree = "<group>"; };
 		944A0119238D7CBD00957702 /* Specs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Specs.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		944A011D238D7CBD00957702 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		946AB17023903B2C003D0016 /* Trunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trunk.swift; sourceTree = "<group>"; };
-		946AB17223903B48003D0016 /* FakeTrunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTrunk.swift; sourceTree = "<group>"; };
 		946AB1782390568C003D0016 /* TrunkSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrunkSpec.swift; sourceTree = "<group>"; };
-		94DB463B239330FE00D0C0A2 /* AppLaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
 		94DB4640239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunchViewControllerSpec.swift; sourceTree = "<group>"; };
-		94E7A86D23920E4500C3A04F /* Trunk+Utensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Trunk+Utensils.swift"; sourceTree = "<group>"; };
 		A549590B733FCDA00A8D606F /* Pods-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Specs.debug.xcconfig"; path = "Target Support Files/Pods-Specs/Pods-Specs.debug.xcconfig"; sourceTree = "<group>"; };
 		C6AEDCB7A77793D6849DD9E0 /* Pods_Specs.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Specs.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFFF1C07A0B87A5350505963 /* Pods_Utensils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Utensils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,15 +119,6 @@
 			path = Tools;
 			sourceTree = "<group>";
 		};
-		940682A9238EE01C004278CB /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				940682AE238EE792004278CB /* Fakes */,
-				940682A7238EC926004278CB /* Directory.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		940682AA238EE021004278CB /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -136,26 +127,84 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		940682AE238EE792004278CB /* Fakes */ = {
+		940F9DEB239B13910028937B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				940682AF238EE79E004278CB /* FakeDirectory.swift */,
+				940F9DEC239B13970028937B /* Utensils */,
 			);
-			path = Fakes;
+			path = Sources;
 			sourceTree = "<group>";
 		};
-		940F9C592396B1900028937B /* Extensions */ = {
+		940F9DEC239B13970028937B /* Utensils */ = {
 			isa = PBXGroup;
 			children = (
-				940F9C5A2396B1A10028937B /* Bundle+Utensils.swift */,
+				940F9E02239B14730028937B /* View Controllers */,
+				940F9DF6239B144D0028937B /* Tools */,
+				940F9DED239B14110028937B /* Extensions */,
+				940F9DF0239B14280028937B /* Models */,
 			);
-			path = Extensions;
+			path = Utensils;
+			sourceTree = "<group>";
+		};
+		940F9DED239B14110028937B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				940F9DEE239B141F0028937B /* Bundle+Utensils.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		940F9DF0239B14280028937B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				940F9DF1239B142F0028937B /* Fakes */,
+				940F9DF4239B14440028937B /* Directory.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		940F9DF1239B142F0028937B /* Fakes */ = {
+			isa = PBXGroup;
+			children = (
+				940F9DF2239B143E0028937B /* FakeDirectory.swift */,
+			);
+			name = Fakes;
+			sourceTree = "<group>";
+		};
+		940F9DF6239B144D0028937B /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				940F9DF7239B14560028937B /* Fakes */,
+				940F9DFE239B146D0028937B /* Debouncer.swift */,
+				940F9DFC239B146D0028937B /* Trunk.swift */,
+				940F9DFD239B146D0028937B /* Trunk+Utensils.swift */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
+		940F9DF7239B14560028937B /* Fakes */ = {
+			isa = PBXGroup;
+			children = (
+				940F9DF8239B14630028937B /* FakeDebouncer.swift */,
+				940F9DF9239B14630028937B /* FakeTrunk.swift */,
+			);
+			name = Fakes;
+			sourceTree = "<group>";
+		};
+		940F9E02239B14730028937B /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				940F9E03239B147F0028937B /* AppLaunchViewController.swift */,
+				940F9E04239B147F0028937B /* DefaultAppLaunchView.swift */,
+			);
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 		94341AEF238CCECF00BC8355 = {
 			isa = PBXGroup;
 			children = (
 				94341AFB238CCECF00BC8355 /* Utensils */,
+				940F9DEB239B13910028937B /* Sources */,
 				944A011A238D7CBD00957702 /* Specs */,
 				94341AFA238CCECF00BC8355 /* Products */,
 				6E4023168A777314D411F10C /* Pods */,
@@ -175,50 +224,10 @@
 		94341AFB238CCECF00BC8355 /* Utensils */ = {
 			isa = PBXGroup;
 			children = (
-				944A010B238CD82A00957702 /* Source */,
-				94341B04238CCEE800BC8355 /* Supporting Files */,
-			);
-			path = Utensils;
-			sourceTree = "<group>";
-		};
-		94341B04238CCEE800BC8355 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
+				94341AFC238CCECF00BC8355 /* Utensils.h */,
 				94341AFD238CCECF00BC8355 /* Info.plist */,
 			);
-			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		944A010B238CD82A00957702 /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				94341AFC238CCECF00BC8355 /* Utensils.h */,
-				940F9C592396B1900028937B /* Extensions */,
-				940682A9238EE01C004278CB /* Models */,
-				944A0111238D7BB900957702 /* Tools */,
-				94DB463A239330E800D0C0A2 /* ViewControllers */,
-			);
-			path = Source;
-			sourceTree = "<group>";
-		};
-		944A010E238D7B9900957702 /* Fakes */ = {
-			isa = PBXGroup;
-			children = (
-				944A010F238D7BA600957702 /* FakeDebouncer.swift */,
-				946AB17223903B48003D0016 /* FakeTrunk.swift */,
-			);
-			path = Fakes;
-			sourceTree = "<group>";
-		};
-		944A0111238D7BB900957702 /* Tools */ = {
-			isa = PBXGroup;
-			children = (
-				944A010E238D7B9900957702 /* Fakes */,
-				944A010C238D7B6700957702 /* Debouncer.swift */,
-				946AB17023903B2C003D0016 /* Trunk.swift */,
-				94E7A86D23920E4500C3A04F /* Trunk+Utensils.swift */,
-			);
-			path = Tools;
+			path = Utensils;
 			sourceTree = "<group>";
 		};
 		944A011A238D7CBD00957702 /* Specs */ = {
@@ -231,15 +240,6 @@
 				9406829C238D7D0E004278CB /* Supporting Files */,
 			);
 			path = Specs;
-			sourceTree = "<group>";
-		};
-		94DB463A239330E800D0C0A2 /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				94DB463B239330FE00D0C0A2 /* AppLaunchViewController.swift */,
-				940F9C6B239748270028937B /* DefaultAppLaunchView.swift */,
-			);
-			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		94DB463F239479C900D0C0A2 /* ViewControllers */ = {
@@ -463,16 +463,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				946AB17123903B2C003D0016 /* Trunk.swift in Sources */,
-				944A0110238D7BA600957702 /* FakeDebouncer.swift in Sources */,
-				94E7A86E23920E4500C3A04F /* Trunk+Utensils.swift in Sources */,
-				940F9C6C239748270028937B /* DefaultAppLaunchView.swift in Sources */,
-				94DB463C239330FE00D0C0A2 /* AppLaunchViewController.swift in Sources */,
-				940F9C5B2396B1A10028937B /* Bundle+Utensils.swift in Sources */,
-				944A010D238D7B6700957702 /* Debouncer.swift in Sources */,
-				940682B0238EE79E004278CB /* FakeDirectory.swift in Sources */,
-				940682A8238EC926004278CB /* Directory.swift in Sources */,
-				946AB17323903B48003D0016 /* FakeTrunk.swift in Sources */,
+				940F9DFB239B14630028937B /* FakeTrunk.swift in Sources */,
+				940F9DF5239B14440028937B /* Directory.swift in Sources */,
+				940F9DFA239B14630028937B /* FakeDebouncer.swift in Sources */,
+				940F9DF3239B143E0028937B /* FakeDirectory.swift in Sources */,
+				940F9E00239B146D0028937B /* Trunk+Utensils.swift in Sources */,
+				940F9E01239B146D0028937B /* Debouncer.swift in Sources */,
+				940F9DFF239B146D0028937B /* Trunk.swift in Sources */,
+				940F9E06239B147F0028937B /* DefaultAppLaunchView.swift in Sources */,
+				940F9DEF239B141F0028937B /* Bundle+Utensils.swift in Sources */,
+				940F9E05239B147F0028937B /* AppLaunchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -634,7 +634,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "Utensils/Supporting Files/Info.plist";
+				INFOPLIST_FILE = Utensils/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -668,7 +668,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = "Utensils/Supporting Files/Info.plist";
+				INFOPLIST_FILE = Utensils/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
