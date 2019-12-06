@@ -60,7 +60,7 @@ Using the default launch view:
 let appLaunchViewController = AppLaunchViewController { print("I'm launching!") }
 ```
 
-Using a custom user supplied storyboard:
+Using a custom user supplied view:
 
 ```
 let appLaunchViewController = AppLaunchViewController { print("I'm launching!") }
