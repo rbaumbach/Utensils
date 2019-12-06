@@ -63,7 +63,7 @@ let appLaunchViewController = AppLaunchViewController { print("I'm launching!") 
 Using a custom user supplied view:
 
 ```
-let appLaunchViewController = AppLaunchViewController { print("I'm launching!") }
+let appLaunchViewController = AppLaunchViewController { thingy.doSomethingLengthyBeforeAppLaunches() }
 appLaunchViewController.customLoadingView = fancyBrandedLoadingView
 ```
 
@@ -81,11 +81,12 @@ All tools will have accompanying protocols and fakes for those of you that enjoy
 
 This project has been setup to use [fastlane](https://fastlane.tools) to run the specs.
 
-First, bundle required gems and then install Cocoapods when in the project directory:
+First, bundle required gems, install [Cocoapods](http://cocoapods.org) and [Carthage](https://github.com/Carthage/Carthage).  Next, inside the root project directory run:
 
 ```bash
 $ bundle
 $ bundle exec pod install
+$ carthage bootstrap --platform ios
 ```
 
 And then use fastlane to run all the specs on the command line:
