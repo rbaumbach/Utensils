@@ -10,6 +10,7 @@ end
 
 target :Specs do
     pod 'Capsule', '~> 0.1.1'
+    
     pod 'Quick', '2.2.0'
     pod 'Nimble', '8.0.4'
 end

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		135F8B24864A5F30E6A29131 /* Pods_Specs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6AEDCB7A77793D6849DD9E0 /* Pods_Specs.framework */; };
+		8FF8E56D809DB5E0171C46A3 /* Pods_Utensils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFFF1C07A0B87A5350505963 /* Pods_Utensils.framework */; };
 		9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9406829D238D7F24004278CB /* DebouncerSpec.swift */; };
 		940682A8238EC926004278CB /* Directory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682A7238EC926004278CB /* Directory.swift */; };
 		940682AC238EE03A004278CB /* DirectorySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682AB238EE03A004278CB /* DirectorySpec.swift */; };
@@ -27,7 +28,6 @@
 		94DB463C239330FE00D0C0A2 /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB463B239330FE00D0C0A2 /* AppLaunchViewController.swift */; };
 		94DB4641239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB4640239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift */; };
 		94E7A86E23920E4500C3A04F /* Trunk+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E7A86D23920E4500C3A04F /* Trunk+Utensils.swift */; };
-		EB3F589AEE8DA9FC3F5A1EFB /* Pods_Utensils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFFF1C07A0B87A5350505963 /* Pods_Utensils.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,7 +90,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				940F9DB22399CA940028937B /* Capsule.framework in Frameworks */,
-				EB3F589AEE8DA9FC3F5A1EFB /* Pods_Utensils.framework in Frameworks */,
+				8FF8E56D809DB5E0171C46A3 /* Pods_Utensils.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,7 +301,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 94341B01238CCECF00BC8355 /* Build configuration list for PBXNativeTarget "Utensils" */;
 			buildPhases = (
-				5B192B5A5858D1BF1A0E6017 /* [CP] Check Pods Manifest.lock */,
+				837C0A270B30DE1D6E331A80 /* [CP] Check Pods Manifest.lock */,
 				94341AF4238CCECF00BC8355 /* Headers */,
 				94341AF5238CCECF00BC8355 /* Sources */,
 				94341AF6238CCECF00BC8355 /* Frameworks */,
@@ -410,7 +410,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Specs/Pods-Specs-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5B192B5A5858D1BF1A0E6017 /* [CP] Check Pods Manifest.lock */ = {
+		837C0A270B30DE1D6E331A80 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
