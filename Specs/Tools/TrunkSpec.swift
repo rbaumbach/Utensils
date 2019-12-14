@@ -118,8 +118,8 @@ class TrunkSpec: QuickSpec {
                         didComplete = true
                     }
                     
-                    fakeDispatchQueueWrapper.capturedGlobalAsyncCompletionHandler?()
-                    fakeDispatchQueueWrapper.capturedMainAsyncCompletionHandler?()
+                    fakeDispatchQueueWrapper.capturedGlobalAsyncExecutionBlock?()
+                    fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                 }
                 
                 it("saves the data to disk on a background queue") {
@@ -217,8 +217,8 @@ class TrunkSpec: QuickSpec {
                         capturedModelData = modelData
                     }
                     
-                    fakeDispatchQueueWrapper.capturedGlobalAsyncCompletionHandler?()
-                    fakeDispatchQueueWrapper.capturedMainAsyncCompletionHandler?()
+                    fakeDispatchQueueWrapper.capturedGlobalAsyncExecutionBlock?()
+                    fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                 }
                 
                 it("returns the model data that was retrieved from disk on a background queue") {
