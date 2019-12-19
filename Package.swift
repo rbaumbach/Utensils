@@ -28,7 +28,7 @@ import PackageDescription
 let package = Package(name: "Utensils",
                       platforms: [.iOS(.v10)],
                       products: [.library(name: "Utensils", targets: ["Utensils"])],
-                      dependencies: [.package(url: "https://github.com/rbaumbach/Capsule", from: "0.1.1")],
+                      dependencies: [.package(url: "https://github.com/rbaumbach/Capsule", from: "0.2.0")],
                       targets: [.target(name: "Utensils",
                                         dependencies: ["Capsule"])],
                       swiftLanguageVersions: [.v5])
