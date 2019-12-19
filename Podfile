@@ -5,11 +5,13 @@ use_frameworks!
 inhibit_all_warnings!
 
 target :Utensils do
+  pod 'Capsule', '~> 0.2.0'
+
   pod 'SwiftLint', '0.37.0'
 end
 
 target :Specs do
-    pod 'Capsule', '~> 0.2.1'
+    pod 'Capsule', '~> 0.2.0'
 
     pod 'Quick', '2.2.0'
     pod 'Nimble', '8.0.4'

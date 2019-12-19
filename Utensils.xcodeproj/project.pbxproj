@@ -12,7 +12,6 @@
 		9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9406829D238D7F24004278CB /* DebouncerSpec.swift */; };
 		940682AC238EE03A004278CB /* DirectorySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682AB238EE03A004278CB /* DirectorySpec.swift */; };
 		940F9C6E23974A060028937B /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9C6D23974A060028937B /* CustomView.swift */; };
-		940F9DB22399CA940028937B /* Capsule.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 940F9DB12399CA940028937B /* Capsule.framework */; };
 		940F9DEF239B141F0028937B /* Bundle+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DEE239B141F0028937B /* Bundle+Utensils.swift */; };
 		940F9DF3239B143E0028937B /* FakeDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DF2239B143E0028937B /* FakeDirectory.swift */; };
 		940F9DF5239B14440028937B /* Directory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DF4239B14440028937B /* Directory.swift */; };
@@ -80,7 +79,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				940F9DB22399CA940028937B /* Capsule.framework in Frameworks */,
 				8FF8E56D809DB5E0171C46A3 /* Pods_Utensils.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
