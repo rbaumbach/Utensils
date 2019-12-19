@@ -67,6 +67,14 @@ let appLaunchViewController = AppLaunchViewController { thingy.doSomethingLength
 appLaunchViewController.customLoadingView = fancyBrandedLoadingView
 ```
 
+* A generic `Validator`
+
+```
+let email = Email(string: "billy@goat.com")
+
+let isValidEmail = AnyValidator<Email>().isValid(email)
+```
+
 Note: The custom view will be anchored to all 4 corners of view controller
 
 And more to come...
