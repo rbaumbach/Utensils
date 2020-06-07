@@ -60,6 +60,8 @@ let appLaunchViewController = AppLaunchViewController { thingy.doSomethingLength
 appLaunchViewController.customLoadingView = fancyBrandedLoadingView
 ```
 
+Note: The custom view will be anchored to all 4 corners of view controller
+
 * A generic `Validator`
 
 ```
@@ -67,8 +69,6 @@ let email = Email(string: "billy@goat.com")
 
 let isValidEmail = AnyValidator<Email>().isValid(email)
 ```
-
-Note: The custom view will be anchored to all 4 corners of view controller
 
 And more to come...
 
@@ -82,12 +82,11 @@ All tools will have accompanying protocols and fakes for those of you that enjoy
 
 This project has been setup to use [fastlane](https://fastlane.tools) to run the specs.
 
-First, bundle required gems, install [Cocoapods](http://cocoapods.org) and [Carthage](https://github.com/Carthage/Carthage).  Next, inside the root project directory run:
+First, bundle required gems, install [Cocoapods](http://cocoapods.org). Next, inside the root project directory run:
 
 ```bash
 $ bundle
 $ bundle exec pod install
-$ carthage bootstrap --platform ios
 ```
 
 And then use fastlane to run all the specs on the command line:
