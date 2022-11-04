@@ -1,18 +1,18 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '10.0'
+platform :ios, '11.0'
 use_frameworks!
 inhibit_all_warnings!
 
 target :Utensils do
   pod 'Capsule', '~> 1.0.0'
 
-  pod 'SwiftLint', '0.40.0'
+  pod 'SwiftLint', '0.49.1'
 end
 
 target :Specs do
     pod 'Capsule', '~> 1.0.0'
 
-    pod 'Quick', '3.0.0'
-    pod 'Nimble', '8.1.1'
+    pod 'Quick', '5.0.1'
+    pod 'Nimble', '10.0.0'
 end
