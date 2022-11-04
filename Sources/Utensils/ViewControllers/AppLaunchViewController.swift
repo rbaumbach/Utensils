@@ -1,6 +1,6 @@
 //MIT License
 //
-//Copyright (c) 2020 Ryan Baumbach <github@ryan.codes>
+//Copyright (c) 2020-2022 Ryan Baumbach <github@ryan.codes>
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,22 +20,46 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-import Foundation
+import UIKit
 
-public class FakeDebouncer: DebouncerProtocol {
-    // MARK: - Captured properties
+public class AppLaunchViewController: UIViewController {
+    // MARK: - Private properties
+
+    private var launchWork: (() -> Void)?
     
-    public var capturedDebounceSeconds: Double?
-    public var capturedDebounceExectution: (() -> Void)?
+    // MARK: - Public properties
+    
+    public var customLaunchView: UIView?
     
     // MARK: - Init methods
     
-    public init() { }
+    public convenience init(launchWork: @escaping () -> Void) {
+        self.init(nibName: nil, bundle: nil)
+        
+        self.launchWork = launchWork
+    }
+        
+    // MARK: - View lifecycle
     
-    // MARK: - <DebouncerProtocol>
+    public override func loadView() {
+        super.loadView()
+
+        setupLoadingView()
+    }
     
-    public func mainDebounce(seconds: Double, execute: @escaping () -> Void) {
-        capturedDebounceSeconds = seconds
-        capturedDebounceExectution = execute
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        launchWork?()
+    }
+    
+    // MARK: - Private methods
+    
+    private func setupLoadingView() {
+        if let customLoadingView = customLaunchView {
+            view = customLoadingView
+        } else {
+            view = DefaultAppLaunchView()
+        }
     }
 }

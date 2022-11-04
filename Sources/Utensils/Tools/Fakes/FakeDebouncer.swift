@@ -1,6 +1,6 @@
 //MIT License
 //
-//Copyright (c) 2020 Ryan Baumbach <github@ryan.codes>
+//Copyright (c) 2020-2022 Ryan Baumbach <github@ryan.codes>
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,20 @@
 
 import Foundation
 
-private class PrivateUtensilsBundleExtensionClass { }
-
-public extension Bundle {
-    static var utensils: Bundle {
-        let privateUtensilsClass = PrivateUtensilsBundleExtensionClass.self
-        
-        let bundle = Bundle(for: privateUtensilsClass)
-        
-        return bundle
+public class FakeDebouncer: DebouncerProtocol {
+    // MARK: - Captured properties
+    
+    public var capturedDebounceSeconds: Double?
+    public var capturedDebounceExectution: (() -> Void)?
+    
+    // MARK: - Init methods
+    
+    public init() { }
+    
+    // MARK: - <DebouncerProtocol>
+    
+    public func mainDebounce(seconds: Double, execute: @escaping () -> Void) {
+        capturedDebounceSeconds = seconds
+        capturedDebounceExectution = execute
     }
 }
