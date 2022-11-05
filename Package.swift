@@ -28,7 +28,7 @@ import PackageDescription
 let package = Package(
     name: "Utensils",
     platforms: [
-        .iOS(.v11)
+        .iOS(.v10)
     ],
     products: [
         .library(
