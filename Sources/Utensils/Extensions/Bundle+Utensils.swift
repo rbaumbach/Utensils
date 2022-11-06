@@ -1,3 +1,11 @@
+//MIT License
+//
+//Copyright (c) 2020-2022 Ryan Baumbach <github@ryan.codes>
+//
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 //copies of the Software, and to permit persons to whom the Software is
 //furnished to do so, subject to the following conditions:
 //
@@ -14,18 +22,14 @@
 
 import Foundation
 
-public class FakeDirectory: DirectoryProtocol {
-    // MARK: - Stubbed properties
-    
-    public var stubbedURL = URL(string: "file:///fake-directory/extra-fake-directory")!
-    
-    // MARK: - Init methods
-    
-    public init() { }
-    
-    // MARK: - <DirectoryProtocol>
-    
-    public func url() -> URL {
-        return stubbedURL
+private class PrivateUtensilsBundleExtensionClass { }
+
+public extension Bundle {
+    static var utensils: Bundle {
+        let privateUtensilsClass = PrivateUtensilsBundleExtensionClass.self
+        
+        let bundle = Bundle(for: privateUtensilsClass)
+        
+        return bundle
     }
 }

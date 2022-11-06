@@ -27,7 +27,7 @@ class AppLaunchViewControllerSpec: QuickSpec {
 
                 describe("when the view did appear") {
                     beforeEach {
-                        _ = subject.viewDidAppear(false)
+                        subject.viewDidAppear(false)
                     }
 
                     it("executes the launch work") {
@@ -57,7 +57,7 @@ class AppLaunchViewControllerSpec: QuickSpec {
 
                 describe("when the view did appear") {
                     beforeEach {
-                        _ = subject.viewDidAppear(false)
+                        subject.viewDidAppear(false)
                     }
 
                     it("executes the launch work") {

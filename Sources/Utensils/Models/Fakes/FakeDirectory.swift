@@ -1,6 +1,6 @@
 //MIT License
 //
-//Copyright (c) 2020 Ryan Baumbach <github@ryan.codes>
+//Copyright (c) 2020-2022 Ryan Baumbach <github@ryan.codes>
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,46 +20,20 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-import UIKit
+import Foundation
 
-public class AppLaunchViewController: UIViewController {
-    // MARK: - Private properties
-
-    private var launchWork: (() -> Void)?
+public class FakeDirectory: DirectoryProtocol {
+    // MARK: - Stubbed properties
     
-    // MARK: - Public properties
-    
-    public var customLaunchView: UIView?
+    public var stubbedURL = URL(string: "file:///fake-directory/extra-fake-directory")!
     
     // MARK: - Init methods
     
-    public convenience init(launchWork: @escaping () -> Void) {
-        self.init(nibName: nil, bundle: nil)
-        
-        self.launchWork = launchWork
-    }
-        
-    // MARK: - View lifecycle
+    public init() { }
     
-    public override func loadView() {
-        super.loadView()
-
-        setupLoadingView()
-    }
+    // MARK: - <DirectoryProtocol>
     
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        launchWork?()
-    }
-    
-    // MARK: - Private methods
-    
-    private func setupLoadingView() {
-        if let customLoadingView = customLaunchView {
-            view = customLoadingView
-        } else {
-            view = DefaultAppLaunchView()
-        }
+    public func url() -> URL {
+        return stubbedURL
     }
 }
