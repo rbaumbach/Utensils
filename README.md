@@ -12,6 +12,13 @@ A set of useful iOS tools.
 2.  Install the pod(s) by running `pod install`.
 3.  Add Utensils to your files with `import Utensils`.
 
+### Swift Package manager
+
+[Swift Package Manager](https://swift.org/package-manager/) can be used to add `Utensils` the to your project:
+
+1.  Add `.package(url: "https://github.com/rbaumbach/Utensils", from: "0.1.0")`
+2.  [Follow intructions to add](https://swift.org/getting-started/#using-the-package-manager) the Utensils package to your project.
+
 ### Clone from Github
 
 1.  Clone repository from github and copy files directly, or add it as a git submodule.
