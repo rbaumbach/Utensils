@@ -1,9 +1,9 @@
 import Quick
-import Nimble
+import Moocher
 import Capsule
 @testable import Utensils
 
-class DebouncerSpec: QuickSpec {
+final class DebouncerSpec: QuickSpec {
     override func spec() {
         describe("Debouncer") {
             var subject: Debouncer!
@@ -30,22 +30,22 @@ class DebouncerSpec: QuickSpec {
                 }
                 
                 it("cancels previous work item wrapper execution") {
-                    expect(previousDispatchWorkItemWrapper.didCancel).to(beTruthy())
+                    expect(previousDispatchWorkItemWrapper.didCancel).to.beTruthy()
                 }
                 
                 it("creates a new work item wrapper to execute") {
                     let updatedDispatchWorkItemWrapper = (subject.currentDispatchWorkItemWrapper as! FakeDispatchWorkItemWrapper)
                     
-                    expect(updatedDispatchWorkItemWrapper === previousDispatchWorkItemWrapper).toNot(beTruthy())
+                    expect(updatedDispatchWorkItemWrapper === previousDispatchWorkItemWrapper).toNot.beTruthy()
                 }
                 
                 it("dispatches the new work item wrapper using debounce seconds and qos") {
-                    expect(fakeDispatchQueueWrapper.capturedMainAfterWorkItemWrapperSecondsDouble).to(equal(33.33))
+                    expect(fakeDispatchQueueWrapper.capturedMainAfterWorkItemWrapperSecondsDouble).to.equal(33.33)
                     
                     let actualDispatchWorkItemWrapper = (fakeDispatchQueueWrapper.capturedMainAfterWorkItemWrapperSecondsDoubleProtocol as! FakeDispatchWorkItemWrapper)
                     let updatedDispatchWorkItemWrapper = (subject.currentDispatchWorkItemWrapper as! FakeDispatchWorkItemWrapper)
                     
-                    expect(actualDispatchWorkItemWrapper === updatedDispatchWorkItemWrapper).to(beTruthy())
+                    expect(actualDispatchWorkItemWrapper === updatedDispatchWorkItemWrapper).to.beTruthy()
                 }
             }
         }

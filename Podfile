@@ -14,6 +14,5 @@ target :Specs do
     pod 'Capsule', '~> 1.3.1'
 
     pod 'Quick', '5.0.1'
-    pod 'Nimble', '10.0.0'
     pod 'Moocher', '0.4.0'
 end

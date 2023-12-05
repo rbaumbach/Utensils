@@ -1,9 +1,9 @@
 import Quick
-import Nimble
+import Moocher
 import Capsule
 @testable import Utensils
 
-class DirectorySpec: QuickSpec {
+final class DirectorySpec: QuickSpec {
     override func spec() {
         describe("Directory") {
             var subject: Directory!
@@ -19,8 +19,8 @@ class DirectorySpec: QuickSpec {
                 
                 let expectedURL = URL(string: "file:///fake-documents-directory")!
                 
-                expect(subject.url()).to(equal(expectedURL))
-                expect(fakeFileManager.capturedSearchPathDirectory).to(equal(.documentDirectory))
+                expect(subject.url()).to.equal(expectedURL)
+                expect(fakeFileManager.capturedSearchPathDirectory).to.equal(.documentDirectory)
             }
             
             describe("when building file URL from directory and filename") {
@@ -37,12 +37,12 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("creates the the additional path directory in documents") {
-                                expect(fakeFileManager.capturedFileExistsPath).to(equal("/fake-documents-directory/abc/123"))
-                                expect(fakeFileManager.capturedCreateDirectoryURL).to(equal(URL(string: "file:///fake-documents-directory/abc/123")))
-                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to(beTruthy())
-                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to(beNil())
+                                expect(fakeFileManager.capturedFileExistsPath).to.equal("/fake-documents-directory/abc/123")
+                                expect(fakeFileManager.capturedCreateDirectoryURL).to.equal(URL(string: "file:///fake-documents-directory/abc/123"))
+                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to.beTruthy()
+                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to.beNil()
                                 
-                                expect(url).to(equal(URL(string: "file:///fake-documents-directory/abc/123")!))
+                                expect(url).to.equal(URL(string: "file:///fake-documents-directory/abc/123")!)
                             }
                         }
                         
@@ -57,7 +57,7 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("builds the correct URL") {
-                                expect(url).to(equal(URL(string: "file:///fake-documents-directory/abc/123")!))
+                                expect(url).to.equal(URL(string: "file:///fake-documents-directory/abc/123")!)
                             }
                         }
                     }
@@ -71,7 +71,7 @@ class DirectorySpec: QuickSpec {
                         }
                         
                         it("builds the correct URL") {
-                            expect(url).to(equal(URL(string: "file:///fake-documents-directory")!))
+                            expect(url).to.equal(URL(string: "file:///fake-documents-directory")!)
                         }
                     }
                 }
@@ -86,12 +86,12 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("creates the the additional path directory in temp") {
-                                expect(fakeFileManager.capturedFileExistsPath).to(equal("/fake-temp-directory/abc/123"))
-                                expect(fakeFileManager.capturedCreateDirectoryURL).to(equal(URL(string: "file:///fake-temp-directory/abc/123")))
-                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to(beTruthy())
-                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to(beNil())
+                                expect(fakeFileManager.capturedFileExistsPath).to.equal("/fake-temp-directory/abc/123")
+                                expect(fakeFileManager.capturedCreateDirectoryURL).to.equal(URL(string: "file:///fake-temp-directory/abc/123"))
+                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to.beTruthy()
+                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to.beNil()
                                 
-                                expect(url).to(equal(URL(string: "file:///fake-temp-directory/abc/123")!))
+                                expect(url).to.equal(URL(string: "file:///fake-temp-directory/abc/123")!)
                             }
                         }
                         
@@ -105,7 +105,7 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("builds the correct URL") {
-                                expect(url).to(equal(URL(string: "file:///fake-temp-directory/abc/123")!))
+                                expect(url).to.equal(URL(string: "file:///fake-temp-directory/abc/123")!)
                             }
                         }
                     }
@@ -118,7 +118,7 @@ class DirectorySpec: QuickSpec {
                         }
                         
                         it("builds the correct URL") {
-                            expect(url).to(equal(URL(string: "file:///fake-temp-directory")!))
+                            expect(url).to.equal(URL(string: "file:///fake-temp-directory")!)
                         }
                     }
                 }
@@ -133,12 +133,12 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("creates the the additional path directory in library") {
-                                expect(fakeFileManager.capturedFileExistsPath).to(equal("/fake-library-directory/abc/123"))
-                                expect(fakeFileManager.capturedCreateDirectoryURL).to(equal(URL(string: "file:///fake-library-directory/abc/123")))
-                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to(beTruthy())
-                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to(beNil())
+                                expect(fakeFileManager.capturedFileExistsPath).to.equal("/fake-library-directory/abc/123")
+                                expect(fakeFileManager.capturedCreateDirectoryURL).to.equal(URL(string: "file:///fake-library-directory/abc/123"))
+                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to.beTruthy()
+                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to.beNil()
                                 
-                                expect(url).to(equal(URL(string: "file:///fake-library-directory/abc/123")!))
+                                expect(url).to.equal(URL(string: "file:///fake-library-directory/abc/123")!)
                             }
                         }
                         
@@ -152,7 +152,7 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("builds the correct URL") {
-                                expect(url).to(equal(URL(string: "file:///fake-library-directory/abc/123")!))
+                                expect(url).to.equal(URL(string: "file:///fake-library-directory/abc/123")!)
                             }
                         }
                     }
@@ -165,7 +165,7 @@ class DirectorySpec: QuickSpec {
                         }
                         
                         it("builds the correct URL") {
-                            expect(url).to(equal(URL(string: "file:///fake-library-directory")!))
+                            expect(url).to.equal(URL(string: "file:///fake-library-directory")!)
                         }
                     }
                 }
@@ -180,12 +180,12 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("creates the the additional path directory in caches") {
-                                expect(fakeFileManager.capturedFileExistsPath).to(equal("/fake-caches-directory/abc/123"))
-                                expect(fakeFileManager.capturedCreateDirectoryURL).to(equal(URL(string: "file:///fake-caches-directory/abc/123")))
-                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to(beTruthy())
-                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to(beNil())
+                                expect(fakeFileManager.capturedFileExistsPath).to.equal("/fake-caches-directory/abc/123")
+                                expect(fakeFileManager.capturedCreateDirectoryURL).to.equal(URL(string: "file:///fake-caches-directory/abc/123"))
+                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to.beTruthy()
+                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to.beNil()
                                 
-                                expect(url).to(equal(URL(string: "file:///fake-caches-directory/abc/123")!))
+                                expect(url).to.equal(URL(string: "file:///fake-caches-directory/abc/123")!)
                             }
                         }
                         
@@ -199,7 +199,7 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("builds the correct URL") {
-                                expect(url).to(equal(URL(string: "file:///fake-caches-directory/abc/123")!))
+                                expect(url).to.equal(URL(string: "file:///fake-caches-directory/abc/123")!)
                             }
                         }
                     }
@@ -212,7 +212,7 @@ class DirectorySpec: QuickSpec {
                         }
                         
                         it("builds the correct URL") {
-                            expect(url).to(equal(URL(string: "file:///fake-caches-directory")!))
+                            expect(url).to.equal(URL(string: "file:///fake-caches-directory")!)
                         }
                     }
                 }
@@ -227,12 +227,12 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("creates the application support directory") {
-                                expect(fakeFileManager.capturedFileExistsPath).to(equal("/fake-application-support-directory/abc/123"))
-                                expect(fakeFileManager.capturedCreateDirectoryURL).to(equal(URL(string: "file:///fake-application-support-directory/abc/123")))
-                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to(beTruthy())
-                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to(beNil())
+                                expect(fakeFileManager.capturedFileExistsPath).to.equal("/fake-application-support-directory/abc/123")
+                                expect(fakeFileManager.capturedCreateDirectoryURL).to.equal(URL(string: "file:///fake-application-support-directory/abc/123"))
+                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to.beTruthy()
+                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to.beNil()
                                 
-                                expect(url).to(equal(URL(string: "file:///fake-application-support-directory/abc/123")!))
+                                expect(url).to.equal(URL(string: "file:///fake-application-support-directory/abc/123")!)
                             }
                         }
                         
@@ -246,9 +246,9 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("builds the correct URL") {
-                                expect(fakeFileManager.capturedFileExistsPath).to(equal("/fake-application-support-directory/abc/123"))
+                                expect(fakeFileManager.capturedFileExistsPath).to.equal("/fake-application-support-directory/abc/123")
                                 
-                                expect(url).to(equal(URL(string: "file:///fake-application-support-directory/abc/123")!))
+                                expect(url).to.equal(URL(string: "file:///fake-application-support-directory/abc/123")!)
                             }
                         }
                     }
@@ -262,12 +262,12 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("creates the application support directory") {
-                                expect(fakeFileManager.capturedFileExistsPath).to(equal("/fake-application-support-directory"))
-                                expect(fakeFileManager.capturedCreateDirectoryURL).to(equal(URL(string: "file:///fake-application-support-directory")))
-                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to(beTruthy())
-                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to(beNil())
+                                expect(fakeFileManager.capturedFileExistsPath).to.equal("/fake-application-support-directory")
+                                expect(fakeFileManager.capturedCreateDirectoryURL).to.equal(URL(string: "file:///fake-application-support-directory"))
+                                expect(fakeFileManager.capturedCreateDirectoryCreateIntermediates).to.beTruthy()
+                                expect(fakeFileManager.capturedCreateDirectoryAttributes).to.beNil()
                                 
-                                expect(url).to(equal(URL(string: "file:///fake-application-support-directory")!))
+                                expect(url).to.equal(URL(string: "file:///fake-application-support-directory")!)
                             }
                         }
                         
@@ -281,9 +281,9 @@ class DirectorySpec: QuickSpec {
                             }
                             
                             it("builds the correct URL") {
-                                expect(fakeFileManager.capturedFileExistsPath).to(equal("/fake-application-support-directory"))
+                                expect(fakeFileManager.capturedFileExistsPath).to.equal("/fake-application-support-directory")
                                 
-                                expect(url).to(equal(URL(string: "file:///fake-application-support-directory")!))
+                                expect(url).to.equal(URL(string: "file:///fake-application-support-directory")!)
                             }
                         }
                     }
@@ -295,11 +295,11 @@ class DirectorySpec: QuickSpec {
                     let dir1 = Directory()
                     let dir2 = Directory()
                     
-                    expect(dir1).to(equal(dir2))
+                    expect(dir1).to.equal(dir2)
                     
                     let anotherDir = Directory(.temp())
                     
-                    expect(dir1).toNot(equal(anotherDir))
+                    expect(dir1).toNot.equal(anotherDir)
                 }
             }
         }
