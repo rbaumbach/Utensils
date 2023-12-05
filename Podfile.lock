@@ -1,28 +1,34 @@
 PODS:
-  - Capsule (1.0.0)
+  - Capsule (1.3.1)
+  - Moocher (0.4.0):
+    - Moocher/Core (= 0.4.0)
+  - Moocher/Core (0.4.0)
   - Nimble (10.0.0)
   - Quick (5.0.1)
-  - SwiftLint (0.49.1)
+  - SwiftLint (0.54.0)
 
 DEPENDENCIES:
-  - Capsule (~> 1.0.0)
+  - Capsule (~> 1.3.1)
+  - Moocher (= 0.4.0)
   - Nimble (= 10.0.0)
   - Quick (= 5.0.1)
-  - SwiftLint (= 0.49.1)
+  - SwiftLint (= 0.54.0)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Capsule
+    - Moocher
     - Nimble
     - Quick
     - SwiftLint
 
 SPEC CHECKSUMS:
-  Capsule: 93dbe35215ad527c43742ee980f1cf50d73fd971
+  Capsule: 9ef140d7885b9a89d5bae7a572fe714021b04da4
+  Moocher: 4c5f38df3caf6d4664e525a7e119584ad6614680
   Nimble: 5316ef81a170ce87baf72dd961f22f89a602ff84
   Quick: 749aa754fd1e7d984f2000fe051e18a3a9809179
-  SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
+  SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
 
-PODFILE CHECKSUM: 7f57b7df0393f835114372a110f5d53cd5836c42
+PODFILE CHECKSUM: c6489337065f807ff9499477f0e320112cacde8c
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.14.3
