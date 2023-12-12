@@ -24,7 +24,7 @@ import Foundation
 import Capsule
 
 public protocol FileLoaderProtocol {
-    func json<T: Codable>(name: String, fileExtension: String) throws -> T?
+    func loadJSON<T: Codable>(name: String, fileExtension: String) throws -> T?
 }
 
 public class FileLoader {
@@ -54,8 +54,8 @@ public class FileLoader {
     
     // MARK: - Public methods
     
-    public func json<T: Codable>(name: String, 
-                                 fileExtension: String) throws -> T? {
+    public func loadJSON<T: Codable>(name: String,
+                                     fileExtension: String) throws -> T? {
         guard let bundlePath = bundle.path(forResource: name,
                                            ofType: fileExtension) else {
             throw Error.unableToFindFile

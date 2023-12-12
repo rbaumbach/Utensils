@@ -30,8 +30,8 @@ final class FileLoaderSpec: QuickSpec {
                     
                     it("throws an unable to find file error") {
                         expect({
-                            let _: String? = try subject.json(name: "file",
-                                                              fileExtension: "json")
+                            let _: String? = try subject.loadJSON(name: "file",
+                                                                  fileExtension: "json")
                         }).to.throwError(specificError: FileLoader.Error.unableToFindFile)
                     }
                 }
@@ -43,8 +43,8 @@ final class FileLoaderSpec: QuickSpec {
                     
                     it("throws an unable to load JSON data error (with wrapped error)") {
                         expect({
-                            let _: String? = try subject.json(name: "file",
-                                                              fileExtension: "json")
+                            let _: String? = try subject.loadJSON(name: "file",
+                                                                  fileExtension: "json")
                         }).to.throwError { error in
                             let fileLoaderError = error as! FileLoader.Error
                             
@@ -63,9 +63,9 @@ final class FileLoaderSpec: QuickSpec {
                     
                     beforeEach {
                         fakeStringWrapper.stubbedLoadData = nil
-                            
-                        decodedJSON = try! subject.json(name: "file",
-                                                        fileExtension: "json")
+                        
+                        decodedJSON = try! subject.loadJSON(name: "file",
+                                                            fileExtension: "json")
                     }
                     
                     it("returns nil without error") {
@@ -84,8 +84,8 @@ final class FileLoaderSpec: QuickSpec {
                     
                     it("throws an unable to decode JSON data error (with wrapped error)") {
                         expect({
-                            let _: String? = try subject.json(name: "file",
-                                                              fileExtension: "json")
+                            let _: String? = try subject.loadJSON(name: "file",
+                                                                  fileExtension: "json")
                         }).to.throwError { error in
                             let fileLoaderError = error as! FileLoader.Error
                             
@@ -105,8 +105,8 @@ final class FileLoaderSpec: QuickSpec {
                     beforeEach {
                         fakeJSONDecoder.stubbedDecodedJSON = "wooooo whooooooooo!"
                         
-                        decodedJSON = try! subject.json(name: "file",
-                                                        fileExtension: "json")
+                        decodedJSON = try! subject.loadJSON(name: "file",
+                                                            fileExtension: "json")
                     }
                     
                     it("returns events") {
