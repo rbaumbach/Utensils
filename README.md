@@ -28,7 +28,7 @@ A set of useful iOS tools.
 
 * A `Debouncer`:
 
-```
+```Swift
 let debouncer = Debouncer()
 
 debouncer.mainDebounce(seconds: 0.1) {
@@ -38,13 +38,13 @@ debouncer.mainDebounce(seconds: 0.1) {
 
 * A `Directory`:
 
-```
+```Swift
 let directory = Directory(.temp(additionalPath: "filez/"))
 ```
 
 * A persistence tool called `Trunk`:
 
-```
+```Swift
 let trunk = Trunk()
 
 trunk.save(data: [0, 1, 2, 3, 4])
@@ -56,13 +56,13 @@ let arrayOfInts: [Int]? = trunk.load()
 
 Using the default launch view:
 
-```
+```Swift
 let appLaunchViewController = AppLaunchViewController { print("I'm launching!") }
 ```
 
 Using a custom user supplied view:
 
-```
+```Swift
 let appLaunchViewController = AppLaunchViewController { thingy.doSomethingLengthyBeforeAppLaunches() }
 appLaunchViewController.customLoadingView = fancyBrandedLoadingView
 ```
@@ -71,7 +71,7 @@ Note: The custom view will be anchored to all 4 corners of view controller
 
 * A generic `Validator`
 
-```
+```Swift
 let email = Email(string: "billy@goat.com")
 
 let isValidEmail = AnyValidator<Email>().isValid(email)
@@ -79,7 +79,7 @@ let isValidEmail = AnyValidator<Email>().isValid(email)
 
 * A json `FileLoader`
 
-```
+```Swift
 do {
     let decodedJSON: [Model]? = try FileLoader().loadJSON(name: "file", fileExtension: "json")
 } catch {
