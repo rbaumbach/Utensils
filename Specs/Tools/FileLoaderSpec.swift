@@ -22,7 +22,7 @@ final class FileLoaderSpec: QuickSpec {
                                      jsonDecoder: fakeJSONDecoder)
             }
             
-            describe("#json(name:fileExtension:)") {
+            describe("#loadJSON(name:fileExtension:)") {
                 describe("when the json file path cannot be loaded") {
                     beforeEach {
                         fakeBundle.stubbedPath = nil

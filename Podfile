@@ -10,9 +10,17 @@ target :Utensils do
   pod 'SwiftLint', '0.54.0'
 end
 
-target :Specs do
-    pod 'Capsule', '~> 1.3.3'
+def shared_spec_pods
+  pod 'Capsule', '~> 1.3.3'
 
-    pod 'Quick', '5.0.1'
-    pod 'Moocher', '0.4.0'
+  pod 'Quick', '5.0.1'
+  pod 'Moocher', '0.4.0'
+end
+
+target :Specs do
+  shared_spec_pods
+end
+
+target :IntegrationSpecs do
+  shared_spec_pods
 end

@@ -1,0 +1,15 @@
+import Foundation
+
+struct DolphinData: Codable, Equatable {
+    var data: [Dolphin]
+}
+
+struct Dolphin: Codable, Equatable {
+    var name: String
+    var favoriteToy: String
+    
+    enum CodingKeys: String, CodingKey {
+        case name
+        case favoriteToy = "favorite-toy"
+    }
+}

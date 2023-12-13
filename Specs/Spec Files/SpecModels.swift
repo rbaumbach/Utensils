@@ -3,7 +3,7 @@ import Foundation
 
 // Validator spec examples
 
-struct Dog: Validatable {
+struct Dog: Validatable, Codable {
     var name = "Sparky"
     var breed = "Chihuahua"
     
