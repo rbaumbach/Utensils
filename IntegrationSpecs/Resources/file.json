@@ -1,0 +1,16 @@
+{
+    "data": [
+        {
+            "name": "Flipper",
+            "favorite-toy": "toy-boat"
+        },
+        {
+            "name": "Snowflake",
+            "favorite-toy": "football"
+        },
+        {
+            "name": "Echo",
+            "favorite-toy": "conch-shell"
+        }
+    ]
+}

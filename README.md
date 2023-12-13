@@ -1,4 +1,4 @@
-# Utensils [![Bitrise](https://app.bitrise.io/app/3adff35b20b98d18/status.svg?token=suTO3q7-BKS3M0d51a1Cpw&branch=master)](https://app.bitrise.io/app/e22e45ed089adf65) [![Cocoapod Version](https://img.shields.io/cocoapods/v/Utensils.svg)](https://github.com/rbaumbach/Utensils) [![SPM Compatible](https://img.shields.io/badge/SPM-Compatible-blue)](https://swift.org/package-manager/) [![Cocoapod Platform](https://img.shields.io/badge/platform-iOS-blue.svg)](https://github.com/rbaumbach/Utensils) [![License](https://img.shields.io/dub/l/vibe-d.svg)](https://github.com/rbaumbach/Utensils/blob/master/MIT-LICENSE.txt)
+# Utensils [![Cocoapod Version](https://img.shields.io/cocoapods/v/Utensils.svg)](https://github.com/rbaumbach/Utensils) [![SPM Compatible](https://img.shields.io/badge/SPM-Compatible-blue)](https://swift.org/package-manager/) [![Cocoapod Platform](https://img.shields.io/badge/platform-iOS-blue.svg)](https://github.com/rbaumbach/Utensils) [![License](https://img.shields.io/dub/l/vibe-d.svg)](https://github.com/rbaumbach/Utensils/blob/master/MIT-LICENSE.txt)
 
 A set of useful iOS tools.
 
@@ -16,7 +16,7 @@ A set of useful iOS tools.
 
 [Swift Package Manager](https://swift.org/package-manager/) can be used to add `Utensils` the to your project:
 
-1.  Add `.package(url: "https://github.com/rbaumbach/Utensils", from: "0.1.0")`
+1.  Add `.package(url: "https://github.com/rbaumbach/Utensils", from: "0.2.0")`
 2.  [Follow intructions to add](https://swift.org/getting-started/#using-the-package-manager) the Utensils package to your project.
 
 ### Clone from Github
@@ -76,6 +76,18 @@ let email = Email(string: "billy@goat.com")
 
 let isValidEmail = AnyValidator<Email>().isValid(email)
 ```
+
+* A json `FileLoader`
+
+```
+do {
+    let decodedJSON: [Model]? = try FileLoader().loadJSON(name: "file", fileExtension: "json")
+} catch {
+    // handle error
+}
+```
+
+Note: The `Model` must conform to `Codable`
 
 And more to come...
 

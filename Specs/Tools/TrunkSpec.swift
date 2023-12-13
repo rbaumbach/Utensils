@@ -1,9 +1,9 @@
 import Quick
-import Nimble
+import Moocher
 import Capsule
 @testable import Utensils
 
-class TrunkSpec: QuickSpec {
+final class TrunkSpec: QuickSpec {
     override func spec() {
         describe("Trunk") {
             var subject: Trunk!
@@ -33,7 +33,7 @@ class TrunkSpec: QuickSpec {
                 }
                 
                 it("updates the internal jsonCodableWrapper outputForrmatting internally") {
-                    expect(fakeJSONCodableWrapper.capturedOutputFormat).to(equal(.pretty))
+                    expect(fakeJSONCodableWrapper.capturedOutputFormat).to.equal(.pretty)
                 }
             }
             
@@ -43,7 +43,7 @@ class TrunkSpec: QuickSpec {
                 }
                 
                 it("updates the internal jsonCodableWrapper dateFormat internally") {
-                    expect(fakeJSONCodableWrapper.capturedDateFormat).to(equal(.iso8601))
+                    expect(fakeJSONCodableWrapper.capturedDateFormat).to.equal(.iso8601)
                 }
             }
 
@@ -60,8 +60,8 @@ class TrunkSpec: QuickSpec {
                     it("does nothing") {
                         let typeSafeCapturedEncodeValue = fakeJSONCodableWrapper.capturedEncodeValue as! [Int]
                         
-                        expect(typeSafeCapturedEncodeValue).to(equal([0, 1, 2, 3, 4]))
-                        expect(fakeDataWrapper.capturedWriteData).to(beNil())
+                        expect(typeSafeCapturedEncodeValue).to.equal([0, 1, 2, 3, 4])
+                        expect(fakeDataWrapper.capturedWriteData).to.beNil()
                     }
                 }
 
@@ -78,11 +78,11 @@ class TrunkSpec: QuickSpec {
                         it("does nothing") {
                             let typeSafeCapturedEncodeValue = fakeJSONCodableWrapper.capturedEncodeValue as! [Int]
                             
-                            expect(typeSafeCapturedEncodeValue).to(equal([0, 1, 2, 3, 4]))
+                            expect(typeSafeCapturedEncodeValue).to.equal([0, 1, 2, 3, 4])
                             
                             let expectedURL = directory.url().appendingPathComponent("array-of-ints.json")
 
-                            expect(fakeDataWrapper.capturedWriteURL).to(equal(expectedURL))
+                            expect(fakeDataWrapper.capturedWriteURL).to.equal(expectedURL)
                         }
                     }
 
@@ -96,13 +96,13 @@ class TrunkSpec: QuickSpec {
                         it("saves the data to disk") {
                             let typeSafeCapturedEncodeValue = fakeJSONCodableWrapper.capturedEncodeValue as! [Int]
 
-                            expect(typeSafeCapturedEncodeValue).to(equal([0, 1, 2, 3, 4]))
+                            expect(typeSafeCapturedEncodeValue).to.equal([0, 1, 2, 3, 4])
                             
-                            expect(fakeDataWrapper.capturedWriteData).to(equal(fakeJSONCodableWrapper.stubbedEncodeData))
+                            expect(fakeDataWrapper.capturedWriteData).to.equal(fakeJSONCodableWrapper.stubbedEncodeData)
                             
                             let expectedURL = directory.url().appendingPathComponent("array-of-ints.json")
                             
-                            expect(fakeDataWrapper.capturedWriteURL).to(equal(expectedURL))
+                            expect(fakeDataWrapper.capturedWriteURL).to.equal(expectedURL)
                         }
                     }
                 }
@@ -123,21 +123,21 @@ class TrunkSpec: QuickSpec {
                 }
                 
                 it("saves the data to disk on a background queue") {
-                    expect(fakeDispatchQueueWrapper.capturedGlobalAsyncQOS).to(equal(.background))
+                    expect(fakeDispatchQueueWrapper.capturedGlobalAsyncQOS).to.equal(.background)
                     
                     let typeSafeCapturedEncodeValue = fakeJSONCodableWrapper.capturedEncodeValue as! [Int]
 
-                    expect(typeSafeCapturedEncodeValue).to(equal([0, 1, 2, 3, 4]))
+                    expect(typeSafeCapturedEncodeValue).to.equal([0, 1, 2, 3, 4])
                     
-                    expect(fakeDataWrapper.capturedWriteData).to(equal(fakeJSONCodableWrapper.stubbedEncodeData))
+                    expect(fakeDataWrapper.capturedWriteData).to.equal(fakeJSONCodableWrapper.stubbedEncodeData)
                     
                     let expectedURL = directory.url().appendingPathComponent("trunk.json")
                     
-                    expect(fakeDataWrapper.capturedWriteURL).to(equal(expectedURL))
+                    expect(fakeDataWrapper.capturedWriteURL).to.equal(expectedURL)
                 }
                 
                 it("executes the completion handler on the main queue") {
-                    expect(didComplete).to(beTruthy())
+                    expect(didComplete).to.beTruthy()
                 }
             }
 
@@ -155,10 +155,10 @@ class TrunkSpec: QuickSpec {
                     it("returns nil") {
                         let expectedURL = directory.url().appendingPathComponent("array-of-ints.json")
                         
-                        expect(fakeDataWrapper.capturedLoadDataURL).to(equal(expectedURL))
+                        expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
 
-                        expect(fakeJSONCodableWrapper.capturedDecodeData).to(beNil())
-                        expect(modelData).to(beNil())
+                        expect(fakeJSONCodableWrapper.capturedDecodeData).to.beNil()
+                        expect(modelData).to.beNil()
                     }
                 }
                 
@@ -178,12 +178,12 @@ class TrunkSpec: QuickSpec {
                         it("returns nil") {
                             let expectedURL = directory.url().appendingPathComponent("array-of-ints.json")
                             
-                            expect(fakeDataWrapper.capturedLoadDataURL).to(equal(expectedURL))
+                            expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
                             
-                            expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to(equal("Array<Int>.Type"))
-                            expect(fakeJSONCodableWrapper.capturedDecodeData).to(equal(fakeDataWrapper.stubbedLoadData))
+                            expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to.equal("Array<Int>.Type")
+                            expect(fakeJSONCodableWrapper.capturedDecodeData).to.equal(fakeDataWrapper.stubbedLoadData)
                             
-                            expect(modelData).to(beNil())
+                            expect(modelData).to.beNil()
                         }
                     }
                     
@@ -196,12 +196,12 @@ class TrunkSpec: QuickSpec {
                         it("returns the model data that was retrieved from disk") {
                             let expectedURL = directory.url().appendingPathComponent("array-of-ints.json")
                             
-                            expect(fakeDataWrapper.capturedLoadDataURL).to(equal(expectedURL))
+                            expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
                             
-                            expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to(equal("Array<Int>.Type"))
-                            expect(fakeJSONCodableWrapper.capturedDecodeData).to(equal(fakeDataWrapper.stubbedLoadData))
+                            expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to.equal("Array<Int>.Type")
+                            expect(fakeJSONCodableWrapper.capturedDecodeData).to.equal(fakeDataWrapper.stubbedLoadData)
                             
-                            expect(modelData).to(equal([0, 1, 2, 3, 4]))
+                            expect(modelData).to.equal([0, 1, 2, 3, 4])
                         }
                     }
                 }
@@ -222,19 +222,19 @@ class TrunkSpec: QuickSpec {
                 }
                 
                 it("returns the model data that was retrieved from disk on a background queue") {
-                    expect(fakeDispatchQueueWrapper.capturedGlobalAsyncQOS).to(equal(.background))
+                    expect(fakeDispatchQueueWrapper.capturedGlobalAsyncQOS).to.equal(.background)
 
                     let expectedURL = directory.url().appendingPathComponent("trunk.json")
                     
-                    expect(fakeDataWrapper.capturedLoadDataURL).to(equal(expectedURL))
+                    expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
                     
-                    expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to(equal("Array<Int>.Type"))
-                    expect(fakeJSONCodableWrapper.capturedDecodeData).to(equal(fakeDataWrapper.stubbedLoadData))
+                    expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to.equal("Array<Int>.Type")
+                    expect(fakeJSONCodableWrapper.capturedDecodeData).to.equal(fakeDataWrapper.stubbedLoadData)
                 }
                 
                 it("executes the completion handler with model data on the main queue") {
                     
-                    expect(capturedModelData).to(equal([0, 1, 2, 3, 4]))
+                    expect(capturedModelData).to.equal([0, 1, 2, 3, 4])
                 }
             }
         }

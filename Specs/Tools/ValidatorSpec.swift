@@ -1,9 +1,9 @@
 import Quick
-import Nimble
+import Moocher
 import Capsule
 @testable import Utensils
 
-class ValidatorSpec: QuickSpec {
+final class ValidatorSpec: QuickSpec {
     override func spec() {
         describe("Validator") {
             var subject: AnyValidator<Dog>!
@@ -15,17 +15,17 @@ class ValidatorSpec: QuickSpec {
             it("validates the object given") {
                 var dog = Dog()
                 
-                expect(subject.isValid(dog)).to(beTruthy())
+                expect(subject.isValid(dog)).to.beTruthy()
                 
                 dog.breed = "Pit Bull"
                 
-                expect(subject.isValid(dog)).to(beFalsy())
+                expect(subject.isValid(dog)).to.beFalsy()
                 
                 let anotherSubject = AnyValidator<Dude>()
                 
                 let dude = Dude()
                 
-                expect(anotherSubject.isValid(dude)).to(beTruthy())
+                expect(anotherSubject.isValid(dude)).to.beTruthy()
             }
         }
     }
