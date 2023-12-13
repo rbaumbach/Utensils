@@ -77,6 +77,18 @@ let email = Email(string: "billy@goat.com")
 let isValidEmail = AnyValidator<Email>().isValid(email)
 ```
 
+* A json `FileLoader`
+
+```
+do {
+    let decodedJSON: [Model]? = try FileLoader().loadJSON(name: "file", fileExtension: "json")
+} catch {
+    // handle error
+}
+```
+
+Note: The `Model` must conform to `Codable`
+
 And more to come...
 
 ## Goodies
