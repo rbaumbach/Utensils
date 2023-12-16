@@ -52,12 +52,9 @@ final class FileLoaderSpec: QuickSpec {
                         }).to.throwError { error in
                             let fileLoaderError = error as! FileLoader.Error
                             
-                            switch fileLoaderError {
-                            case .unableToLoadJSONData(let error):
-                                expect(error).toNot.beNil()
-                            default:
-                                failSpec()
-                            }
+                            let expectedError = FileLoader.Error.unableToLoadJSONData(wrappedError: FakeGenericError.whoCares)
+                            
+                            expect(fileLoaderError).to.equal(expectedError)
                         }
                     }
                 }
@@ -90,15 +87,12 @@ final class FileLoaderSpec: QuickSpec {
                         expect({
                             let _: String? = try subject.loadJSON(name: "file",
                                                                   fileExtension: "json")
-                        }).to.throwError { error in
+                        }).to.throwError { error in                            
                             let fileLoaderError = error as! FileLoader.Error
                             
-                            switch fileLoaderError {
-                            case .unableToDecodeJSONData(let error):
-                                expect(error).toNot.beNil()
-                            default:
-                                failSpec()
-                            }
+                            let expectedError = FileLoader.Error.unableToDecodeJSONData(wrappedError: FakeGenericError.whoCares)
+                            
+                            expect(fileLoaderError).to.equal(expectedError)
                         }
                     }
                 }

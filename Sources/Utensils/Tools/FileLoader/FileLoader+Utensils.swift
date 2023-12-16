@@ -21,10 +21,7 @@
 //SOFTWARE.
 
 import Foundation
-
-enum EmptyError: Error { 
-    case empty
-}
+import Capsule
 
 extension FileLoader {
     public enum Error: CaseIterable, LocalizedError, Equatable {
