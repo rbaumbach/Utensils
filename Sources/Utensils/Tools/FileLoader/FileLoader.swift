@@ -34,14 +34,6 @@ public class FileLoader {
     private let stringWrapper: StringWrapperProtocol
     private let jsonDecoder: JSONDecoderProtocol
     
-    // MARK: - Error
-    
-    public enum Error: Swift.Error {
-        case unableToFindFile
-        case unableToLoadJSONData(wrappedError: Swift.Error)
-        case unableToDecodeJSONData(wrappedError: Swift.Error)
-    }
-    
     // MARK: - Init methods
     
     public init(bundle: BundleProtocol = Bundle.main,
@@ -58,7 +50,7 @@ public class FileLoader {
                                      fileExtension: String) throws -> T? {
         guard let bundlePath = bundle.path(forResource: name,
                                            ofType: fileExtension) else {
-            throw Error.unableToFindFile
+            throw Error.unableToFindFile(fileName: "\(name).\(fileExtension)")
         }
         
         guard let jsonData = try {

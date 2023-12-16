@@ -32,7 +32,11 @@ final class FileLoaderSpec: QuickSpec {
                         expect({
                             let _: String? = try subject.loadJSON(name: "file",
                                                                   fileExtension: "json")
-                        }).to.throwError(specificError: FileLoader.Error.unableToFindFile)
+                        }).to.throwError { error in
+                            let typedError = error as! FileLoader.Error
+                            
+                            expect(typedError.localizedDescription).to.equal("Unable to find file: file.json")
+                        }
                     }
                 }
                 
