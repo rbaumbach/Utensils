@@ -81,7 +81,7 @@ let isValidEmail = AnyValidator<Email>().isValid(email)
 
 ```Swift
 do {
-    let decodedJSON: [Model]? = try FileLoader().loadJSON(name: "file", fileExtension: "json")
+    let decodedJSON: Model? = try FileLoader().loadJSON(name: "file", fileExtension: "json")
 } catch {
     // handle error
 }
