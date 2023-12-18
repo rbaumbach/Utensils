@@ -36,7 +36,7 @@ final class PequenoNetworkingSpec: QuickSpec {
                 describe("when url request cannot be constructed (when url is bad)") {
                     beforeEach {
                         subject.request(endpoint: "_gannon!",
-                                        parameters: [:],
+                                        parameters: nil,
                                         httpMethod: .get,
                                         headers: nil) { result in
                             actualResult = result
@@ -202,7 +202,7 @@ final class PequenoNetworkingSpec: QuickSpec {
                     describe("when parameters are empty and headers are nil") {
                         beforeEach {
                             subject.requestAndDeserialize(endpoint: "_gannon!",
-                                                          parameters: [:],
+                                                          parameters: nil,
                                                           httpMethod: .get,
                                                           headers: nil) { result in
                                 actualResult = result
