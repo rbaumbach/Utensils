@@ -27,4 +27,6 @@ end
 
 target :IntegrationSpecs do
   shared_spec_pods
+
+  pod 'Moocher/Polling', '0.4.0'
 end

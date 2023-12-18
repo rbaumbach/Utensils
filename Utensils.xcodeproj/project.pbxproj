@@ -25,7 +25,6 @@
 		94569E172B28E279008494E1 /* SomeTestFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E162B28E279008494E1 /* SomeTestFunctions.swift */; };
 		94569E202B28EC93008494E1 /* Utensils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94341AF9238CCECF00BC8355 /* Utensils.framework */; platformFilter = ios; };
 		94569E282B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E272B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift */; };
-		94569E2D2B28EFF8008494E1 /* Dolphin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E2C2B28EFF8008494E1 /* Dolphin.swift */; };
 		94569E2E2B28F655008494E1 /* file.json in Resources */ = {isa = PBXBuildFile; fileRef = 94569E2A2B28EF10008494E1 /* file.json */; };
 		94569E302B29F596008494E1 /* FakeFileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E2F2B29F596008494E1 /* FakeFileLoader.swift */; };
 		94569E372B2CB1EE008494E1 /* FileLoader+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E362B2CB1EE008494E1 /* FileLoader+Utensils.swift */; };
@@ -36,6 +35,9 @@
 		94569E512B2FDCAC008494E1 /* HTTPMethodSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E502B2FDCAC008494E1 /* HTTPMethodSpec.swift */; };
 		94569E532B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E522B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift */; };
 		94569E552B2FE491008494E1 /* PequenoNetworkingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E542B2FE491008494E1 /* PequenoNetworkingSpec.swift */; };
+		94569E572B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E562B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift */; };
+		94569E582B30E19D008494E1 /* SomeTestFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E162B28E279008494E1 /* SomeTestFunctions.swift */; };
+		94569E5B2B30E776008494E1 /* SpecModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E5A2B30E776008494E1 /* SpecModels.swift */; };
 		94630F0723A93E870054BAAD /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94630F0623A93E870054BAAD /* Validator.swift */; };
 		94630F0923AA6D440054BAAD /* ValidatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94630F0823AA6D440054BAAD /* ValidatorSpec.swift */; };
 		94630F0B23AA76CB0054BAAD /* SpecModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94630F0A23AA76CB0054BAAD /* SpecModels.swift */; };
@@ -91,7 +93,6 @@
 		94569E1C2B28EC93008494E1 /* IntegrationSpecs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntegrationSpecs.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		94569E272B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileLoaderIntegrationSpecs.swift; sourceTree = "<group>"; };
 		94569E2A2B28EF10008494E1 /* file.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = file.json; sourceTree = "<group>"; };
-		94569E2C2B28EFF8008494E1 /* Dolphin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dolphin.swift; sourceTree = "<group>"; };
 		94569E2F2B29F596008494E1 /* FakeFileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeFileLoader.swift; sourceTree = "<group>"; };
 		94569E362B2CB1EE008494E1 /* FileLoader+Utensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileLoader+Utensils.swift"; sourceTree = "<group>"; };
 		94569E392B2DDBA4008494E1 /* FileLoader+UtensilsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileLoader+UtensilsSpec.swift"; sourceTree = "<group>"; };
@@ -101,6 +102,8 @@
 		94569E502B2FDCAC008494E1 /* HTTPMethodSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethodSpec.swift; sourceTree = "<group>"; };
 		94569E522B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PequenoNetworking+UtensilsSpec.swift"; sourceTree = "<group>"; };
 		94569E542B2FE491008494E1 /* PequenoNetworkingSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingSpec.swift; sourceTree = "<group>"; };
+		94569E562B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingIntegrationSpecs.swift; sourceTree = "<group>"; };
+		94569E5A2B30E776008494E1 /* SpecModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecModels.swift; sourceTree = "<group>"; };
 		94630F0623A93E870054BAAD /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		94630F0823AA6D440054BAAD /* ValidatorSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorSpec.swift; sourceTree = "<group>"; };
 		94630F0A23AA76CB0054BAAD /* SpecModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecModels.swift; sourceTree = "<group>"; };
@@ -258,6 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				94569E292B28EEFE008494E1 /* Resources */,
+				94569E592B30E765008494E1 /* Spec Files */,
 				94569E262B28EE49008494E1 /* Tools */,
 			);
 			path = IntegrationSpecs;
@@ -267,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				94569E272B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift */,
+				94569E562B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -274,7 +279,6 @@
 		94569E292B28EEFE008494E1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				94569E2C2B28EFF8008494E1 /* Dolphin.swift */,
 				94569E2A2B28EF10008494E1 /* file.json */,
 			);
 			path = Resources;
@@ -333,6 +337,14 @@
 				94569E542B2FE491008494E1 /* PequenoNetworkingSpec.swift */,
 			);
 			path = PequenoNetworking;
+			sourceTree = "<group>";
+		};
+		94569E592B30E765008494E1 /* Spec Files */ = {
+			isa = PBXGroup;
+			children = (
+				94569E5A2B30E776008494E1 /* SpecModels.swift */,
+			);
+			path = "Spec Files";
 			sourceTree = "<group>";
 		};
 		94872AF12915D15400D3528B /* ViewControllers */ = {
@@ -740,8 +752,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94569E5B2B30E776008494E1 /* SpecModels.swift in Sources */,
+				94569E572B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift in Sources */,
 				94569E282B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift in Sources */,
-				94569E2D2B28EFF8008494E1 /* Dolphin.swift in Sources */,
+				94569E582B30E19D008494E1 /* SomeTestFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
