@@ -1,9 +1,6 @@
-// swift-tools-version:5.1
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
 //MIT License
 //
-//Copyright (c) 2019-2022 Ryan Baumbach <github@ryan.codes>
+//Copyright (c) 2020-2023 Ryan Baumbach <github@ryan.codes>
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-import PackageDescription
+import Foundation
 
-let package = Package(
-    name: "Utensils",
-    platforms: [
-        .iOS(.v12)
-    ],
-    products: [
-        .library(
-            name: "Utensils",
-            targets: ["Utensils"]
-        )
-    ],
-    dependencies: [
-        .package(
-            url: "https://github.com/rbaumbach/Capsule",
-            from: "1.3.6"
-        )
-    ],
-    targets: [
-        .target(
-            name: "Utensils",
-            dependencies: ["Capsule"]
-        )
-    ],
-    swiftLanguageVersions: [.v5]
-)
+public enum HTTPMethod: String, CaseIterable, Equatable {
+    case get = "GET"
+}
