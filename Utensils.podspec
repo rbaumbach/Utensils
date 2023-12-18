@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name                  = 'Utensils'
-  spec.version               = '0.2.1'
+  spec.version               = '0.2.2'
   spec.summary               = 'A set of useful iOS tools.'
   spec.homepage              = 'https://github.com/rbaumbach/utensils'
   spec.license               = { :type => 'MIT', :file => 'MIT-LICENSE.txt' }
@@ -12,5 +12,5 @@ Pod::Spec.new do |spec|
   spec.source_files          = 'Sources/Utensils/**/*.{swift}'
   spec.swift_version         = '5.1.2'
 
-  spec.dependency 'Capsule', '~> 1.3.4'
+  spec.dependency 'Capsule', '~> 1.3.5'
 end
