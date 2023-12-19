@@ -99,7 +99,9 @@ networker.request(httpMethod: .get,
                   headers: ["version": "v1"],
                   parameters: ["breed": "chihuahua"],
                   completionHandler: { result in print(result) }
-                  
+
+// Using Codable models
+                
 networker.requestAndDeserialize(httpMethod: .get,
                                 endpoint: "/dogs",
                                 headers: ["version": "v1"],
