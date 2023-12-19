@@ -19,10 +19,10 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
             describe("request(endpoint:parameters:httpMethod:headers:completionHandler:)") {
                 it("completes with deserialized json") {
                     hangOn(for: .seconds(5)) { complete in
-                        subject.request(endpoint: "/api/quotes",
-                                        parameters: [:],
-                                        httpMethod: .get,
-                                        headers: nil) { result in
+                        subject.request(httpMethod: .get,
+                                        endpoint: "/api/quotes",
+                                        headers: nil,
+                                        parameters: [:]) { result in
                             if case .success(let jsonResponse) = result {
                                 guard let quotes = jsonResponse as? [Any] else {
                                     failSpec()
@@ -44,10 +44,10 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
             describe("requestAndDeserialize(endpoint:parameters:httpMethod:headers:completionHandler:)") {
                 it("completes with deserialized json") {
                     hangOn(for: .seconds(5)) { complete in
-                        subject.requestAndDeserialize(endpoint: "/api/quotes",
-                                                      parameters: [:],
-                                                      httpMethod: .get,
-                                                      headers: nil) { (result: Result<[Quote], PequenoNetworking.Error>)  in
+                        subject.requestAndDeserialize(httpMethod: .get,
+                                                      endpoint: "/api/quotes",
+                                                      headers: nil,
+                                                      parameters: [:]) { (result: Result<[Quote], PequenoNetworking.Error>)  in
                             if case .success(let decodedResponse) = result {
                                 expect(decodedResponse).toNot.beEmpty()
                             } else {

@@ -24,16 +24,16 @@ import Foundation
 import Capsule
 
 public protocol PequenoNetworkingProtocol {
-    func request(endpoint: String,
-                 parameters: [String: String]?,
-                 httpMethod: HTTPMethod,
+    func request(httpMethod: HTTPMethod,
+                 endpoint: String,
                  headers: [String: String]?,
+                 parameters: [String: String]?,
                  completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
     
-    func requestAndDeserialize<T: Codable>(endpoint: String,
-                                           parameters: [String: String]?,
-                                           httpMethod: HTTPMethod,
+    func requestAndDeserialize<T: Codable>(httpMethod: HTTPMethod,
+                                           endpoint: String,
                                            headers: [String: String]?,
+                                           parameters: [String: String]?,
                                            completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
 }
 
@@ -65,15 +65,15 @@ public class PequenoNetworking: PequenoNetworkingProtocol {
     
     // MARK: - Public methods
     
-    public func request(endpoint: String,
-                        parameters: [String: String]?,
-                        httpMethod: HTTPMethod,
+    public func request(httpMethod: HTTPMethod,
+                        endpoint: String,
                         headers: [String: String]?,
+                        parameters: [String: String]?,
                         completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        requestData(endpoint: endpoint,
-                    parameters: parameters,
-                    httpMethod: httpMethod,
-                    headers: headers) { [weak self] data, error in
+        requestData(httpMethod: httpMethod,
+                    endpoint: endpoint,
+                    headers: headers,
+                    parameters: parameters) { [weak self] data, error in
             guard let self = self else { return }
             
             if let error = error {
@@ -113,15 +113,15 @@ public class PequenoNetworking: PequenoNetworkingProtocol {
         }
     }
     
-    public func requestAndDeserialize<T: Codable>(endpoint: String,
-                                                  parameters: [String: String]?,
-                                                  httpMethod: HTTPMethod,
+    public func requestAndDeserialize<T: Codable>(httpMethod: HTTPMethod,
+                                                  endpoint: String,
                                                   headers: [String: String]?,
+                                                  parameters: [String: String]?,
                                                   completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        requestData(endpoint: endpoint,
-                    parameters: parameters,
-                    httpMethod: httpMethod,
-                    headers: headers) { [weak self] data, error in
+        requestData(httpMethod: httpMethod,
+                    endpoint: endpoint,
+                    headers: headers,
+                    parameters: parameters) { [weak self] data, error in
             guard let self = self else { return }
             
             if let error = error {
@@ -162,9 +162,9 @@ public class PequenoNetworking: PequenoNetworkingProtocol {
     
     // MARK: - Private methods
     
-    private func constructURLRequest(baseURL: String,
+    private func constructURLRequest(httpMethod: HTTPMethod,
+                                     baseURL: String,
                                      endpoint: String,
-                                     httpMethod: HTTPMethod,
                                      headers: [String: String]?,
                                      parameters: [String: String]?) -> URLRequest? {
         var urlComponents = URLComponents(string: baseURL)!
@@ -188,20 +188,20 @@ public class PequenoNetworking: PequenoNetworkingProtocol {
         return urlRequest
     }
     
-    private func requestData(endpoint: String,
-                             parameters: [String: String]?,
-                             httpMethod: HTTPMethod,
+    private func requestData(httpMethod: HTTPMethod,
+                             endpoint: String,
                              headers: [String: String]?,
+                             parameters: [String: String]?,
                              completionHandler: @escaping (Data?, Error?) -> Void) {
-        guard let urlRequest = constructURLRequest(baseURL: baseURL,
+        guard let urlRequest = constructURLRequest(httpMethod: httpMethod,
+                                                   baseURL: baseURL,
                                                    endpoint: endpoint,
-                                                   httpMethod: httpMethod,
                                                    headers: headers,
                                                    parameters: parameters) else {
-            let requestError = buildRequestError(endpoint: endpoint,
-                                                 parameters: parameters,
-                                                 httpMethod: httpMethod,
-                                                 headers: headers)
+            let requestError = buildRequestError(httpMethod: httpMethod,
+                                                 endpoint: endpoint,
+                                                 headers: headers,
+                                                 parameters: parameters)
             
             completionHandler(nil, requestError)
             
@@ -233,10 +233,10 @@ public class PequenoNetworking: PequenoNetworkingProtocol {
         dataTask.resume()
     }
     
-    private func buildRequestError(endpoint: String,
-                                   parameters: [String: String]?,
-                                   httpMethod: HTTPMethod,
-                                   headers: [String: String]?) -> PequenoNetworking.Error {
+    private func buildRequestError(httpMethod: HTTPMethod,
+                                   endpoint: String,
+                                   headers: [String: String]?,
+                                   parameters: [String: String]?) -> PequenoNetworking.Error {
         let paramsString: String = {
             if let parameters = parameters {
                 return parameters.description

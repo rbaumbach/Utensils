@@ -35,10 +35,10 @@ final class PequenoNetworkingSpec: QuickSpec {
                 
                 describe("when url request cannot be constructed (when url is bad)") {
                     beforeEach {
-                        subject.request(endpoint: "_gannon!",
-                                        parameters: nil,
-                                        httpMethod: .get,
-                                        headers: nil) { result in
+                        subject.request(httpMethod: .get,
+                                        endpoint: "_gannon!",
+                                        headers: nil,
+                                        parameters: nil) { result in
                             actualResult = result
                         }
                         
@@ -62,10 +62,10 @@ final class PequenoNetworkingSpec: QuickSpec {
                 
                 describe("when url request can be constructed") {
                     beforeEach {
-                        subject.request(endpoint: "/link",
-                                        parameters: [:],
-                                        httpMethod: .get,
-                                        headers: nil) { result in
+                        subject.request(httpMethod: .get,
+                                        endpoint: "/link",
+                                        headers: nil,
+                                        parameters: nil) { result in
                             actualResult = result
                         }
                     }
@@ -201,10 +201,10 @@ final class PequenoNetworkingSpec: QuickSpec {
                 describe("when url request cannot be constructed (when url is bad)") {
                     describe("when parameters are empty and headers are nil") {
                         beforeEach {
-                            subject.requestAndDeserialize(endpoint: "_gannon!",
-                                                          parameters: nil,
-                                                          httpMethod: .get,
-                                                          headers: nil) { result in
+                            subject.requestAndDeserialize(httpMethod: .get,
+                                                          endpoint: "_gannon!",
+                                                          headers: nil,
+                                                          parameters: nil) { result in
                                 actualResult = result
                             }
                             
@@ -228,10 +228,10 @@ final class PequenoNetworkingSpec: QuickSpec {
                     
                     describe("when parameters are NOT empty and headers are NOT nil and NOT empty") {
                         beforeEach {
-                            subject.requestAndDeserialize(endpoint: "_gannon!",
-                                                          parameters: ["name": "maya"],
-                                                          httpMethod: .get,
-                                                          headers: ["dog": "mutt"]) { result in
+                            subject.requestAndDeserialize(httpMethod: .get,
+                                                          endpoint: "_gannon!",
+                                                          headers: ["dog": "mutt"],
+                                                          parameters: ["name": "maya"]) { result in
                                 actualResult = result
                             }
                             
@@ -256,10 +256,10 @@ final class PequenoNetworkingSpec: QuickSpec {
                 
                 describe("when url request can be constructed") {
                     beforeEach {
-                        subject.requestAndDeserialize(endpoint: "/link",
-                                                      parameters: [:],
-                                                      httpMethod: .get,
-                                                      headers: nil) { result in
+                        subject.requestAndDeserialize(httpMethod: .get,
+                                                      endpoint: "/link",
+                                                      headers: nil,
+                                                      parameters: nil) { result in
                             actualResult = result
                         }
                     }
