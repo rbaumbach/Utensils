@@ -21,11 +21,3 @@ struct Quote: Codable {
         case content = "q"
     }
 }
-
-//    {
-//        "q": "Lack of emotion causes lack of progress and lack of motivation.",
-//        "a": "Tony Robbins",
-//        "i": "https://zenquotes.io/img/tony-robbins.jpg",
-//        "c": "63",
-//        "h": "<blockquote>&ldquo;Lack of emotion causes lack of progress and lack of motivation.&rdquo; &mdash; <footer>Tony Robbins</footer></blockquote>"
-//    }
