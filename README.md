@@ -16,7 +16,7 @@ A set of useful iOS tools.
 
 [Swift Package Manager](https://swift.org/package-manager/) can be used to add `Utensils` the to your project:
 
-1.  Add `.package(url: "https://github.com/rbaumbach/Utensils", from: "0.2.1")`
+1.  Add `.package(url: "https://github.com/rbaumbach/Utensils", from: "0.2.2")`
 2.  [Follow intructions to add](https://swift.org/getting-started/#using-the-package-manager) the Utensils package to your project.
 
 ### Clone from Github
@@ -86,6 +86,30 @@ do {
     // handle error
 }
 ```
+
+* A "pequeno" networker
+
+```swift
+let networker = PequenoNetworking(baseURL: "https://dogsrbettahthancats.party")
+
+// Ol' skool Any json response
+
+networker.request(httpMethod: .get,
+                  endpoint: "/dogs",
+                  headers: ["version": "v1"],
+                  parameters: ["breed": "chihuahua"],
+                  completionHandler: { result in print(result) }
+                  
+networker.requestAndDeserialize(httpMethod: .get,
+                                endpoint: "/dogs",
+                                headers: ["version": "v1"],
+                                parameters: ["breed": "chihuahua"]) { 
+                                (result: Result<[Dog], PequenoNetworking.Error>) in
+    print(result))
+}
+```
+
+Note: Currently only supports `GET` requests.
 
 Note: The `Model` must conform to `Codable`
 

@@ -30,7 +30,7 @@ final class FileLoader_UtensilsSpec: QuickSpec {
                     expect(unableToLoadJSONData.localizedDescription).to.equal(expectedUnableToLoadJSONDataDescription)
                     
                     let unableToDecodeJSONData = FileLoader.Error.unableToDecodeJSONData(wrappedError: EmptyError.empty)
-                    let expectedUnableToDecodeJSONData = "Unable to load decond json data.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                    let expectedUnableToDecodeJSONData = "Unable to load decoded json data.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
                     
                     expect(unableToDecodeJSONData.localizedDescription).to.equal(expectedUnableToDecodeJSONData)
                 }
@@ -51,7 +51,7 @@ final class FileLoader_UtensilsSpec: QuickSpec {
                         expect(unableToLoadJSONData.errorDescription).to.equal(expectedUnableToLoadJSONDataDescription)
                         
                         let unableToDecodeJSONData = FileLoader.Error.unableToDecodeJSONData(wrappedError: EmptyError.empty)
-                        let expectedUnableToDecodeJSONData = "Unable to load decond json data.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                        let expectedUnableToDecodeJSONData = "Unable to load decoded json data.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
                         
                         expect(unableToDecodeJSONData.errorDescription).to.equal(expectedUnableToDecodeJSONData)
                     }
@@ -71,7 +71,7 @@ final class FileLoader_UtensilsSpec: QuickSpec {
                         expect(unableToLoadJSONData.failureReason).to.equal(expectedUnableToLoadJSONDataDescription)
                         
                         let unableToDecodeJSONData = FileLoader.Error.unableToDecodeJSONData(wrappedError: EmptyError.empty)
-                        let expectedUnableToDecodeJSONData = "Unable to load decond json data.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                        let expectedUnableToDecodeJSONData = "Unable to load decoded json data.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
                         
                         expect(unableToDecodeJSONData.failureReason).to.equal(expectedUnableToDecodeJSONData)
                     }

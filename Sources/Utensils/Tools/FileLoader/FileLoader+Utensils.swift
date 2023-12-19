@@ -23,8 +23,8 @@
 import Foundation
 import Capsule
 
-extension FileLoader {
-    public enum Error: CaseIterable, LocalizedError, Equatable {
+public extension FileLoader {
+    enum Error: CaseIterable, LocalizedError, Equatable {
         case unableToFindFile(fileName: String)
         case unableToLoadJSONData(wrappedError: Swift.Error)
         case unableToDecodeJSONData(wrappedError: Swift.Error)
@@ -46,7 +46,7 @@ extension FileLoader {
             case .unableToLoadJSONData(let error):
                 return "Unable to load json data.  Wrapped Error: \(error.localizedDescription)"
             case .unableToDecodeJSONData(wrappedError: let error):
-                return "Unable to load decond json data.  Wrapped Error: \(error.localizedDescription)"
+                return "Unable to load decoded json data.  Wrapped Error: \(error.localizedDescription)"
             }
         }
         

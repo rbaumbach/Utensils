@@ -13,3 +13,11 @@ struct Dolphin: Codable, Equatable {
         case favoriteToy = "favorite-toy"
     }
 }
+
+struct Quote: Codable {
+    let content: String
+    
+    enum CodingKeys: String, CodingKey {
+        case content = "q"
+    }
+}

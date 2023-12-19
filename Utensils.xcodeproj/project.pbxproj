@@ -25,11 +25,19 @@
 		94569E172B28E279008494E1 /* SomeTestFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E162B28E279008494E1 /* SomeTestFunctions.swift */; };
 		94569E202B28EC93008494E1 /* Utensils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94341AF9238CCECF00BC8355 /* Utensils.framework */; platformFilter = ios; };
 		94569E282B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E272B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift */; };
-		94569E2D2B28EFF8008494E1 /* Dolphin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E2C2B28EFF8008494E1 /* Dolphin.swift */; };
 		94569E2E2B28F655008494E1 /* file.json in Resources */ = {isa = PBXBuildFile; fileRef = 94569E2A2B28EF10008494E1 /* file.json */; };
 		94569E302B29F596008494E1 /* FakeFileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E2F2B29F596008494E1 /* FakeFileLoader.swift */; };
 		94569E372B2CB1EE008494E1 /* FileLoader+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E362B2CB1EE008494E1 /* FileLoader+Utensils.swift */; };
 		94569E3A2B2DDBA4008494E1 /* FileLoader+UtensilsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E392B2DDBA4008494E1 /* FileLoader+UtensilsSpec.swift */; };
+		94569E3F2B2E779D008494E1 /* PequenoNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E3E2B2E779D008494E1 /* PequenoNetworking.swift */; };
+		94569E462B2F35BE008494E1 /* PequenoNetworking+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E452B2F35BE008494E1 /* PequenoNetworking+Utensils.swift */; };
+		94569E482B2F9FDA008494E1 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E472B2F9FDA008494E1 /* HTTPMethod.swift */; };
+		94569E512B2FDCAC008494E1 /* HTTPMethodSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E502B2FDCAC008494E1 /* HTTPMethodSpec.swift */; };
+		94569E532B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E522B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift */; };
+		94569E552B2FE491008494E1 /* PequenoNetworkingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E542B2FE491008494E1 /* PequenoNetworkingSpec.swift */; };
+		94569E572B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E562B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift */; };
+		94569E582B30E19D008494E1 /* SomeTestFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E162B28E279008494E1 /* SomeTestFunctions.swift */; };
+		94569E5B2B30E776008494E1 /* SpecModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E5A2B30E776008494E1 /* SpecModels.swift */; };
 		94630F0723A93E870054BAAD /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94630F0623A93E870054BAAD /* Validator.swift */; };
 		94630F0923AA6D440054BAAD /* ValidatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94630F0823AA6D440054BAAD /* ValidatorSpec.swift */; };
 		94630F0B23AA76CB0054BAAD /* SpecModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94630F0A23AA76CB0054BAAD /* SpecModels.swift */; };
@@ -85,10 +93,17 @@
 		94569E1C2B28EC93008494E1 /* IntegrationSpecs.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IntegrationSpecs.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		94569E272B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileLoaderIntegrationSpecs.swift; sourceTree = "<group>"; };
 		94569E2A2B28EF10008494E1 /* file.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = file.json; sourceTree = "<group>"; };
-		94569E2C2B28EFF8008494E1 /* Dolphin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dolphin.swift; sourceTree = "<group>"; };
 		94569E2F2B29F596008494E1 /* FakeFileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeFileLoader.swift; sourceTree = "<group>"; };
 		94569E362B2CB1EE008494E1 /* FileLoader+Utensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileLoader+Utensils.swift"; sourceTree = "<group>"; };
 		94569E392B2DDBA4008494E1 /* FileLoader+UtensilsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileLoader+UtensilsSpec.swift"; sourceTree = "<group>"; };
+		94569E3E2B2E779D008494E1 /* PequenoNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworking.swift; sourceTree = "<group>"; };
+		94569E452B2F35BE008494E1 /* PequenoNetworking+Utensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PequenoNetworking+Utensils.swift"; sourceTree = "<group>"; };
+		94569E472B2F9FDA008494E1 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		94569E502B2FDCAC008494E1 /* HTTPMethodSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethodSpec.swift; sourceTree = "<group>"; };
+		94569E522B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PequenoNetworking+UtensilsSpec.swift"; sourceTree = "<group>"; };
+		94569E542B2FE491008494E1 /* PequenoNetworkingSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingSpec.swift; sourceTree = "<group>"; };
+		94569E562B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingIntegrationSpecs.swift; sourceTree = "<group>"; };
+		94569E5A2B30E776008494E1 /* SpecModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecModels.swift; sourceTree = "<group>"; };
 		94630F0623A93E870054BAAD /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		94630F0823AA6D440054BAAD /* ValidatorSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorSpec.swift; sourceTree = "<group>"; };
 		94630F0A23AA76CB0054BAAD /* SpecModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecModels.swift; sourceTree = "<group>"; };
@@ -161,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				94569E332B2CB1B0008494E1 /* FileLoader */,
+				94569E4F2B2FDC9C008494E1 /* PequenoNetworking */,
 				94569E382B2CB6EE008494E1 /* Trunk */,
 				9406829D238D7F24004278CB /* DebouncerSpec.swift */,
 				94630F0823AA6D440054BAAD /* ValidatorSpec.swift */,
@@ -245,6 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				94569E292B28EEFE008494E1 /* Resources */,
+				94569E592B30E765008494E1 /* Spec Files */,
 				94569E262B28EE49008494E1 /* Tools */,
 			);
 			path = IntegrationSpecs;
@@ -254,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				94569E272B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift */,
+				94569E562B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -261,7 +279,6 @@
 		94569E292B28EEFE008494E1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				94569E2C2B28EFF8008494E1 /* Dolphin.swift */,
 				94569E2A2B28EF10008494E1 /* file.json */,
 			);
 			path = Resources;
@@ -300,6 +317,34 @@
 				946AB1782390568C003D0016 /* TrunkSpec.swift */,
 			);
 			path = Trunk;
+			sourceTree = "<group>";
+		};
+		94569E442B2F35A2008494E1 /* PequenoNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				94569E472B2F9FDA008494E1 /* HTTPMethod.swift */,
+				94569E3E2B2E779D008494E1 /* PequenoNetworking.swift */,
+				94569E452B2F35BE008494E1 /* PequenoNetworking+Utensils.swift */,
+			);
+			path = PequenoNetworking;
+			sourceTree = "<group>";
+		};
+		94569E4F2B2FDC9C008494E1 /* PequenoNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				94569E502B2FDCAC008494E1 /* HTTPMethodSpec.swift */,
+				94569E522B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift */,
+				94569E542B2FE491008494E1 /* PequenoNetworkingSpec.swift */,
+			);
+			path = PequenoNetworking;
+			sourceTree = "<group>";
+		};
+		94569E592B30E765008494E1 /* Spec Files */ = {
+			isa = PBXGroup;
+			children = (
+				94569E5A2B30E776008494E1 /* SpecModels.swift */,
+			);
+			path = "Spec Files";
 			sourceTree = "<group>";
 		};
 		94872AF12915D15400D3528B /* ViewControllers */ = {
@@ -347,6 +392,7 @@
 			isa = PBXGroup;
 			children = (
 				94872AFD2915D26200D3528B /* Fakes */,
+				94569E442B2F35A2008494E1 /* PequenoNetworking */,
 				94569E342B2CB1C6008494E1 /* FileLoader */,
 				94569E352B2CB1D5008494E1 /* Trunk */,
 				940F9DFE239B146D0028937B /* Debouncer.swift */,
@@ -662,9 +708,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94569E3F2B2E779D008494E1 /* PequenoNetworking.swift in Sources */,
 				94569E302B29F596008494E1 /* FakeFileLoader.swift in Sources */,
 				94569E372B2CB1EE008494E1 /* FileLoader+Utensils.swift in Sources */,
 				940F9DFB239B14630028937B /* FakeTrunk.swift in Sources */,
+				94569E462B2F35BE008494E1 /* PequenoNetworking+Utensils.swift in Sources */,
 				94872AF52915D16F00D3528B /* AppLaunchViewController.swift in Sources */,
 				940F9DF5239B14440028937B /* Directory.swift in Sources */,
 				940F9DFA239B14630028937B /* FakeDebouncer.swift in Sources */,
@@ -672,6 +720,7 @@
 				940F9DF3239B143E0028937B /* FakeDirectory.swift in Sources */,
 				9401276A2B20B3F600C0D7CD /* FileLoader.swift in Sources */,
 				94872AFF2915D28E00D3528B /* Trunk+Utensils.swift in Sources */,
+				94569E482B2F9FDA008494E1 /* HTTPMethod.swift in Sources */,
 				94630F0723A93E870054BAAD /* Validator.swift in Sources */,
 				94872AF92915D20700D3528B /* Bundle+Utensils.swift in Sources */,
 				940F9E01239B146D0028937B /* Debouncer.swift in Sources */,
@@ -684,12 +733,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				940F9C6E23974A060028937B /* CustomView.swift in Sources */,
+				94569E532B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift in Sources */,
 				94569E152B274845008494E1 /* FileLoaderSpec.swift in Sources */,
 				946AB1792390568C003D0016 /* TrunkSpec.swift in Sources */,
 				94630F0B23AA76CB0054BAAD /* SpecModels.swift in Sources */,
 				940682AC238EE03A004278CB /* DirectorySpec.swift in Sources */,
 				94630F0923AA6D440054BAAD /* ValidatorSpec.swift in Sources */,
+				94569E552B2FE491008494E1 /* PequenoNetworkingSpec.swift in Sources */,
 				94569E3A2B2DDBA4008494E1 /* FileLoader+UtensilsSpec.swift in Sources */,
+				94569E512B2FDCAC008494E1 /* HTTPMethodSpec.swift in Sources */,
 				94569E172B28E279008494E1 /* SomeTestFunctions.swift in Sources */,
 				94DB4641239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift in Sources */,
 				9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */,
@@ -700,8 +752,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94569E5B2B30E776008494E1 /* SpecModels.swift in Sources */,
+				94569E572B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift in Sources */,
 				94569E282B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift in Sources */,
-				94569E2D2B28EFF8008494E1 /* Dolphin.swift in Sources */,
+				94569E582B30E19D008494E1 /* SomeTestFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -775,7 +829,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.2.1;
+				MARKETING_VERSION = 0.2.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -834,7 +888,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.2.1;
+				MARKETING_VERSION = 0.2.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -867,7 +921,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.1;
+				MARKETING_VERSION = 0.2.2;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = teamthick.utensils;
@@ -902,7 +956,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.2.1;
+				MARKETING_VERSION = 0.2.2;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = teamthick.utensils;
@@ -973,7 +1027,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = teamthick.IntegrationSpecs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -998,7 +1052,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = teamthick.IntegrationSpecs;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
