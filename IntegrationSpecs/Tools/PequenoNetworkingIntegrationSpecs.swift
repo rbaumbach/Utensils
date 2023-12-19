@@ -22,7 +22,7 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                         subject.request(httpMethod: .get,
                                         endpoint: "/api/quotes",
                                         headers: nil,
-                                        parameters: [:]) { result in
+                                        parameters: nil) { result in
                             if case .success(let jsonResponse) = result {
                                 guard let quotes = jsonResponse as? [Any] else {
                                     failSpec()
@@ -47,7 +47,7 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                         subject.requestAndDeserialize(httpMethod: .get,
                                                       endpoint: "/api/quotes",
                                                       headers: nil,
-                                                      parameters: [:]) { (result: Result<[Quote], PequenoNetworking.Error>)  in
+                                                      parameters: nil) { (result: Result<[Quote], PequenoNetworking.Error>)  in
                             if case .success(let decodedResponse) = result {
                                 expect(decodedResponse).toNot.beEmpty()
                             } else {

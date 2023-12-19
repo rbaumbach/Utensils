@@ -87,6 +87,30 @@ do {
 }
 ```
 
+* A "pequeno" networker
+
+```swift
+let networker = PequenoNetworking(baseURL: "https://dogsrbettahthancats.party")
+
+// Ol' skool Any json response
+
+networker.request(httpMethod: .get,
+                  endpoint: "/dogs",
+                  headers: ["version": "v1"],
+                  parameters: ["breed": "chihuahua"],
+                  completionHandler: { result in print(result) }
+                  
+networker.requestAndDeserialize(httpMethod: .get,
+                                endpoint: "/dogs",
+                                headers: ["version": "v1"],
+                                parameters: ["breed": "chihuahua"]) { 
+                                (result: Result<[Dog], PequenoNetworking.Error>) in
+    print(result))
+}
+```
+
+Note: Currently only supports `GET` requests.
+
 Note: The `Model` must conform to `Codable`
 
 And more to come...
