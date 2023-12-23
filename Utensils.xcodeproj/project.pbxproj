@@ -38,6 +38,7 @@
 		94569E572B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E562B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift */; };
 		94569E582B30E19D008494E1 /* SomeTestFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E162B28E279008494E1 /* SomeTestFunctions.swift */; };
 		94569E5B2B30E776008494E1 /* SpecModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E5A2B30E776008494E1 /* SpecModels.swift */; };
+		94569E5D2B36498F008494E1 /* PequenoNetworkingV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E5C2B36498F008494E1 /* PequenoNetworkingV2.swift */; };
 		94630F0723A93E870054BAAD /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94630F0623A93E870054BAAD /* Validator.swift */; };
 		94630F0923AA6D440054BAAD /* ValidatorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94630F0823AA6D440054BAAD /* ValidatorSpec.swift */; };
 		94630F0B23AA76CB0054BAAD /* SpecModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94630F0A23AA76CB0054BAAD /* SpecModels.swift */; };
@@ -46,6 +47,7 @@
 		94872AF52915D16F00D3528B /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AF32915D16F00D3528B /* AppLaunchViewController.swift */; };
 		94872AF92915D20700D3528B /* Bundle+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AF82915D20700D3528B /* Bundle+Utensils.swift */; };
 		94872AFF2915D28E00D3528B /* Trunk+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AFE2915D28E00D3528B /* Trunk+Utensils.swift */; };
+		94B2AE712B3740900081B1FE /* PequenoNetworkingV2IntegrationSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B2AE702B3740900081B1FE /* PequenoNetworkingV2IntegrationSpecs.swift */; };
 		94DB4641239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB4640239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift */; };
 		B9767CBDEC35DF4B014C4D1F /* Pods_IntegrationSpecs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C675609842C623220C7BDF38 /* Pods_IntegrationSpecs.framework */; };
 /* End PBXBuildFile section */
@@ -104,6 +106,7 @@
 		94569E542B2FE491008494E1 /* PequenoNetworkingSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingSpec.swift; sourceTree = "<group>"; };
 		94569E562B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingIntegrationSpecs.swift; sourceTree = "<group>"; };
 		94569E5A2B30E776008494E1 /* SpecModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecModels.swift; sourceTree = "<group>"; };
+		94569E5C2B36498F008494E1 /* PequenoNetworkingV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingV2.swift; sourceTree = "<group>"; };
 		94630F0623A93E870054BAAD /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		94630F0823AA6D440054BAAD /* ValidatorSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorSpec.swift; sourceTree = "<group>"; };
 		94630F0A23AA76CB0054BAAD /* SpecModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecModels.swift; sourceTree = "<group>"; };
@@ -113,6 +116,7 @@
 		94872AF32915D16F00D3528B /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
 		94872AF82915D20700D3528B /* Bundle+Utensils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Utensils.swift"; sourceTree = "<group>"; };
 		94872AFE2915D28E00D3528B /* Trunk+Utensils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Trunk+Utensils.swift"; sourceTree = "<group>"; };
+		94B2AE702B3740900081B1FE /* PequenoNetworkingV2IntegrationSpecs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingV2IntegrationSpecs.swift; sourceTree = "<group>"; };
 		94DB4640239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunchViewControllerSpec.swift; sourceTree = "<group>"; };
 		9F3A5BD0ACB0A9B3B2A60C30 /* Pods-IntegrationSpecs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntegrationSpecs.release.xcconfig"; path = "Target Support Files/Pods-IntegrationSpecs/Pods-IntegrationSpecs.release.xcconfig"; sourceTree = "<group>"; };
 		A549590B733FCDA00A8D606F /* Pods-Specs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Specs.debug.xcconfig"; path = "Target Support Files/Pods-Specs/Pods-Specs.debug.xcconfig"; sourceTree = "<group>"; };
@@ -270,8 +274,8 @@
 		94569E262B28EE49008494E1 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				94B2AE6F2B3740770081B1FE /* PequenoNetworking */,
 				94569E272B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift */,
-				94569E562B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -325,6 +329,7 @@
 				94569E472B2F9FDA008494E1 /* HTTPMethod.swift */,
 				94569E3E2B2E779D008494E1 /* PequenoNetworking.swift */,
 				94569E452B2F35BE008494E1 /* PequenoNetworking+Utensils.swift */,
+				94569E5C2B36498F008494E1 /* PequenoNetworkingV2.swift */,
 			);
 			path = PequenoNetworking;
 			sourceTree = "<group>";
@@ -409,6 +414,15 @@
 				940F9DF9239B14630028937B /* FakeTrunk.swift */,
 			);
 			path = Fakes;
+			sourceTree = "<group>";
+		};
+		94B2AE6F2B3740770081B1FE /* PequenoNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				94569E562B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift */,
+				94B2AE702B3740900081B1FE /* PequenoNetworkingV2IntegrationSpecs.swift */,
+			);
+			path = PequenoNetworking;
 			sourceTree = "<group>";
 		};
 		94DB463F239479C900D0C0A2 /* ViewControllers */ = {
@@ -721,6 +735,7 @@
 				9401276A2B20B3F600C0D7CD /* FileLoader.swift in Sources */,
 				94872AFF2915D28E00D3528B /* Trunk+Utensils.swift in Sources */,
 				94569E482B2F9FDA008494E1 /* HTTPMethod.swift in Sources */,
+				94569E5D2B36498F008494E1 /* PequenoNetworkingV2.swift in Sources */,
 				94630F0723A93E870054BAAD /* Validator.swift in Sources */,
 				94872AF92915D20700D3528B /* Bundle+Utensils.swift in Sources */,
 				940F9E01239B146D0028937B /* Debouncer.swift in Sources */,
@@ -752,6 +767,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94B2AE712B3740900081B1FE /* PequenoNetworkingV2IntegrationSpecs.swift in Sources */,
 				94569E5B2B30E776008494E1 /* SpecModels.swift in Sources */,
 				94569E572B30DF28008494E1 /* PequenoNetworkingIntegrationSpecs.swift in Sources */,
 				94569E282B28EE64008494E1 /* FileLoaderIntegrationSpecs.swift in Sources */,

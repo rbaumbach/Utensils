@@ -24,4 +24,8 @@ import Foundation
 
 public enum HTTPMethod: String, CaseIterable, Equatable {
     case get = "GET"
+    case delete = "DELETE"
+    case post = "POST"
+    case put = "PUT"
+    case patch = "PATCH"
 }

@@ -47,15 +47,15 @@ public class PequenoNetworking: PequenoNetworkingProtocol {
     
     // MARK: - Readonly properties
     
-    let baseURL: String
+    public let baseURL: String
     
     // MARK: - Init methods
     
-    init(baseURL: String,
-         urlSession: URLSessionProtocol = URLSession.shared,
-         jsonSerializationWrapper: JSONSerializationWrapperProtocol = JSONSerializationWrapper(),
-         jsonDecoder: JSONDecoderProtocol = JSONDecoder(),
-         dispatchQueueWrapper: DispatchQueueWrapperProtocol = DispatchQueueWrapper()) {
+    public init(baseURL: String,
+                urlSession: URLSessionProtocol = URLSession.shared,
+                jsonSerializationWrapper: JSONSerializationWrapperProtocol = JSONSerializationWrapper(),
+                jsonDecoder: JSONDecoderProtocol = JSONDecoder(),
+                dispatchQueueWrapper: DispatchQueueWrapperProtocol = DispatchQueueWrapper()) {
         self.baseURL = baseURL
         self.urlSession = urlSession
         self.jsonSerializationWrapper = jsonSerializationWrapper

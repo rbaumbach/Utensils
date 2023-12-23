@@ -21,3 +21,7 @@ struct Quote: Codable {
         case content = "q"
     }
 }
+
+struct HTTPBin: Codable {
+    let url: String
+}
