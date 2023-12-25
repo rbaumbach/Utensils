@@ -19,6 +19,7 @@
 		940F9DFB239B14630028937B /* FakeTrunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DF9239B14630028937B /* FakeTrunk.swift */; };
 		940F9DFF239B146D0028937B /* Trunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DFC239B146D0028937B /* Trunk.swift */; };
 		940F9E01239B146D0028937B /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DFE239B146D0028937B /* Debouncer.swift */; };
+		942B4E782B3A1E290086D749 /* URLRequestInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B4E772B3A1E290086D749 /* URLRequestInfo.swift */; };
 		94341AFE238CCECF00BC8355 /* Utensils.h in Headers */ = {isa = PBXBuildFile; fileRef = 94341AFC238CCECF00BC8355 /* Utensils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		944A011E238D7CBD00957702 /* Utensils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94341AF9238CCECF00BC8355 /* Utensils.framework */; };
 		94569E152B274845008494E1 /* FileLoaderSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E142B274845008494E1 /* FileLoaderSpec.swift */; };
@@ -85,6 +86,7 @@
 		940F9DF9239B14630028937B /* FakeTrunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeTrunk.swift; sourceTree = "<group>"; };
 		940F9DFC239B146D0028937B /* Trunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trunk.swift; sourceTree = "<group>"; };
 		940F9DFE239B146D0028937B /* Debouncer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
+		942B4E772B3A1E290086D749 /* URLRequestInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestInfo.swift; sourceTree = "<group>"; };
 		94341AF9238CCECF00BC8355 /* Utensils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Utensils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94341AFC238CCECF00BC8355 /* Utensils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utensils.h; sourceTree = "<group>"; };
 		94341AFD238CCECF00BC8355 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 				94569E3E2B2E779D008494E1 /* PequenoNetworking.swift */,
 				94569E452B2F35BE008494E1 /* PequenoNetworking+Utensils.swift */,
 				94569E5C2B36498F008494E1 /* PequenoNetworkingV2.swift */,
+				942B4E772B3A1E290086D749 /* URLRequestInfo.swift */,
 			);
 			path = PequenoNetworking;
 			sourceTree = "<group>";
@@ -737,6 +740,7 @@
 				94569E482B2F9FDA008494E1 /* HTTPMethod.swift in Sources */,
 				94569E5D2B36498F008494E1 /* PequenoNetworkingV2.swift in Sources */,
 				94630F0723A93E870054BAAD /* Validator.swift in Sources */,
+				942B4E782B3A1E290086D749 /* URLRequestInfo.swift in Sources */,
 				94872AF92915D20700D3528B /* Bundle+Utensils.swift in Sources */,
 				940F9E01239B146D0028937B /* Debouncer.swift in Sources */,
 				940F9DFF239B146D0028937B /* Trunk.swift in Sources */,

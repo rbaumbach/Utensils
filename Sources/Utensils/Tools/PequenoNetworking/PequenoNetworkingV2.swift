@@ -1,3 +1,25 @@
+//MIT License
+//
+//Copyright (c) 2020-2023 Ryan Baumbach <github@ryan.codes>
+//
+//Permission is hereby granted, free of charge, to any person obtaining a copy
+//of this software and associated documentation files (the "Software"), to deal
+//in the Software without restriction, including without limitation the rights
+//to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//copies of the Software, and to permit persons to whom the Software is
+//furnished to do so, subject to the following conditions:
+//
+//The above copyright notice and this permission notice shall be included in all
+//copies or substantial portions of the Software.
+//
+//THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//SOFTWARE.
+
 import Foundation
 import Capsule
 
@@ -13,7 +35,7 @@ public class PequenoNetworkingV2 {
     
     public let baseURL: String
     public let headers: [String: String]?
-        
+    
     // MARK: - Init methods
     
     public init(baseURL: String,
@@ -37,71 +59,61 @@ public class PequenoNetworkingV2 {
     public func get(endpoint: String,
                     parameters: [String: String]?,
                     completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        guard let urlRequest = buildURLRequest(httpMethod: "GET", 
-                                               endpoint: endpoint,
-                                               parameters: parameters) else {
-            completionHandler(.failure(.requestError(String.empty)))
-            
-            return
-        }
+        let urlRequestInfo = URLRequestInfo(httpMethod: .get,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
         
-        executeJSONSerialization(urlRequest: urlRequest, completionHandler: completionHandler)
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
     }
     
     public func delete(endpoint: String,
                        parameters: [String: String]?,
                        completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        guard let urlRequest = buildURLRequest(httpMethod: "DELETE",
-                                               endpoint: endpoint,
-                                               parameters: parameters) else {
-            completionHandler(.failure(.requestError(String.empty)))
-            
-            return
-        }
+        let urlRequestInfo = URLRequestInfo(httpMethod: .delete,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
         
-        executeJSONSerialization(urlRequest: urlRequest, completionHandler: completionHandler)
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
     }
     
     public func post(endpoint: String,
                      body: [String: Any]?,
                      completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        guard let urlRequest = buildURLRequest(httpMethod: "POST",
-                                               endpoint: endpoint,
-                                               body: body) else {
-            completionHandler(.failure(.requestError(String.empty)))
-            
-            return
-        }
+        let urlRequestInfo = URLRequestInfo(httpMethod: .post,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
         
-        executeJSONSerialization(urlRequest: urlRequest, completionHandler: completionHandler)
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
     }
     
     public func put(endpoint: String,
                     body: [String: Any]?,
                     completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        guard let urlRequest = buildURLRequest(httpMethod: "PUT",
-                                               endpoint: endpoint,
-                                               body: body) else {
-            completionHandler(.failure(.requestError(String.empty)))
-            
-            return
-        }
+        let urlRequestInfo = URLRequestInfo(httpMethod: .put,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
         
-        executeJSONSerialization(urlRequest: urlRequest, completionHandler: completionHandler)
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
     }
     
     public func patch(endpoint: String,
                       body: [String: Any]?,
                       completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        guard let urlRequest = buildURLRequest(httpMethod: "PATCH",
-                                               endpoint: endpoint,
-                                               body: body) else {
-            completionHandler(.failure(.requestError(String.empty)))
-            
-            return
-        }
+        let urlRequestInfo = URLRequestInfo(httpMethod: .patch,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
         
-        executeJSONSerialization(urlRequest: urlRequest, completionHandler: completionHandler)
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
     }
     
     // MARK: - Codable
@@ -109,135 +121,157 @@ public class PequenoNetworkingV2 {
     public func get<T: Codable>(endpoint: String,
                                 parameters: [String: String]?,
                                 completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        guard let urlRequest = buildURLRequest(httpMethod: "GET",
-                                               endpoint: endpoint,
-                                               parameters: parameters) else {
-            completionHandler(.failure(.requestError(String.empty)))
-            
-            return
-        }
+        let urlRequestInfo = URLRequestInfo(httpMethod: .get,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
         
-        executeCodable(urlRequest: urlRequest, completionHandler: completionHandler)
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
     }
     
     public func delete<T: Codable>(endpoint: String,
                                    parameters: [String: String]?,
                                    completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        guard let urlRequest = buildURLRequest(httpMethod: "DELETE",
-                                               endpoint: endpoint,
-                                               parameters: parameters) else {
-            completionHandler(.failure(.requestError(String.empty)))
-            
-            return
-        }
+        let urlRequestInfo = URLRequestInfo(httpMethod: .delete,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
         
-        executeCodable(urlRequest: urlRequest, completionHandler: completionHandler)
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
     }
     
     public func post<T: Codable>(endpoint: String,
                                  body: [String: Any]?,
                                  completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        guard let urlRequest = buildURLRequest(httpMethod: "POST",
-                                               endpoint: endpoint,
-                                               body: body) else {
-            completionHandler(.failure(.requestError(String.empty)))
-            
-            return
-        }
+        let urlRequestInfo = URLRequestInfo(httpMethod: .post,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
         
-        executeCodable(urlRequest: urlRequest, completionHandler: completionHandler)
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
     }
     
     public func put<T: Codable>(endpoint: String,
                                 body: [String: Any]?,
                                 completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        guard let urlRequest = buildURLRequest(httpMethod: "PUT",
-                                               endpoint: endpoint,
-                                               body: body) else {
-            completionHandler(.failure(.requestError(String.empty)))
-            
-            return
-        }
+        let urlRequestInfo = URLRequestInfo(httpMethod: .put,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
         
-        executeCodable(urlRequest: urlRequest, completionHandler: completionHandler)
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
     }
     
     public func patch<T: Codable>(endpoint: String,
                                   body: [String: Any]?,
                                   completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        guard let urlRequest = buildURLRequest(httpMethod: "PATCH",
-                                               endpoint: endpoint,
-                                               body: body) else {
-            completionHandler(.failure(.requestError(String.empty)))
-            
-            return
-        }
+        let urlRequestInfo = URLRequestInfo(httpMethod: .patch,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
         
-        executeCodable(urlRequest: urlRequest, completionHandler: completionHandler)
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
     }
     
     // MARK: - Private methods
-    
-    // MARK: - URLRequest - GET, DELETE
-    
-    private func buildURLRequest(httpMethod: String,
-                                 endpoint: String,
-                                 parameters: [String: String]?) -> URLRequest? {
-        var urlComponents = URLComponents(string: baseURL)!
-        urlComponents.path = endpoint
-                
-        urlComponents.queryItems = parameters?.map { (key, value) in
+        
+    private func buildURLRequest(urlRequestInfo: URLRequestInfo,
+                                 completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void) {
+        guard var urlComponents = URLComponents(string: baseURL) else {
+            completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
+            
+            return
+        }
+
+        urlComponents.path = urlRequestInfo.endpoint
+        
+        urlComponents.queryItems = urlRequestInfo.parameters?.map { (key, value) in
             return URLQueryItem(name: key, value: value)
         }
         
         guard let urlComponentsURL = urlComponents.url else {
-            return nil
+            completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
+            
+            return
         }
         
         var urlRequest = URLRequest(url: urlComponentsURL)
-        urlRequest.httpMethod = httpMethod
+        urlRequest.httpMethod = urlRequestInfo.httpMethod.rawValue
         
         headers?.forEach { key, value in
             urlRequest.addValue(value, forHTTPHeaderField: key)
         }
         
-        return urlRequest
-    }
-    
-    // MARK: - URLRequest - POST, PUT, PATCH
-    
-    private func buildURLRequest(httpMethod: String,
-                                 endpoint: String,
-                                 body: Any?) -> URLRequest? {
-        var urlComponents = URLComponents(string: baseURL)!
-        urlComponents.path = endpoint
-        
-        guard let urlComponentsURL = urlComponents.url else {
-            return nil
-        }
-        
-        var urlRequest = URLRequest(url: urlComponentsURL)
-        urlRequest.httpMethod = httpMethod
-        
-        headers?.forEach { key, value in
-            urlRequest.addValue(value, forHTTPHeaderField: key)
-        }
-        
-        if let body = body {
+        if let body = urlRequestInfo.body {
             guard let body = try? JSONSerialization.data(withJSONObject: body) else {
-                return nil
+                completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
+                
+                return
             }
             
             urlRequest.httpBody = body
         }
         
-        return urlRequest
+        completionHandler(.success(urlRequest))
     }
+    
+//    private func handleResponse(data: Data?,
+//                                error: PequenoNetworking.Error?,
+//                                isCodable: Bool,
+//                                completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+//        if let error = error {
+//            completionHandler(.failure(error))
+//            
+//            return
+//        }
+//        
+//        guard let data = data else {
+//            completionHandler(.failure(.dataError))
+//            
+//            return
+//        }
+//        
+//        let result: Result<Any, PequenoNetworking.Error>
+//        
+//        do {
+//            if !isCodable {
+//                let jsonResponse = try self.jsonSerializationWrapper.jsonObject(with: data,
+//                                                                                options: .mutableContainers)
+//            } else {
+//                let jsonResponse = try self.jsonDecoder.decode(T.self, from: data)
+//            }
+//            
+//            result = .success(jsonResponse)
+//        } catch {
+//            result = .failure(.jsonObjectDecodeError(wrappedError: error))
+//        }
+//        
+//        completionHandler(result)
+//    }
     
     // MARK: - JSONSerialization (ol' skoo)
     
-    private func executeJSONSerialization(urlRequest: URLRequest,
-                                          completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+    private func executeNetworkRequest(urlRequestInfo: URLRequestInfo,
+                                       completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        
+        buildURLRequest(urlRequestInfo: urlRequestInfo) { result in
+            switch result {
+            case .success(let urlRequest):
+                executeJSONSerializer(urlRequest: urlRequest,
+                                      completionHandler: completionHandler)
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    private func executeJSONSerializer(urlRequest: URLRequest,
+                                       completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
         buildAndExecute(urlRequest: urlRequest) { [weak self] data, error in
             self?.handleResponseWithJSONSerializer(data: data, error: error) { [weak self] result in
                 self?.dispatchQueueWrapper.mainAsync {
@@ -277,6 +311,20 @@ public class PequenoNetworkingV2 {
     }
     
     // MARK: - Codable
+    
+    private func executeNetworkRequest<T: Codable>(urlRequestInfo: URLRequestInfo,
+                                                   completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        
+        buildURLRequest(urlRequestInfo: urlRequestInfo) { result in
+            switch result {
+            case .success(let urlRequest):
+                executeCodable(urlRequest: urlRequest,
+                               completionHandler: completionHandler)
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
     
     private func executeCodable<T: Codable>(urlRequest: URLRequest,
                                             completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {

@@ -27,6 +27,7 @@ public extension PequenoNetworking {
     // MARK: - Enums
     
     enum Error: CaseIterable, LocalizedError, Equatable {
+        case urlRequestError(info: URLRequestInfo)
         case requestError(_ string: String)
         case dataTaskError(wrappedError: Swift.Error)
         case malformedResponseError
@@ -51,6 +52,14 @@ public extension PequenoNetworking {
         
         public var localizedDescription: String {
             switch self {
+            case .urlRequestError(let info):
+                return """
+                Unable to build URLRequest:
+                http verb:  \(info.httpMethod.rawValue)
+                endpoint:   \(info.endpoint)
+                parameters: \(info.parameters?.description ?? String.empty)
+                body:       \(info.body?.description ?? String.empty)
+                """
             case .requestError(let string):
                 return """
                 Unable to build URLRequest:
@@ -83,6 +92,8 @@ public extension PequenoNetworking {
         
         public var recoverySuggestion: String? {
             switch self {
+            case .urlRequestError:
+                return "Verify that the request was built appropriately"
             case .requestError:
                 return "Verify that the request was built appropriately"
             case .dataTaskError:

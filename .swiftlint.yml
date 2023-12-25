@@ -10,6 +10,14 @@ disabled_rules:
 
 line_length: 150
 
+type_body_length:
+  warning: 1000
+  error: 1500
+
+file_length:
+  warning: 1000
+  error: 1500
+
 identifier_name:
   excluded:
     - id
@@ -17,8 +25,6 @@ identifier_name:
 nesting:
   type_level:
     warning: 2
-  statement_level:
-    warning: 5
 
 excluded:
   - Pods
