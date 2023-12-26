@@ -28,7 +28,6 @@ public extension PequenoNetworking {
     
     enum Error: CaseIterable, LocalizedError, Equatable {
         case urlRequestError(info: URLRequestInfo)
-        case requestError(_ string: String)
         case dataTaskError(wrappedError: Swift.Error)
         case malformedResponseError
         case invalidStatusCodeError(statusCode: Int)
@@ -39,7 +38,11 @@ public extension PequenoNetworking {
         // MARK: - <CaseIterable>
         
         public static var allCases: [PequenoNetworking.Error] {
-            return [.requestError(String.empty),
+            let emptyURLRequestInfo = URLRequestInfo(httpMethod: .get,
+                                                     endpoint: String.empty,
+                                                     parameters: nil, body: nil)
+            
+            return [.urlRequestError(info: emptyURLRequestInfo),
                     .dataTaskError(wrappedError: EmptyError.empty),
                     .malformedResponseError,
                     .invalidStatusCodeError(statusCode: 0),
@@ -57,13 +60,8 @@ public extension PequenoNetworking {
                 Unable to build URLRequest:
                 http verb:  \(info.httpMethod.rawValue)
                 endpoint:   \(info.endpoint)
-                parameters: \(info.parameters?.description ?? String.empty)
-                body:       \(info.body?.description ?? String.empty)
-                """
-            case .requestError(let string):
-                return """
-                Unable to build URLRequest:
-                \(string)
+                parameters: \(info.parameters?.description ?? "N/A")
+                body:       \(info.body?.description ?? "N/A")
                 """
             case .dataTaskError(let error):
                 return "Unable to complete data task successfully.  Wrapped Error: \(error.localizedDescription)"
@@ -93,11 +91,9 @@ public extension PequenoNetworking {
         public var recoverySuggestion: String? {
             switch self {
             case .urlRequestError:
-                return "Verify that the request was built appropriately"
-            case .requestError:
-                return "Verify that the request was built appropriately"
+                return "Verify that the URLRequest was built appropriately"
             case .dataTaskError:
-                return "Verify that your data task was build appropriately"
+                return "Verify that your data task was built appropriately"
             case .malformedResponseError:
                 return "Verify that your response returned is not malformed"
             case .invalidStatusCodeError:

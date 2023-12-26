@@ -22,9 +22,20 @@
 
 import Foundation
 
-public struct URLRequestInfo {
+public struct URLRequestInfo: Equatable {
+    // MARK: - Readonly properties
+    
     public let httpMethod: HTTPMethod
     public let endpoint: String
     public let parameters: [String: String]?
     public let body: [String: Any]?
+    
+    // MARK: - <Equatable>
+    
+    public static func == (lhs: URLRequestInfo, rhs: URLRequestInfo) -> Bool {
+        return lhs.httpMethod == rhs.httpMethod &&
+               lhs.endpoint == rhs.endpoint &&
+               lhs.parameters == rhs.parameters &&
+               lhs.body?.description == rhs.body?.description
+    }
 }

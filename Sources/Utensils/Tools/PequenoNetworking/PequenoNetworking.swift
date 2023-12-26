@@ -24,17 +24,49 @@ import Foundation
 import Capsule
 
 public protocol PequenoNetworkingProtocol {
-    func request(httpMethod: HTTPMethod,
-                 endpoint: String,
-                 headers: [String: String]?,
-                 parameters: [String: String]?,
-                 completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    // MARK: - JSONSerialization (ol' skoo)
     
-    func requestAndDeserialize<T: Codable>(httpMethod: HTTPMethod,
-                                           endpoint: String,
-                                           headers: [String: String]?,
-                                           parameters: [String: String]?,
-                                           completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+    func get(endpoint: String,
+             parameters: [String: String]?,
+             completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    func delete(endpoint: String,
+                parameters: [String: String]?,
+                completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    func post(endpoint: String,
+              body: [String: Any]?,
+              completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    func put(endpoint: String,
+             body: [String: Any]?,
+             completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    func patch(endpoint: String,
+               body: [String: Any]?,
+               completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    // MARK: - Codable
+    
+    func get<T: Codable>(endpoint: String,
+                         parameters: [String: String]?,
+                         completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+    
+    func delete<T: Codable>(endpoint: String,
+                            parameters: [String: String]?,
+                            completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+    
+    func post<T: Codable>(endpoint: String,
+                          body: [String: Any]?,
+                          completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+    
+    func put<T: Codable>(endpoint: String,
+                         body: [String: Any]?,
+                         completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+    
+    func patch<T: Codable>(endpoint: String,
+                           body: [String: Any]?,
+                           completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
 }
 
 public class PequenoNetworking: PequenoNetworkingProtocol {
@@ -48,166 +80,313 @@ public class PequenoNetworking: PequenoNetworkingProtocol {
     // MARK: - Readonly properties
     
     public let baseURL: String
+    public let headers: [String: String]?
     
     // MARK: - Init methods
     
     public init(baseURL: String,
+                headers: [String: String]?,
                 urlSession: URLSessionProtocol = URLSession.shared,
                 jsonSerializationWrapper: JSONSerializationWrapperProtocol = JSONSerializationWrapper(),
                 jsonDecoder: JSONDecoderProtocol = JSONDecoder(),
                 dispatchQueueWrapper: DispatchQueueWrapperProtocol = DispatchQueueWrapper()) {
         self.baseURL = baseURL
+        self.headers = headers
         self.urlSession = urlSession
         self.jsonSerializationWrapper = jsonSerializationWrapper
         self.jsonDecoder = jsonDecoder
         self.dispatchQueueWrapper = dispatchQueueWrapper
     }
     
-    // MARK: - Public methods
-    
-    public func request(httpMethod: HTTPMethod,
-                        endpoint: String,
-                        headers: [String: String]?,
-                        parameters: [String: String]?,
-                        completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        requestData(httpMethod: httpMethod,
-                    endpoint: endpoint,
-                    headers: headers,
-                    parameters: parameters) { [weak self] data, error in
-            guard let self = self else { return }
-            
-            if let error = error {
-                let result: Result<Any, PequenoNetworking.Error> = Result.failure(error)
-                                
-                self.dispatchQueueWrapper.mainAsync {
-                    completionHandler(result)
-                }
-                
-                return
-            }
-            
-            guard let data = data else {
-                let result: Result<Any, PequenoNetworking.Error> = Result.failure(.dataError)
- 
-                self.dispatchQueueWrapper.mainAsync {
-                    completionHandler(result)
-                }
-                
-                return
-            }
-            
-            let result: Result<Any, PequenoNetworking.Error>
-            
-            do {
-                let jsonResponse = try jsonSerializationWrapper.jsonObject(with: data,
-                                                                           options: .mutableContainers)
-                
-                result = Result.success(jsonResponse)
-            } catch {
-                result = Result.failure(.jsonObjectDecodeError(wrappedError: error))
-            }
-            
-            self.dispatchQueueWrapper.mainAsync {
-                completionHandler(result)
-            }
+    public convenience init() {
+        guard let baseURL = UserDefaults.standard.string(forKey: PequenoNetworkingConstants.BaseURLKey) else {
+            preconditionFailure("BaseURL must exist in UserDefaults")
         }
+        
+        let headers = UserDefaults.standard.object(forKey: PequenoNetworkingConstants.HeadersKey) as? [String: String]
+        
+        self.init(baseURL: baseURL, headers: headers)
     }
     
-    public func requestAndDeserialize<T: Codable>(httpMethod: HTTPMethod,
-                                                  endpoint: String,
-                                                  headers: [String: String]?,
-                                                  parameters: [String: String]?,
-                                                  completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        requestData(httpMethod: httpMethod,
-                    endpoint: endpoint,
-                    headers: headers,
-                    parameters: parameters) { [weak self] data, error in
-            guard let self = self else { return }
-            
-            if let error = error {
-                let result: Result<T, PequenoNetworking.Error> = Result.failure(error)
-                                
-                self.dispatchQueueWrapper.mainAsync {
-                    completionHandler(result)
-                }
-                
-                return
-            }
-            
-            guard let data = data else {
-                let result: Result<T, PequenoNetworking.Error> = Result.failure(.dataError)
- 
-                self.dispatchQueueWrapper.mainAsync {
-                    completionHandler(result)
-                }
-                
-                return
-            }
-            
-            let result: Result<T, PequenoNetworking.Error>
-            
-            do {
-                let decodedData = try jsonDecoder.decode(T.self, from: data)
-                
-                result = Result.success(decodedData)
-            } catch {
-                result = Result.failure(.jsonDecodeError(wrappedError: error))
-            }
-            
-            self.dispatchQueueWrapper.mainAsync {
-                completionHandler(result)
-            }
-        }
+    // MARK: - Public methods
+    
+    public func get(endpoint: String,
+                    parameters: [String: String]?,
+                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(httpMethod: .get,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
+        
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
+    }
+    
+    public func delete(endpoint: String,
+                       parameters: [String: String]?,
+                       completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(httpMethod: .delete,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
+        
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
+    }
+    
+    public func post(endpoint: String,
+                     body: [String: Any]?,
+                     completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(httpMethod: .post,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
+        
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
+    }
+    
+    public func put(endpoint: String,
+                    body: [String: Any]?,
+                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(httpMethod: .put,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
+        
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
+    }
+    
+    public func patch(endpoint: String,
+                      body: [String: Any]?,
+                      completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(httpMethod: .patch,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
+        
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
+    }
+        
+    public func get<T: Codable>(endpoint: String,
+                                parameters: [String: String]?,
+                                completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(httpMethod: .get,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
+        
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
+    }
+    
+    public func delete<T: Codable>(endpoint: String,
+                                   parameters: [String: String]?,
+                                   completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(httpMethod: .delete,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
+        
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
+    }
+    
+    public func post<T: Codable>(endpoint: String,
+                                 body: [String: Any]?,
+                                 completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(httpMethod: .post,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
+        
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
+    }
+    
+    public func put<T: Codable>(endpoint: String,
+                                body: [String: Any]?,
+                                completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(httpMethod: .put,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
+        
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
+    }
+    
+    public func patch<T: Codable>(endpoint: String,
+                                  body: [String: Any]?,
+                                  completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(httpMethod: .patch,
+                                            endpoint: endpoint,
+                                            parameters: nil,
+                                            body: body)
+        
+        executeNetworkRequest(urlRequestInfo: urlRequestInfo,
+                              completionHandler: completionHandler)
     }
     
     // MARK: - Private methods
-    
-    private func constructURLRequest(httpMethod: HTTPMethod,
-                                     baseURL: String,
-                                     endpoint: String,
-                                     headers: [String: String]?,
-                                     parameters: [String: String]?) -> URLRequest? {
-        var urlComponents = URLComponents(string: baseURL)!
-        urlComponents.path = endpoint
         
-        urlComponents.queryItems = parameters?.map { (key, value) in
+    private func buildURLRequest(urlRequestInfo: URLRequestInfo,
+                                 completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void) {
+        guard var urlComponents = URLComponents(string: baseURL) else {
+            completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
+            
+            return
+        }
+
+        urlComponents.path = urlRequestInfo.endpoint
+        
+        urlComponents.queryItems = urlRequestInfo.parameters?.map { (key, value) in
             return URLQueryItem(name: key, value: value)
         }
         
         guard let urlComponentsURL = urlComponents.url else {
-            return nil
+            completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
+            
+            return
         }
         
         var urlRequest = URLRequest(url: urlComponentsURL)
-        urlRequest.httpMethod = httpMethod.rawValue
+        urlRequest.httpMethod = urlRequestInfo.httpMethod.rawValue
         
         headers?.forEach { key, value in
             urlRequest.addValue(value, forHTTPHeaderField: key)
         }
         
-        return urlRequest
+        if let body = urlRequestInfo.body {
+            guard let body = try? JSONSerialization.data(withJSONObject: body) else {
+                completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
+                
+                return
+            }
+            
+            urlRequest.httpBody = body
+        }
+        
+        completionHandler(.success(urlRequest))
     }
     
-    private func requestData(httpMethod: HTTPMethod,
-                             endpoint: String,
-                             headers: [String: String]?,
-                             parameters: [String: String]?,
-                             completionHandler: @escaping (Data?, Error?) -> Void) {
-        guard let urlRequest = constructURLRequest(httpMethod: httpMethod,
-                                                   baseURL: baseURL,
-                                                   endpoint: endpoint,
-                                                   headers: headers,
-                                                   parameters: parameters) else {
-            let requestError = buildRequestError(httpMethod: httpMethod,
-                                                 endpoint: endpoint,
-                                                 headers: headers,
-                                                 parameters: parameters)
-            
-            completionHandler(nil, requestError)
+    // MARK: - JSONSerialization (ol' skoo)
+    
+    private func executeNetworkRequest(urlRequestInfo: URLRequestInfo,
+                                       completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        
+        buildURLRequest(urlRequestInfo: urlRequestInfo) { result in
+            switch result {
+            case .success(let urlRequest):
+                executeJSONSerializer(urlRequest: urlRequest,
+                                      completionHandler: completionHandler)
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    private func executeJSONSerializer(urlRequest: URLRequest,
+                                       completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        buildAndExecute(urlRequest: urlRequest) { [weak self] data, error in
+            self?.handleResponseWithJSONSerializer(data: data, error: error) { [weak self] result in
+                self?.dispatchQueueWrapper.mainAsync {
+                    completionHandler(result)
+                }
+            }
+        }
+    }
+    
+    private func handleResponseWithJSONSerializer(data: Data?,
+                                                  error: PequenoNetworking.Error?,
+                                                  completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        if let error = error {
+            completionHandler(.failure(error))
             
             return
         }
         
+        guard let data = data else {
+            completionHandler(.failure(.dataError))
+            
+            return
+        }
+        
+        let result: Result<Any, PequenoNetworking.Error>
+        
+        do {
+            let jsonResponse = try self.jsonSerializationWrapper.jsonObject(with: data,
+                                                                            options: .mutableContainers)
+            
+            result = .success(jsonResponse)
+        } catch {
+            result = .failure(.jsonObjectDecodeError(wrappedError: error))
+        }
+        
+        completionHandler(result)
+    }
+    
+    // MARK: - Codable
+    
+    private func executeNetworkRequest<T: Codable>(urlRequestInfo: URLRequestInfo,
+                                                   completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        
+        buildURLRequest(urlRequestInfo: urlRequestInfo) { result in
+            switch result {
+            case .success(let urlRequest):
+                executeCodable(urlRequest: urlRequest,
+                               completionHandler: completionHandler)
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    private func executeCodable<T: Codable>(urlRequest: URLRequest,
+                                            completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        buildAndExecute(urlRequest: urlRequest) { [weak self] data, error in
+            self?.handleResponseOnCodable(data: data, error: error) { [weak self] result in
+                self?.dispatchQueueWrapper.mainAsync {
+                    completionHandler(result)
+                }
+            }
+        }
+    }
+    
+    private func handleResponseOnCodable<T: Codable>(data: Data?,
+                                                     error: PequenoNetworking.Error?,
+                                                     completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        if let error = error {
+            completionHandler(.failure(error))
+            
+            return
+        }
+        
+        guard let data = data else {
+            completionHandler(.failure(.dataError))
+            
+            return
+        }
+        
+        let result: Result<T, PequenoNetworking.Error>
+        
+        do {
+            let jsonResponse = try self.jsonDecoder.decode(T.self, from: data)
+            
+            result = .success(jsonResponse)
+        } catch {
+            result = .failure(.jsonObjectDecodeError(wrappedError: error))
+        }
+        
+        completionHandler(result)
+    }
+    
+    // MARK: - URLSession execution
+    
+    private func buildAndExecute(urlRequest: URLRequest,
+                                 completionHandler: @escaping (Data?, PequenoNetworking.Error?) -> Void) {
         let dataTask: URLSessionDataTaskProtocol = urlSession.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
                 completionHandler(nil, .dataTaskError(wrappedError: error))
@@ -231,34 +410,5 @@ public class PequenoNetworking: PequenoNetworkingProtocol {
         }
         
         dataTask.resume()
-    }
-    
-    private func buildRequestError(httpMethod: HTTPMethod,
-                                   endpoint: String,
-                                   headers: [String: String]?,
-                                   parameters: [String: String]?) -> PequenoNetworking.Error {
-        let paramsString: String = {
-            if let parameters = parameters {
-                return parameters.description
-            } else {
-                return "N/A"
-            }
-        }()
-        
-        let headersString: String = {
-            if let headers = headers {
-                return headers.description
-            } else {
-                return "N/A"
-            }
-        }()
-        
-        let requestString = """
-        \(httpMethod.rawValue) - \(baseURL)\(endpoint)
-        Parameters: \(paramsString)
-        Headers: \(headersString)
-        """
-        
-        return .requestError(requestString)
     }
 }

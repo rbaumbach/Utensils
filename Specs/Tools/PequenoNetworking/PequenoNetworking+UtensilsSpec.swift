@@ -6,9 +6,18 @@ import Capsule
 final class PequenoNetworking_UtensilsSpec: QuickSpec {
     override func spec() {
         describe("PequenoNetworking+Utensils") {
+            var emptyURLRequestInfo: URLRequestInfo!
+            
+            beforeEach {
+                emptyURLRequestInfo = URLRequestInfo(httpMethod: .get,
+                                                     endpoint: String.empty,
+                                                     parameters: nil, 
+                                                     body: nil)
+            }
+            
             describe("<CaseIterable>)") {
                 it("has all required cases") {
-                    let expectedCases: [PequenoNetworking.Error] = [.requestError(String.empty),
+                    let expectedCases: [PequenoNetworking.Error] = [.urlRequestError(info: emptyURLRequestInfo),
                                                                     .dataTaskError(wrappedError: EmptyError.empty),
                                                                     .malformedResponseError,
                                                                     .invalidStatusCodeError(statusCode: 0),
@@ -21,48 +30,81 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
             }
             
             describe("<Error>") {
-                it("has proper localized description") {
-                    let requestError = PequenoNetworking.Error.requestError("You Lose...")
-                    let expectedRequestError = "Unable to build URLRequest:\nYou Lose..."
+                describe(".urlRequestError") {
+                    var urlRequestInfo: URLRequestInfo!
                     
-                    expect(requestError.localizedDescription).to.equal(expectedRequestError)
+                    describe("when all info properties have content") {
+                        beforeEach {
+                            urlRequestInfo = URLRequestInfo(httpMethod: .get,
+                                                            endpoint: "/avgn",
+                                                            parameters: ["item": "power-glove"],
+                                                            body: ["2nd-player": "behind-couch"])
+                        }
+                        
+                        it("has proper localized description") {
+                            let urlRequestError = PequenoNetworking.Error.urlRequestError(info: urlRequestInfo)
+                            let expectedRequestError = "Unable to build URLRequest:\nhttp verb:  GET\nendpoint:   /avgn\nparameters: [\"item\": \"power-glove\"]\nbody:       [\"2nd-player\": \"behind-couch\"]"
+                                                        
+                            expect(urlRequestError.localizedDescription).to.equal(expectedRequestError)
+                        }
+                    }
                     
-                    let dataTaskError = PequenoNetworking.Error.dataTaskError(wrappedError: EmptyError.empty)
-                    let expectedDataTaskError = "Unable to complete data task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
-                    
-                    expect(dataTaskError.localizedDescription).to.equal(expectedDataTaskError)
-                    
-                    let malformedResponseError = PequenoNetworking.Error.malformedResponseError
-                    
-                    expect(malformedResponseError.localizedDescription).to.equal("Unable to process response")
-                    
-                    let invalidStatusCodeError = PequenoNetworking.Error.invalidStatusCodeError(statusCode: 99)
-                    
-                    expect(invalidStatusCodeError.localizedDescription).to.equal("99: Invalid status code")
-                    
-                    let dataError = PequenoNetworking.Error.dataError
-                    
-                    expect(dataError.localizedDescription).to.equal("Data task does not contain data")
-                    
-                    let jsonDecodeError = PequenoNetworking.Error.jsonDecodeError(wrappedError: EmptyError.empty)
-                    let expectedJSONDecodeError = "Unable to decode json. Wrapped Error: \(EmptyError.empty.localizedDescription)"
-                    
-                    expect(jsonDecodeError.localizedDescription).to.equal(expectedJSONDecodeError)
-                    
-                    let jsonObjectDecodeError = PequenoNetworking.Error.jsonObjectDecodeError(wrappedError: EmptyError.empty)
-                    let expectedJSONObjectDecodeError = "Unable to decode json object. Wrapped Error: \(EmptyError.empty.localizedDescription)"
-                    
-                    expect(jsonObjectDecodeError.localizedDescription).to.equal(expectedJSONObjectDecodeError)
+                    describe("when parameters and body are nil") {
+                        beforeEach {
+                            urlRequestInfo = URLRequestInfo(httpMethod: .get,
+                                                            endpoint: "/avgn",
+                                                            parameters: nil,
+                                                            body: nil)
+                        }
+                        
+                        it("has proper localized description") {
+                            let urlRequestError = PequenoNetworking.Error.urlRequestError(info: urlRequestInfo)
+                            let expectedRequestError = "Unable to build URLRequest:\nhttp verb:  GET\nendpoint:   /avgn\nparameters: N/A\nbody:       N/A"
+                                                        
+                            expect(urlRequestError.localizedDescription).to.equal(expectedRequestError)
+                        }
+                    }
+                }
+                
+                describe("all other errors") {
+                    it("has proper localized description") {
+                        let dataTaskError = PequenoNetworking.Error.dataTaskError(wrappedError: EmptyError.empty)
+                        let expectedDataTaskError = "Unable to complete data task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                        
+                        expect(dataTaskError.localizedDescription).to.equal(expectedDataTaskError)
+                        
+                        let malformedResponseError = PequenoNetworking.Error.malformedResponseError
+                        
+                        expect(malformedResponseError.localizedDescription).to.equal("Unable to process response")
+                        
+                        let invalidStatusCodeError = PequenoNetworking.Error.invalidStatusCodeError(statusCode: 99)
+                        
+                        expect(invalidStatusCodeError.localizedDescription).to.equal("99: Invalid status code")
+                        
+                        let dataError = PequenoNetworking.Error.dataError
+                        
+                        expect(dataError.localizedDescription).to.equal("Data task does not contain data")
+                        
+                        let jsonDecodeError = PequenoNetworking.Error.jsonDecodeError(wrappedError: EmptyError.empty)
+                        let expectedJSONDecodeError = "Unable to decode json. Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                        
+                        expect(jsonDecodeError.localizedDescription).to.equal(expectedJSONDecodeError)
+                        
+                        let jsonObjectDecodeError = PequenoNetworking.Error.jsonObjectDecodeError(wrappedError: EmptyError.empty)
+                        let expectedJSONObjectDecodeError = "Unable to decode json object. Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                        
+                        expect(jsonObjectDecodeError.localizedDescription).to.equal(expectedJSONObjectDecodeError)
+                    }
                 }
             }
             
             describe("<LocalizedError>") {
                 describe("#errorDescription") {
                     it("is the same as the localized description") {
-                        let requestError = PequenoNetworking.Error.requestError("You Lose...")
-                        let expectedRequestError = "Unable to build URLRequest:\nYou Lose..."
+                        let urlRequestError = PequenoNetworking.Error.urlRequestError(info: emptyURLRequestInfo)
+                        let expectedRequestError = "Unable to build URLRequest:\nhttp verb:  GET\nendpoint:   \nparameters: N/A\nbody:       N/A"
                         
-                        expect(requestError.errorDescription).to.equal(expectedRequestError)
+                        expect(urlRequestError.errorDescription).to.equal(expectedRequestError)
                         
                         let dataTaskError = PequenoNetworking.Error.dataTaskError(wrappedError: EmptyError.empty)
                         let expectedDataTaskError = "Unable to complete data task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
@@ -95,10 +137,10 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                 
                 describe("#failureReason") {
                     it("is the same as the localized description") {
-                        let requestError = PequenoNetworking.Error.requestError("You Lose...")
-                        let expectedRequestError = "Unable to build URLRequest:\nYou Lose..."
+                        let urlRequestError = PequenoNetworking.Error.urlRequestError(info: emptyURLRequestInfo)
+                        let expectedRequestError = "Unable to build URLRequest:\nhttp verb:  GET\nendpoint:   \nparameters: N/A\nbody:       N/A"
                         
-                        expect(requestError.failureReason).to.equal(expectedRequestError)
+                        expect(urlRequestError.failureReason).to.equal(expectedRequestError)
                         
                         let dataTaskError = PequenoNetworking.Error.dataTaskError(wrappedError: EmptyError.empty)
                         let expectedDataTaskError = "Unable to complete data task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
@@ -131,13 +173,13 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                 
                 describe("#recoverySuggestion") {
                     it("has proper recovery suggestion") {
-                        let requestError = PequenoNetworking.Error.requestError("You Lose...")
-                        let expectedRequestError = "Verify that the request was built appropriately"
+                        let urlRequestError = PequenoNetworking.Error.urlRequestError(info: emptyURLRequestInfo)
+                        let expectedRequestError = "Verify that the URLRequest was built appropriately"
                         
-                        expect(requestError.recoverySuggestion).to.equal(expectedRequestError)
+                        expect(urlRequestError.recoverySuggestion).to.equal(expectedRequestError)
                         
                         let dataTaskError = PequenoNetworking.Error.dataTaskError(wrappedError: EmptyError.empty)
-                        let expectedDataTaskError = "Verify that your data task was build appropriately"
+                        let expectedDataTaskError = "Verify that your data task was built appropriately"
                         expect(dataTaskError.recoverySuggestion).to.equal(expectedDataTaskError)
                         
                         let malformedResponseError = PequenoNetworking.Error.malformedResponseError
@@ -167,13 +209,13 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
             
             describe("<Equatable") {
                 it("is equatable") {
-                    let requestError = PequenoNetworking.Error.requestError("You Lose...")
+                    let urlRequestError = PequenoNetworking.Error.urlRequestError(info: emptyURLRequestInfo)
                     
-                    expect(requestError).to.equal(PequenoNetworking.Error.requestError("You Lose..."))
+                    expect(urlRequestError).to.equal(PequenoNetworking.Error.urlRequestError(info: emptyURLRequestInfo))
                     
                     let dataTaskError = PequenoNetworking.Error.dataTaskError(wrappedError: EmptyError.empty)
                     
-                    expect(requestError).toNot.equal(dataTaskError)
+                    expect(urlRequestError).toNot.equal(dataTaskError)
                 }
             }
         }
