@@ -261,6 +261,39 @@ final class PequenoNetworkingV2IntegrationSpec: QuickSpec {
                     }
                 }
             }
+            
+            describe("using convenience init w/ UserDefaults") {
+                beforeEach {
+                    UserDefaults.standard.set("https://httpbin.org", forKey: PequenoNetworkingConstants.BaseURLKey)
+                    
+                    subjectV2 = PequenoNetworkingV2()
+                }
+                
+                afterEach {
+                    UserDefaults.standard.removeObject(forKey: PequenoNetworkingConstants.BaseURLKey)
+                }
+                
+                it("works") {
+                    hangOn(for: .seconds(5)) { complete in
+                        subjectV2.get(endpoint: "/get",
+                                      parameters: nil) { result in
+                            if case .success(let jsonResponse) = result {
+                                guard let quotes = jsonResponse as? [String: Any] else {
+                                    failSpec()
+                                    
+                                    return
+                                }
+                                
+                                expect(quotes).toNot.beEmpty()
+                            } else {
+                                failSpec()
+                            }
+                            
+                            complete()
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -23,6 +23,52 @@
 import Foundation
 import Capsule
 
+public protocol PequenoNetworkingV2Protocol {
+    // MARK: - JSONSerialization (ol' skoo)
+    
+    func get(endpoint: String,
+             parameters: [String: String]?,
+             completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    func delete(endpoint: String,
+                parameters: [String: String]?,
+                completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    func post(endpoint: String,
+              body: [String: Any]?,
+              completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    func put(endpoint: String,
+             body: [String: Any]?,
+             completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    func patch(endpoint: String,
+               body: [String: Any]?,
+               completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    // MARK: - Codable
+    
+    func get<T: Codable>(endpoint: String,
+                         parameters: [String: String]?,
+                         completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+    
+    func delete<T: Codable>(endpoint: String,
+                            parameters: [String: String]?,
+                            completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+    
+    func post<T: Codable>(endpoint: String,
+                          body: [String: Any]?,
+                          completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+    
+    func put<T: Codable>(endpoint: String,
+                         body: [String: Any]?,
+                         completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+    
+    func patch<T: Codable>(endpoint: String,
+                           body: [String: Any]?,
+                           completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+}
+
 public class PequenoNetworkingV2 {
     // MARK: - Private properties
     
@@ -52,9 +98,17 @@ public class PequenoNetworkingV2 {
         self.dispatchQueueWrapper = dispatchQueueWrapper
     }
     
-    // MARK: - Public methods
+    public convenience init() {
+        guard let baseURL = UserDefaults.standard.string(forKey: PequenoNetworkingConstants.BaseURLKey) else {
+            preconditionFailure("BaseURL must exist in UserDefaults")
+        }
+        
+        let headers = UserDefaults.standard.object(forKey: PequenoNetworkingConstants.HeadersKey) as? [String: String]
+        
+        self.init(baseURL: baseURL, headers: headers)
+    }
     
-    // MARK: - JSONSerialization (ol' skoo)
+    // MARK: - Public methods
     
     public func get(endpoint: String,
                     parameters: [String: String]?,
@@ -115,9 +169,7 @@ public class PequenoNetworkingV2 {
         executeNetworkRequest(urlRequestInfo: urlRequestInfo,
                               completionHandler: completionHandler)
     }
-    
-    // MARK: - Codable
-    
+        
     public func get<T: Codable>(endpoint: String,
                                 parameters: [String: String]?,
                                 completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
@@ -219,40 +271,6 @@ public class PequenoNetworkingV2 {
         
         completionHandler(.success(urlRequest))
     }
-    
-//    private func handleResponse(data: Data?,
-//                                error: PequenoNetworking.Error?,
-//                                isCodable: Bool,
-//                                completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-//        if let error = error {
-//            completionHandler(.failure(error))
-//            
-//            return
-//        }
-//        
-//        guard let data = data else {
-//            completionHandler(.failure(.dataError))
-//            
-//            return
-//        }
-//        
-//        let result: Result<Any, PequenoNetworking.Error>
-//        
-//        do {
-//            if !isCodable {
-//                let jsonResponse = try self.jsonSerializationWrapper.jsonObject(with: data,
-//                                                                                options: .mutableContainers)
-//            } else {
-//                let jsonResponse = try self.jsonDecoder.decode(T.self, from: data)
-//            }
-//            
-//            result = .success(jsonResponse)
-//        } catch {
-//            result = .failure(.jsonObjectDecodeError(wrappedError: error))
-//        }
-//        
-//        completionHandler(result)
-//    }
     
     // MARK: - JSONSerialization (ol' skoo)
     
