@@ -260,7 +260,7 @@ public class PequenoNetworking: PequenoNetworkingProtocol {
         }
         
         if let body = urlRequestInfo.body {
-            guard let body = try? JSONSerialization.data(withJSONObject: body) else {
+            guard let body = try? jsonSerializationWrapper.data(withJSONObject: body) else {
                 completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
                 
                 return
