@@ -98,12 +98,12 @@ public class PequenoNetworking: PequenoNetworkingProtocol {
         self.dispatchQueueWrapper = dispatchQueueWrapper
     }
     
-    public convenience init() {
-        guard let baseURL = UserDefaults.standard.string(forKey: PequenoNetworkingConstants.BaseURLKey) else {
+    public convenience init(userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
+        guard let baseURL = userDefaults.string(forKey: PequenoNetworkingConstants.BaseURLKey) else {
             preconditionFailure("BaseURL must exist in UserDefaults")
         }
         
-        let headers = UserDefaults.standard.object(forKey: PequenoNetworkingConstants.HeadersKey) as? [String: String]
+        let headers = userDefaults.object(forKey: PequenoNetworkingConstants.HeadersKey) as? [String: String]
         
         self.init(baseURL: baseURL, headers: headers)
     }
