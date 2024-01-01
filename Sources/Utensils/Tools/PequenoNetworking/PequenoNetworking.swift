@@ -105,14 +105,13 @@ public class PequenoNetworking: PequenoNetworkingProtocol {
     // MARK: - Public methods
     
     public func get(endpoint: String,
-                    parameters: [String: String]?) async throws -> Any {
-        return try await withCheckedThrowingContinuation { continuation in
-            classicNetworkingEngine.get(baseURL: baseURL,
-                                        headers: headers,
-                                        endpoint: endpoint,
-                                        parameters: parameters,
-                                        completionHandler: <#completionHandler#>)
-        }
+                    parameters: [String: String]?,
+                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        classicNetworkingEngine.get(baseURL: baseURL,
+                                    headers: headers,
+                                    endpoint: endpoint,
+                                    parameters: parameters,
+                                    completionHandler: completionHandler)
     }
     
     public func delete(endpoint: String,

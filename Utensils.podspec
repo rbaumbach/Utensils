@@ -10,7 +10,7 @@ Pod::Spec.new do |spec|
   spec.platform              = :ios
   spec.ios.deployment_target = '12.0'
   spec.source_files          = 'Sources/Utensils/**/*.{swift}'
-  spec.swift_version         = '5.1.2'
+  spec.swift_version         = '5.3'
 
   spec.dependency 'Capsule', '~> 1.4.0'
 end
