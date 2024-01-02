@@ -1,4 +1,4 @@
-# Utensils [![Cocoapod Version](https://img.shields.io/cocoapods/v/Utensils.svg)](https://github.com/rbaumbach/Utensils) [![SPM Compatible](https://img.shields.io/badge/SPM-Compatible-blue)](https://swift.org/package-manager/) [![Cocoapod Platform](https://img.shields.io/badge/platform-iOS-blue.svg)](https://github.com/rbaumbach/Utensils) [![License](https://img.shields.io/dub/l/vibe-d.svg)](https://github.com/rbaumbach/Utensils/blob/master/MIT-LICENSE.txt)
+# Utensils [![Cocoapod Version](https://img.shields.io/cocoapods/v/Utensils.svg)](https://github.com/rbaumbach/Utensils) [![SPM Compatible](https://img.shields.io/badge/SPM-Compatible-blue)](https://swift.org/package-manager/) [![Cocoapod Platform](https://img.shields.io/badge/platform-iOS-blue.svg)](https://github.com/rbaumbach/Utensils) ![iOS Deployment Target](https://img.shields.io/badge/iOS_Deployment_Target-12.0-964B00) [![License](https://img.shields.io/dub/l/vibe-d.svg)](https://github.com/rbaumbach/Utensils/blob/master/MIT-LICENSE.txt)
 
 A set of useful iOS tools.
 
@@ -16,7 +16,7 @@ A set of useful iOS tools.
 
 [Swift Package Manager](https://swift.org/package-manager/) can be used to add `Utensils` the to your project:
 
-1.  Add `.package(url: "https://github.com/rbaumbach/Utensils", from: "0.2.2")`
+1.  Add `.package(url: "https://github.com/rbaumbach/Utensils", from: "0.3.0")`
 2.  [Follow intructions to add](https://swift.org/getting-started/#using-the-package-manager) the Utensils package to your project.
 
 ### Clone from Github
@@ -90,28 +90,32 @@ do {
 * A "pequeno" networker
 
 ```swift
+// Using basic baseURL init()
+
 let networker = PequenoNetworking(baseURL: "https://dogsrbettahthancats.party")
+
+// Using global BaseURL contained within UserDefaults
+
+UserDefaults.standard.set("https://dogsrbettahthancats.party",
+                          forKey: PequenoNetworkingConstants.BaseURLKey)
+
+let networker = PequenoNetworking()
 
 // Ol' skool Any json response
 
-networker.request(httpMethod: .get,
-                  endpoint: "/dogs",
-                  headers: ["version": "v1"],
-                  parameters: ["breed": "chihuahua"],
-                  completionHandler: { result in print(result) }
+networker.get(endpoint: "/dogs",
+              headers: ["version": "v1"],
+              parameters: ["breed": "chihuahua"],
+              completionHandler: { result in print(result) }
 
 // Using Codable models
                 
-networker.requestAndDeserialize(httpMethod: .get,
-                                endpoint: "/dogs",
-                                headers: ["version": "v1"],
-                                parameters: ["breed": "chihuahua"]) { 
-                                (result: Result<[Dog], PequenoNetworking.Error>) in
+networker.get(endpoint: "/dogs",
+              headers: ["version": "v1"],
+              parameters: ["breed": "chihuahua"]) { (result: Result<[Dog], PequenoNetworking.Error>) in
     print(result))
 }
 ```
-
-Note: Currently only supports `GET` requests.
 
 Note: The `Model` must conform to `Codable`
 

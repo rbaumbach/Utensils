@@ -20,46 +20,23 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-import UIKit
+import Foundation
 
-public class AppLaunchViewController: UIViewController {
-    // MARK: - Private properties
-
-    private var launchWork: (() -> Void)?
+public class FakeURLSessionExecutor: URLSessionExecutorProtocol {
+    // MARK: - Captured properties
     
-    // MARK: - Public properties
-    
-    public var customLaunchView: UIView?
+    public var capturedExecuteURLRequest: URLRequest?
+    public var capturedExecuteCompletionHandler: ((Data?, PequenoNetworking.Error?) -> Void)?
     
     // MARK: - Init methods
     
-    public convenience init(launchWork: @escaping () -> Void) {
-        self.init(nibName: nil, bundle: nil)
-        
-        self.launchWork = launchWork
-    }
-        
-    // MARK: - View lifecycle
+    public init() { }
     
-    public override func loadView() {
-        super.loadView()
-
-        setupLoadingView()
-    }
+    // MARK: - <URLSessionExecutorProtocol>
     
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        launchWork?()
-    }
-    
-    // MARK: - Private methods
-    
-    private func setupLoadingView() {
-        if let customLoadingView = customLaunchView {
-            view = customLoadingView
-        } else {
-            view = DefaultAppLaunchView()
-        }
+    public func execute(urlRequest: URLRequest, 
+                        completionHandler: @escaping (Data?, PequenoNetworking.Error?) -> Void) {
+        capturedExecuteURLRequest = urlRequest
+        capturedExecuteCompletionHandler = completionHandler
     }
 }

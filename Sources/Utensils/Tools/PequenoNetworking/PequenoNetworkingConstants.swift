@@ -20,46 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-import UIKit
+import Foundation
 
-public class AppLaunchViewController: UIViewController {
-    // MARK: - Private properties
-
-    private var launchWork: (() -> Void)?
-    
-    // MARK: - Public properties
-    
-    public var customLaunchView: UIView?
-    
-    // MARK: - Init methods
-    
-    public convenience init(launchWork: @escaping () -> Void) {
-        self.init(nibName: nil, bundle: nil)
-        
-        self.launchWork = launchWork
-    }
-        
-    // MARK: - View lifecycle
-    
-    public override func loadView() {
-        super.loadView()
-
-        setupLoadingView()
-    }
-    
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        launchWork?()
-    }
-    
-    // MARK: - Private methods
-    
-    private func setupLoadingView() {
-        if let customLoadingView = customLaunchView {
-            view = customLoadingView
-        } else {
-            view = DefaultAppLaunchView()
-        }
-    }
+public struct PequenoNetworkingConstants {
+    public static let BaseURLKey = "PequenoNetworkingBaseURLKey"
+    public static let HeadersKey = "PequenoNetworkingHeadersKey"
 }

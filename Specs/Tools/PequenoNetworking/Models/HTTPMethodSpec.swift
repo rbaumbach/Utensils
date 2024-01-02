@@ -7,11 +7,17 @@ final class HTTPMethodSpec: QuickSpec {
         describe("HTTPMethod") {
             it("has proper raw values") {
                 expect(HTTPMethod.get.rawValue).to.equal("GET")
+                expect(HTTPMethod.delete.rawValue).to.equal("DELETE")
+                expect(HTTPMethod.post.rawValue).to.equal("POST")
+                expect(HTTPMethod.put.rawValue).to.equal("PUT")
+                expect(HTTPMethod.patch.rawValue).to.equal("PATCH")
             }
             
             describe("<CaseIterable>)") {
                 it("has all required cases") {
-                    expect(HTTPMethod.allCases).to.equal([.get])
+                    let expectedCases: [HTTPMethod] = [.get, .delete, .post, .put, .patch]
+                    
+                    expect(HTTPMethod.allCases).to.equal(expectedCases)
                 }
             }
 

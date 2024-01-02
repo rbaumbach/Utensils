@@ -20,46 +20,37 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-import UIKit
+import Foundation
 
-public class AppLaunchViewController: UIViewController {
-    // MARK: - Private properties
-
-    private var launchWork: (() -> Void)?
+public class FakeURLRequestBuilder: URLRequestBuilderProtocol {
+    // MARK: - Captured properties
     
-    // MARK: - Public properties
+    public var capturedBuildBaseURL: String?
+    public var capturedBuildHeaders: [String: String]?
+    public var capturedURLRequestInfo: URLRequestInfo?
     
-    public var customLaunchView: UIView?
+    // MARK: - Stubbed properties
+    
+    public var stubbedResult: Result<URLRequest, PequenoNetworking.Error> = {
+        let urlRequest = URLRequest(url: URL(string: "https://whatever.dude-99.party")!)
+        
+        return .success(urlRequest)
+    }()
     
     // MARK: - Init methods
     
-    public convenience init(launchWork: @escaping () -> Void) {
-        self.init(nibName: nil, bundle: nil)
+    public init() { }
+    
+    // MARK: - <URLRequestBuilderProtocol>
+    
+    public func build(baseURL: String,
+                      headers: [String: String]?,
+                      urlRequestInfo: URLRequestInfo,
+                      completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void) {
+        capturedBuildBaseURL = baseURL
+        capturedBuildHeaders = headers
+        capturedURLRequestInfo = urlRequestInfo
         
-        self.launchWork = launchWork
-    }
-        
-    // MARK: - View lifecycle
-    
-    public override func loadView() {
-        super.loadView()
-
-        setupLoadingView()
-    }
-    
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        launchWork?()
-    }
-    
-    // MARK: - Private methods
-    
-    private func setupLoadingView() {
-        if let customLoadingView = customLaunchView {
-            view = customLoadingView
-        } else {
-            view = DefaultAppLaunchView()
-        }
+        completionHandler(stubbedResult)
     }
 }

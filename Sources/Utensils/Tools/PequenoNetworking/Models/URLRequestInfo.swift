@@ -1,6 +1,6 @@
 //MIT License
 //
-//Copyright (c) 2020-2023 Ryan Baumbach <github@ryan.codes>
+//Copyright (c) 2020-2024 Ryan Baumbach <github@ryan.codes>
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,20 @@
 
 import Foundation
 
-public enum HTTPMethod: String, CaseIterable, Equatable {
-    case get = "GET"
+public struct URLRequestInfo: Equatable {
+    // MARK: - Readonly properties
+    
+    public let httpMethod: HTTPMethod
+    public let endpoint: String
+    public let parameters: [String: String]?
+    public let body: [String: Any]?
+    
+    // MARK: - <Equatable>
+    
+    public static func == (lhs: URLRequestInfo, rhs: URLRequestInfo) -> Bool {
+        return lhs.httpMethod == rhs.httpMethod &&
+               lhs.endpoint == rhs.endpoint &&
+               lhs.parameters == rhs.parameters &&
+               lhs.body?.description == rhs.body?.description
+    }
 }

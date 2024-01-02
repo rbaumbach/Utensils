@@ -3,7 +3,7 @@
 
 //MIT License
 //
-//Copyright (c) 2019-2022 Ryan Baumbach <github@ryan.codes>
+//Copyright (c) 2019-2024 Ryan Baumbach <github@ryan.codes>
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/rbaumbach/Capsule",
-            from: "1.3.6"
+            from: "1.4.0"
         )
     ],
     targets: [

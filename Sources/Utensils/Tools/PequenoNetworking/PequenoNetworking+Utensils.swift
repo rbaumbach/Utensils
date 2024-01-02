@@ -1,6 +1,6 @@
 //MIT License
 //
-//Copyright (c) 2020-2023 Ryan Baumbach <github@ryan.codes>
+//Copyright (c) 2020-2024 Ryan Baumbach <github@ryan.codes>
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ public extension PequenoNetworking {
     // MARK: - Enums
     
     enum Error: CaseIterable, LocalizedError, Equatable {
-        case requestError(_ string: String)
+        case urlRequestError(info: URLRequestInfo)
         case dataTaskError(wrappedError: Swift.Error)
         case malformedResponseError
         case invalidStatusCodeError(statusCode: Int)
@@ -38,7 +38,11 @@ public extension PequenoNetworking {
         // MARK: - <CaseIterable>
         
         public static var allCases: [PequenoNetworking.Error] {
-            return [.requestError(String.empty),
+            let emptyURLRequestInfo = URLRequestInfo(httpMethod: .get,
+                                                     endpoint: String.empty,
+                                                     parameters: nil, body: nil)
+            
+            return [.urlRequestError(info: emptyURLRequestInfo),
                     .dataTaskError(wrappedError: EmptyError.empty),
                     .malformedResponseError,
                     .invalidStatusCodeError(statusCode: 0),
@@ -51,10 +55,13 @@ public extension PequenoNetworking {
         
         public var localizedDescription: String {
             switch self {
-            case .requestError(let string):
+            case .urlRequestError(let info):
                 return """
                 Unable to build URLRequest:
-                \(string)
+                http verb:  \(info.httpMethod.rawValue)
+                endpoint:   \(info.endpoint)
+                parameters: \(info.parameters?.description ?? "N/A")
+                body:       \(info.body?.description ?? "N/A")
                 """
             case .dataTaskError(let error):
                 return "Unable to complete data task successfully.  Wrapped Error: \(error.localizedDescription)"
@@ -83,10 +90,10 @@ public extension PequenoNetworking {
         
         public var recoverySuggestion: String? {
             switch self {
-            case .requestError:
-                return "Verify that the request was built appropriately"
+            case .urlRequestError:
+                return "Verify that the URLRequest was built appropriately"
             case .dataTaskError:
-                return "Verify that your data task was build appropriately"
+                return "Verify that your data task was built appropriately"
             case .malformedResponseError:
                 return "Verify that your response returned is not malformed"
             case .invalidStatusCodeError:
