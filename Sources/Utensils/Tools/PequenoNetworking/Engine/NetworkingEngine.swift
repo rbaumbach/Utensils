@@ -24,8 +24,6 @@ import Foundation
 import Capsule
 
 public protocol NetworkingEngineProtocol {
-    // MARK: - Verbs w/ parameters & no body
-
     func get<T: Codable>(baseURL: String,
                          headers: [String: String]?,
                          endpoint: String,

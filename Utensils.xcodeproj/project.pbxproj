@@ -10,6 +10,12 @@
 		135F8B24864A5F30E6A29131 /* Pods_Specs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6AEDCB7A77793D6849DD9E0 /* Pods_Specs.framework */; };
 		8FF8E56D809DB5E0171C46A3 /* Pods_Utensils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFFF1C07A0B87A5350505963 /* Pods_Utensils.framework */; };
 		9401276A2B20B3F600C0D7CD /* FileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940127692B20B3F600C0D7CD /* FileLoader.swift */; };
+		9404C5652B431523001626C8 /* ClassicNetworkingEngineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9404C5642B431523001626C8 /* ClassicNetworkingEngineSpec.swift */; };
+		9404C5692B43162E001626C8 /* FakeURLRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9404C5672B431602001626C8 /* FakeURLRequestBuilder.swift */; };
+		9404C56C2B43183C001626C8 /* FakeURLSessionExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9404C56A2B431814001626C8 /* FakeURLSessionExecutor.swift */; };
+		9404C56F2B4318E3001626C8 /* FakeNetworkingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9404C56D2B4318BF001626C8 /* FakeNetworkingEngine.swift */; };
+		9404C5722B431AF6001626C8 /* FakeClassicNetworkingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9404C5702B431AD6001626C8 /* FakeClassicNetworkingEngine.swift */; };
+		9404C5742B4332F9001626C8 /* NetworkingEngineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9404C5732B4332F9001626C8 /* NetworkingEngineSpec.swift */; };
 		9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9406829D238D7F24004278CB /* DebouncerSpec.swift */; };
 		940682AC238EE03A004278CB /* DirectorySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682AB238EE03A004278CB /* DirectorySpec.swift */; };
 		940F9C6E23974A060028937B /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9C6D23974A060028937B /* CustomView.swift */; };
@@ -83,6 +89,12 @@
 		3A6F222921BB88AC6112B781 /* Pods-Specs.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Specs.release.xcconfig"; path = "Target Support Files/Pods-Specs/Pods-Specs.release.xcconfig"; sourceTree = "<group>"; };
 		5A14836A6AD19BEAEE8B91C2 /* Pods-IntegrationSpecs.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IntegrationSpecs.debug.xcconfig"; path = "Target Support Files/Pods-IntegrationSpecs/Pods-IntegrationSpecs.debug.xcconfig"; sourceTree = "<group>"; };
 		940127692B20B3F600C0D7CD /* FileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileLoader.swift; sourceTree = "<group>"; };
+		9404C5642B431523001626C8 /* ClassicNetworkingEngineSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicNetworkingEngineSpec.swift; sourceTree = "<group>"; };
+		9404C5672B431602001626C8 /* FakeURLRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeURLRequestBuilder.swift; sourceTree = "<group>"; };
+		9404C56A2B431814001626C8 /* FakeURLSessionExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeURLSessionExecutor.swift; sourceTree = "<group>"; };
+		9404C56D2B4318BF001626C8 /* FakeNetworkingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNetworkingEngine.swift; sourceTree = "<group>"; };
+		9404C5702B431AD6001626C8 /* FakeClassicNetworkingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeClassicNetworkingEngine.swift; sourceTree = "<group>"; };
+		9404C5732B4332F9001626C8 /* NetworkingEngineSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingEngineSpec.swift; sourceTree = "<group>"; };
 		9406829D238D7F24004278CB /* DebouncerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncerSpec.swift; sourceTree = "<group>"; };
 		940682AB238EE03A004278CB /* DirectorySpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectorySpec.swift; sourceTree = "<group>"; };
 		940F9C6D23974A060028937B /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
@@ -187,9 +199,22 @@
 		9404C5632B431448001626C8 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
+				9404C5642B431523001626C8 /* ClassicNetworkingEngineSpec.swift */,
+				9404C5732B4332F9001626C8 /* NetworkingEngineSpec.swift */,
 				94FD505E2B3B4A7B0090455F /* URLSessionExecutorSpec.swift */,
 			);
 			path = Engine;
+			sourceTree = "<group>";
+		};
+		9404C5662B4315F4001626C8 /* Fakes */ = {
+			isa = PBXGroup;
+			children = (
+				9404C5702B431AD6001626C8 /* FakeClassicNetworkingEngine.swift */,
+				9404C56D2B4318BF001626C8 /* FakeNetworkingEngine.swift */,
+				9404C5672B431602001626C8 /* FakeURLRequestBuilder.swift */,
+				9404C56A2B431814001626C8 /* FakeURLSessionExecutor.swift */,
+			);
+			path = Fakes;
 			sourceTree = "<group>";
 		};
 		9406829C238D7D0E004278CB /* Supporting Files */ = {
@@ -360,8 +385,9 @@
 		94569E442B2F35A2008494E1 /* PequenoNetworking */ = {
 			isa = PBXGroup;
 			children = (
-				94FD50562B3B24590090455F /* Models */,
+				9404C5662B4315F4001626C8 /* Fakes */,
 				942B4E812B3B224C0086D749 /* Engine */,
+				94FD50562B3B24590090455F /* Models */,
 				94569E5C2B36498F008494E1 /* PequenoNetworking.swift */,
 				94569E452B2F35BE008494E1 /* PequenoNetworking+Utensils.swift */,
 				942B4E792B3A92150086D749 /* PequenoNetworkingConstants.swift */,
@@ -782,15 +808,19 @@
 				94569E302B29F596008494E1 /* FakeFileLoader.swift in Sources */,
 				94FD50582B3B24770090455F /* URLRequestBuilder.swift in Sources */,
 				94569E372B2CB1EE008494E1 /* FileLoader+Utensils.swift in Sources */,
+				9404C5722B431AF6001626C8 /* FakeClassicNetworkingEngine.swift in Sources */,
 				94FD50632B3C7C4F0090455F /* NetworkingEngine.swift in Sources */,
 				940F9DFB239B14630028937B /* FakeTrunk.swift in Sources */,
 				94569E462B2F35BE008494E1 /* PequenoNetworking+Utensils.swift in Sources */,
 				94872AF52915D16F00D3528B /* AppLaunchViewController.swift in Sources */,
+				9404C5692B43162E001626C8 /* FakeURLRequestBuilder.swift in Sources */,
 				940F9DF5239B14440028937B /* Directory.swift in Sources */,
 				94FD50602B3B8F9A0090455F /* ClassicNetworkingEngine.swift in Sources */,
 				940F9DFA239B14630028937B /* FakeDebouncer.swift in Sources */,
 				94872AF42915D16F00D3528B /* DefaultAppLaunchView.swift in Sources */,
+				9404C56F2B4318E3001626C8 /* FakeNetworkingEngine.swift in Sources */,
 				940F9DF3239B143E0028937B /* FakeDirectory.swift in Sources */,
+				9404C56C2B43183C001626C8 /* FakeURLSessionExecutor.swift in Sources */,
 				9401276A2B20B3F600C0D7CD /* FileLoader.swift in Sources */,
 				94872AFF2915D28E00D3528B /* Trunk+Utensils.swift in Sources */,
 				94569E482B2F9FDA008494E1 /* HTTPMethod.swift in Sources */,
@@ -809,6 +839,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				940F9C6E23974A060028937B /* CustomView.swift in Sources */,
+				9404C5652B431523001626C8 /* ClassicNetworkingEngineSpec.swift in Sources */,
 				94569E532B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift in Sources */,
 				94569E152B274845008494E1 /* FileLoaderSpec.swift in Sources */,
 				946AB1792390568C003D0016 /* TrunkSpec.swift in Sources */,
@@ -821,6 +852,7 @@
 				94569E3A2B2DDBA4008494E1 /* FileLoader+UtensilsSpec.swift in Sources */,
 				94FD505F2B3B4A7B0090455F /* URLSessionExecutorSpec.swift in Sources */,
 				94569E512B2FDCAC008494E1 /* HTTPMethodSpec.swift in Sources */,
+				9404C5742B4332F9001626C8 /* NetworkingEngineSpec.swift in Sources */,
 				94569E172B28E279008494E1 /* SomeTestFunctions.swift in Sources */,
 				942B4E7E2B3B206E0086D749 /* PequenoNetworkingConstantsSpec.swift in Sources */,
 				94DB4641239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift in Sources */,

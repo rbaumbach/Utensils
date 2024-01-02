@@ -1,393 +1,278 @@
-//import Quick
-//import Moocher
-//import Capsule
-//@testable import Utensils
-//
-//final class PequenoNetworkingSpec: QuickSpec {
-//    override func spec() {
-//        describe("PequenoNetworking") {
-//            var subject: PequenoNetworking!
-//            
-//            var fakeURLSession: FakeURLSession!
-//            var fakeJSONSerializationWrapper: FakeJSONSerializationWrapper!
-//            var fakeJSONDecoder: FakeJSONDecoder!
-//            var fakeDispatchQueueWrapper: FakeDispatchQueueWrapper!
-//            
-//            beforeEach {
-//                fakeURLSession = FakeURLSession()
-//                fakeJSONSerializationWrapper = FakeJSONSerializationWrapper()
-//                fakeJSONDecoder = FakeJSONDecoder()
-//                fakeDispatchQueueWrapper = FakeDispatchQueueWrapper()
-//                
-//                subject = PequenoNetworking(baseURL: "http://junkity-99.com",
-//                                            urlSession: fakeURLSession,
-//                                            jsonSerializationWrapper: fakeJSONSerializationWrapper,
-//                                            jsonDecoder: fakeJSONDecoder,
-//                                            dispatchQueueWrapper: fakeDispatchQueueWrapper)
-//            }
-//            
-//            it("has a baseURL") {
-//                expect(subject.baseURL).to.equal("http://junkity-99.com")
-//            }
-//            
-//            describe("request(endpoint:parameters:httpMethod:headers:completionHandler:)") {
-//                var actualResult: Result<Any, PequenoNetworking.Error>!
-//                
-//                describe("when url request cannot be constructed (when url is bad)") {
-//                    beforeEach {
-//                        subject.request(httpMethod: .get,
-//                                        endpoint: "_gannon!",
-//                                        headers: nil,
-//                                        parameters: nil) { result in
-//                            actualResult = result
-//                        }
-//                        
-//                        fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                    }
-//                    
-//                    it("completes with requestError") {
-//                        if case .failure(let error) = actualResult {
-//                            let expectedString = """
-//                            GET - http://junkity-99.com_gannon!
-//                            Parameters: N/A
-//                            Headers: N/A
-//                            """
-//                            
-//                            expect(error).to.equal(.requestError(expectedString))
-//                        } else {
-//                            failSpec()
-//                        }
-//                    }
-//                }
-//                
-//                describe("when url request can be constructed") {
-//                    beforeEach {
-//                        subject.request(httpMethod: .get,
-//                                        endpoint: "/link",
-//                                        headers: nil,
-//                                        parameters: nil) { result in
-//                            actualResult = result
-//                        }
-//                    }
-//                    
-//                    describe("when url session completes with error") {
-//                        beforeEach {
-//                            fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, nil, FakeGenericError.whoCares)
-//                            
-//                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                        }
-//                        
-//                        it("completes with dataTaskError") {
-//                            if case .failure(let error) = actualResult {
-//                                expect(error).to.equal(.dataTaskError(wrappedError: FakeGenericError.whoCares))
-//                            } else {
-//                                failSpec()
-//                            }
-//                        }
-//                    }
-//                    
-//                    describe("when url session completes with malformed response") {
-//                        beforeEach {
-//                            fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, nil, nil)
-//                            
-//                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                        }
-//                        
-//                        it("completes with malformedResponseError") {
-//                            if case .failure(let error) = actualResult {
-//                                expect(error).to.equal(.malformedResponseError)
-//                            } else {
-//                                failSpec()
-//                            }
-//                        }
-//                    }
-//                    
-//                    describe("when url session completes with valid response") {
-//                        var response: HTTPURLResponse!
-//
-//                        describe("when url session completes with invalid status code") {
-//                            beforeEach {
-//                                response = HTTPURLResponse(url: URL(string: "http://junkity-99.com")!,
-//                                                           statusCode: 1,
-//                                                           httpVersion: String.empty,
-//                                                           headerFields: nil)
-//                                
-//                                fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, response, nil)
-//                                
-//                                fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                            }
-//                            
-//                            it("completes with invalidStatusCodeError") {
-//                                if case .failure(let error) = actualResult {
-//                                    expect(error).to.equal(.invalidStatusCodeError(statusCode: 1))
-//                                } else {
-//                                    failSpec()
-//                                }
-//                            }
-//                        }
-//                        
-//                        describe("when url session completes with nil data (but without error)") {
-//                            beforeEach {
-//                                response = HTTPURLResponse(url: URL(string: "http://junkity-99.com")!,
-//                                                           statusCode: 222,
-//                                                           httpVersion: String.empty,
-//                                                           headerFields: nil)
-//                                
-//                                fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, response, nil)
-//                                
-//                                fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                            }
-//                            
-//                            it("completes with dataError") {
-//                                if case .failure(let error) = actualResult {
-//                                    expect(error).to.equal(.dataError)
-//                                } else {
-//                                    failSpec()
-//                                }
-//                            }
-//                        }
-//                        
-//                        describe("when url session completes with valid status code and with data") {
-//                            beforeEach {
-//                                response = HTTPURLResponse(url: URL(string: "http://junkity-99.com")!,
-//                                                           statusCode: 222,
-//                                                           httpVersion: String.empty,
-//                                                           headerFields: nil)
-//                            }
-//                            
-//                            describe("when the data CANNOT be deserialized") {
-//                                beforeEach {
-//                                    fakeJSONSerializationWrapper.shouldThrowJSONObjectException = true
-//                                    
-//                                    fakeURLSession.capturedDataTaskURLRequestCompletionHandler?("$".data(using: .utf8), response, nil)
-//                                    
-//                                    fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                                }
-//                                
-//                                it("completes with jsonObjectDecodeError") {
-//                                    if case .failure(let error) = actualResult {
-//                                        expect(error).to.equal(.jsonObjectDecodeError(wrappedError: FakeGenericError.whoCares))
-//                                    } else {
-//                                        failSpec()
-//                                    }
-//                                }
-//                            }
-//                            
-//                            describe("when the data can be deserialized") {
-//                                beforeEach {
-//                                    fakeURLSession.capturedDataTaskURLRequestCompletionHandler?("$".data(using: .utf8), response, nil)
-//                                    
-//                                    fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                                }
-//                                
-//                                it("finally completes with deserialized json... whew...") {
-//                                    if case .success(let success) = actualResult {
-//                                        let actualSuccess = success as! String
-//                                        
-//                                        expect(actualSuccess).to.equal("{ not-real: json }")
-//                                    } else {
-//                                        failSpec()
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            
-//            describe("requestAndDeserialize(endpoint:parameters:httpMethod:headers:completionHandler:)") {
-//                var actualResult: Result<Dog, PequenoNetworking.Error>!
-//                
-//                describe("when url request cannot be constructed (when url is bad)") {
-//                    describe("when parameters are empty and headers are nil") {
-//                        beforeEach {
-//                            subject.requestAndDeserialize(httpMethod: .get,
-//                                                          endpoint: "_gannon!",
-//                                                          headers: nil,
-//                                                          parameters: nil) { result in
-//                                actualResult = result
-//                            }
-//                            
-//                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                        }
-//                        
-//                        it("completes with requestError with proper text") {
-//                            if case .failure(let error) = actualResult {
-//                                let expectedString = """
-//                                GET - http://junkity-99.com_gannon!
-//                                Parameters: N/A
-//                                Headers: N/A
-//                                """
-//                                
-//                                expect(error).to.equal(.requestError(expectedString))
-//                            } else {
-//                                failSpec()
-//                            }
-//                        }
-//                    }
-//                    
-//                    describe("when parameters are NOT empty and headers are NOT nil and NOT empty") {
-//                        beforeEach {
-//                            subject.requestAndDeserialize(httpMethod: .get,
-//                                                          endpoint: "_gannon!",
-//                                                          headers: ["dog": "mutt"],
-//                                                          parameters: ["name": "maya"]) { result in
-//                                actualResult = result
-//                            }
-//                            
-//                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                        }
-//                        
-//                        it("completes with requestError with proper text") {
-//                            if case .failure(let error) = actualResult {
-//                                let expectedString = """
-//                                GET - http://junkity-99.com_gannon!
-//                                Parameters: \(["name": "maya"])
-//                                Headers: \(["dog": "mutt"])
-//                                """
-//                                
-//                                expect(error).to.equal(.requestError(expectedString))
-//                            } else {
-//                                failSpec()
-//                            }
-//                        }
-//                    }
-//                }
-//                
-//                describe("when url request can be constructed") {
-//                    beforeEach {
-//                        subject.requestAndDeserialize(httpMethod: .get,
-//                                                      endpoint: "/link",
-//                                                      headers: nil,
-//                                                      parameters: nil) { result in
-//                            actualResult = result
-//                        }
-//                    }
-//                    
-//                    describe("when url session completes with error") {
-//                        beforeEach {
-//                            fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, nil, FakeGenericError.whoCares)
-//                            
-//                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                        }
-//                        
-//                        it("completes with dataTaskError") {
-//                            if case .failure(let error) = actualResult {
-//                                expect(error).to.equal(.dataTaskError(wrappedError: FakeGenericError.whoCares))
-//                            } else {
-//                                failSpec()
-//                            }
-//                        }
-//                    }
-//                    
-//                    describe("when url session completes with malformed response") {
-//                        beforeEach {
-//                            fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, nil, nil)
-//                            
-//                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                        }
-//                        
-//                        it("completes with malformedResponseError") {
-//                            if case .failure(let error) = actualResult {
-//                                expect(error).to.equal(.malformedResponseError)
-//                            } else {
-//                                failSpec()
-//                            }
-//                        }
-//                    }
-//                    
-//                    describe("when url session completes with valid response") {
-//                        var response: HTTPURLResponse!
-//
-//                        describe("when url session completes with invalid status code") {
-//                            beforeEach {
-//                                response = HTTPURLResponse(url: URL(string: "http://junkity-99.com")!,
-//                                                           statusCode: 1,
-//                                                           httpVersion: String.empty,
-//                                                           headerFields: nil)
-//                                
-//                                fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, response, nil)
-//                                
-//                                fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                            }
-//                            
-//                            it("completes with invalidStatusCodeError") {
-//                                if case .failure(let error) = actualResult {
-//                                    expect(error).to.equal(.invalidStatusCodeError(statusCode: 1))
-//                                } else {
-//                                    failSpec()
-//                                }
-//                            }
-//                        }
-//                        
-//                        describe("when url session completes with nil data (but without error)") {
-//                            beforeEach {
-//                                response = HTTPURLResponse(url: URL(string: "http://junkity-99.com")!,
-//                                                           statusCode: 222,
-//                                                           httpVersion: String.empty,
-//                                                           headerFields: nil)
-//                                
-//                                fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, response, nil)
-//                                
-//                                fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                            }
-//                            
-//                            it("completes with dataError") {
-//                                if case .failure(let error) = actualResult {
-//                                    expect(error).to.equal(.dataError)
-//                                } else {
-//                                    failSpec()
-//                                }
-//                            }
-//                        }
-//                        
-//                        describe("when url session completes with valid status code and with data") {
-//                            beforeEach {
-//                                response = HTTPURLResponse(url: URL(string: "http://junkity-99.com")!,
-//                                                           statusCode: 222,
-//                                                           httpVersion: String.empty,
-//                                                           headerFields: nil)
-//                            }
-//                            
-//                            describe("when the data CANNOT be deserialized") {
-//                                beforeEach {
-//                                    fakeJSONDecoder.shouldThrowDecodeException = true
-//                                    
-//                                    fakeURLSession.capturedDataTaskURLRequestCompletionHandler?("$".data(using: .utf8), response, nil)
-//                                    
-//                                    fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                                }
-//                                
-//                                it("completes with jsonObjectDecodeError") {
-//                                    if case .failure(let error) = actualResult {
-//                                        expect(error).to.equal(.jsonDecodeError(wrappedError: FakeGenericError.whoCares))
-//                                    } else {
-//                                        failSpec()
-//                                    }
-//                                }
-//                            }
-//                            
-//                            describe("when the data can be deserialized") {
-//                                beforeEach {
-//                                    fakeJSONDecoder.stubbedDecodedJSON = Dog()
-//                                    
-//                                    fakeURLSession.capturedDataTaskURLRequestCompletionHandler?("$".data(using: .utf8), response, nil)
-//                                    
-//                                    fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-//                                }
-//                                
-//                                it("finally completes with deserialized json... whew...") {
-//                                    if case .success(let success) = actualResult {
-//                                        expect(success).to.equal(Dog())
-//                                    } else {
-//                                        failSpec()
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
+import Quick
+import Moocher
+import Capsule
+@testable import Utensils
+
+final class PequenoNetworkingSpec: QuickSpec {
+    override func spec() {
+        describe("PequenoNetworking") {
+            var subject: PequenoNetworking!
+            
+            var fakeClassicNetworkingEngine: FakeClassicNetworkingEngine!
+            var fakeNetworkingEngine: FakeNetworkingEngine!
+            
+            var fakeUserDefaults: FakeUserDefaults!
+            
+            beforeEach {
+                fakeClassicNetworkingEngine = FakeClassicNetworkingEngine()
+                fakeNetworkingEngine = FakeNetworkingEngine()
+                
+                fakeUserDefaults = FakeUserDefaults()
+                fakeUserDefaults.stubbedString = "https://ghost.busters"
+                fakeUserDefaults.stubbedObject = ["city": "new-york"]
+            }
+            
+            it("has a convience init method that uses user defaults for baseURL and headers") {
+                subject = PequenoNetworking(userDefaults: fakeUserDefaults)
+                
+                expect(subject.baseURL).to.equal("https://ghost.busters")
+                expect(subject.headers).to.equal(["city": "new-york"])
+            }
+            
+            it("has a baseURL") {
+                subject = PequenoNetworking(baseURL: "https://ghost.busters",
+                                            headers: ["city": "new-york"],
+                                            classicNetworkingEngine: fakeClassicNetworkingEngine,
+                                            networkingEngine: fakeNetworkingEngine)
+                
+                expect(subject.baseURL).to.equal("https://ghost.busters")
+            }
+            
+            it("has headers") {
+                subject = PequenoNetworking(baseURL: "https://ghost.busters",
+                                            headers: ["city": "new-york"],
+                                            classicNetworkingEngine: fakeClassicNetworkingEngine,
+                                            networkingEngine: fakeNetworkingEngine)
+                
+                expect(subject.headers).to.equal(["city": "new-york"])
+            }
+            
+            describe("JSONSerialization (ol' skoo)") {
+                var stubbedResult: Result<Any, PequenoNetworking.Error>!
+                var actualResult: Result<Any, PequenoNetworking.Error>!
+                
+                beforeEach {
+                    subject = PequenoNetworking(baseURL: "https://ghost.busters",
+                                                headers: ["city": "new-york"],
+                                                classicNetworkingEngine: fakeClassicNetworkingEngine,
+                                                networkingEngine: fakeNetworkingEngine)
+                    
+                    stubbedResult = .success("Back off man! I'm a scientist!")
+                }
+                
+                describe("GET") {
+                    beforeEach {
+                        subject.get(endpoint: "/containment-unit",
+                                    parameters: ["ghost": "slimer"]) { result in
+                            actualResult = result
+                        }
+                                                
+                        fakeClassicNetworkingEngine.capturedGetCompletionHandler?(stubbedResult)
+                    }
+                    
+                    it("returns the proper result") {
+                        expect(fakeClassicNetworkingEngine.capturedGetBaseURL).to.equal("https://ghost.busters")
+                        expect(fakeClassicNetworkingEngine.capturedGetHeaders).to.equal(["city": "new-york"])
+                        expect(fakeClassicNetworkingEngine.capturedGetParameters).to.equal(["ghost": "slimer"])
+                        
+                        let typedResult = try! actualResult.get() as! String
+                        
+                        expect(typedResult).to.equal("Back off man! I'm a scientist!")
+                    }
+                }
+                
+                describe("DELETE") {
+                    beforeEach {
+                        subject.delete(endpoint: "/containment-unit",
+                                       parameters: ["ghost": "slimer"]) { result in
+                            actualResult = result
+                        }
+                        
+                        fakeClassicNetworkingEngine.capturedDeleteCompletionHandler?(stubbedResult)
+                    }
+                    
+                    it("returns the proper result") {
+                        expect(fakeClassicNetworkingEngine.capturedDeleteBaseURL).to.equal("https://ghost.busters")
+                        expect(fakeClassicNetworkingEngine.capturedDeleteHeaders).to.equal(["city": "new-york"])
+                        expect(fakeClassicNetworkingEngine.capturedDeleteParameters).to.equal(["ghost": "slimer"])
+                        
+                        let typedResult = try! actualResult.get() as! String
+                        
+                        expect(typedResult).to.equal("Back off man! I'm a scientist!")
+                    }
+                }
+                
+                describe("POST") {
+                    beforeEach {
+                        subject.post(endpoint: "/containment-unit",
+                                     body: ["ghost": "slimer"]) { result in
+                            actualResult = result
+                        }
+                        
+                        fakeClassicNetworkingEngine.capturedPostCompletionHandler?(stubbedResult)
+                    }
+                    
+                    it("returns the proper result") {
+                        expect(fakeClassicNetworkingEngine.capturedPostBaseURL).to.equal("https://ghost.busters")
+                        expect(fakeClassicNetworkingEngine.capturedPostHeaders).to.equal(["city": "new-york"])
+                        
+                        let typedBody = fakeClassicNetworkingEngine.capturedPostBody as! [String: String]
+                        
+                        expect(typedBody).to.equal(["ghost": "slimer"])
+                        
+                        let typedResult = try! actualResult.get() as! String
+                        
+                        expect(typedResult).to.equal("Back off man! I'm a scientist!")
+                    }
+                }
+                
+                describe("PUT") {
+                    beforeEach {
+                        subject.put(endpoint: "/containment-unit",
+                                    body: ["ghost": "slimer"]) { result in
+                            actualResult = result
+                        }
+                        
+                        fakeClassicNetworkingEngine.capturedPutCompletionHandler?(stubbedResult)
+                    }
+                    
+                    it("returns the proper result") {
+                        expect(fakeClassicNetworkingEngine.capturedPutBaseURL).to.equal("https://ghost.busters")
+                        expect(fakeClassicNetworkingEngine.capturedPutHeaders).to.equal(["city": "new-york"])
+                        
+                        let typedBody = fakeClassicNetworkingEngine.capturedPutBody as! [String: String]
+                        
+                        expect(typedBody).to.equal(["ghost": "slimer"])
+                        
+                        let typedResult = try! actualResult.get() as! String
+                        
+                        expect(typedResult).to.equal("Back off man! I'm a scientist!")
+                    }
+                }
+                
+                describe("PATCH") {
+                    beforeEach {
+                        subject.patch(endpoint: "/containment-unit",
+                                      body: ["ghost": "slimer"]) { result in
+                            actualResult = result
+                        }
+                        
+                        fakeClassicNetworkingEngine.capturedPatchCompletionHandler?(stubbedResult)
+                    }
+                    
+                    it("returns the proper result") {
+                        expect(fakeClassicNetworkingEngine.capturedPatchBaseURL).to.equal("https://ghost.busters")
+                        expect(fakeClassicNetworkingEngine.capturedPatchHeaders).to.equal(["city": "new-york"])
+                        
+                        let typedBody = fakeClassicNetworkingEngine.capturedPatchBody as! [String: String]
+                        
+                        expect(typedBody).to.equal(["ghost": "slimer"])
+                        
+                        let typedResult = try! actualResult.get() as! String
+                        
+                        expect(typedResult).to.equal("Back off man! I'm a scientist!")
+                    }
+                }
+            }
+            
+            describe("codable networking") {
+                var stubbedResult: Result<String, PequenoNetworking.Error>!
+                var actualResult: Result<String, PequenoNetworking.Error>!
+                
+                beforeEach {
+                    subject = PequenoNetworking(baseURL: "https://ghost.busters",
+                                                headers: ["city": "new-york"],
+                                                classicNetworkingEngine: fakeClassicNetworkingEngine,
+                                                networkingEngine: fakeNetworkingEngine)
+                    
+                    stubbedResult = .success("Back off man! I'm a scientist!")
+                }
+                
+                describe("GET") {
+                    beforeEach {
+                        subject.get<String>(endpoint: "/containment-unit",
+                                            parameters: ["ghost": "slimer"]) { result in
+                            actualResult = result
+                        }
+                        
+                        let typedCompletionHandler = fakeNetworkingEngine.capturedGetCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                                                
+                        typedCompletionHandler?(stubbedResult)
+                    }
+                    
+                    it("returns the proper result") {
+                        expect(actualResult).to.equal(stubbedResult)
+                    }
+                }
+                
+                describe("DELETE") {
+                    beforeEach {
+                        subject.delete<String>(endpoint: "/containment-unit",
+                                               parameters: ["ghost": "slimer"]) { result in
+                            actualResult = result
+                        }
+                        
+                        let typedCompletionHandler = fakeNetworkingEngine.capturedDeleteCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                        
+                        typedCompletionHandler?(stubbedResult)
+                    }
+                    
+                    it("returns the proper result") {
+                        expect(actualResult).to.equal(stubbedResult)
+                    }
+                }
+                
+                describe("POST") {
+                    beforeEach {
+                        subject.post<String>(endpoint: "/containment-unit",
+                                             body: ["ghost": "slimer"]) { result in
+                            actualResult = result
+                        }
+                        
+                        let typedCompletionHandler = fakeNetworkingEngine.capturedPostCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                        
+                        typedCompletionHandler?(stubbedResult)
+                    }
+                    
+                    it("returns the proper result") {
+                        expect(actualResult).to.equal(stubbedResult)
+                    }
+                }
+                
+                describe("PUT") {
+                    beforeEach {
+                        subject.put<String>(endpoint: "/containment-unit",
+                                            body: ["ghost": "slimer"]) { result in
+                            actualResult = result
+                        }
+                        
+                        let typedCompletionHandler = fakeNetworkingEngine.capturedPutCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                        
+                        typedCompletionHandler?(stubbedResult)
+                    }
+                    
+                    it("returns the proper result") {
+                        expect(actualResult).to.equal(stubbedResult)
+                    }
+                }
+                
+                describe("PATCH") {
+                    beforeEach {
+                        subject.patch<String>(endpoint: "/containment-unit",
+                                              body: ["ghost": "slimer"]) { result in
+                            actualResult = result
+                        }
+                        
+                        let typedCompletionHandler = fakeNetworkingEngine.capturedPatchCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                        
+                        typedCompletionHandler?(stubbedResult)
+                    }
+                    
+                    it("returns the proper result") {
+                        expect(actualResult).to.equal(stubbedResult)
+                    }
+                }
+            }
+        }
+    }
+}
