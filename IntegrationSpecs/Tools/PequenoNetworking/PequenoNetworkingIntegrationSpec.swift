@@ -8,25 +8,25 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
         describe("PequenoNetworking") {
             var subject: PequenoNetworking!
             
+            beforeEach {
+                subject = PequenoNetworking(baseURL: "https://httpbin.org",
+                                            headers: nil)
+            }
+            
             describe("using JSONSerialization") {
                 describe("GET request") {
-                    beforeEach {
-                        subject = PequenoNetworking(baseURL: "https://httpbin.org",
-                                                    headers: nil)
-                    }
-                    
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.get(endpoint: "/get",
                                         parameters: nil) { result in
                                 if case .success(let jsonResponse) = result {
-                                    guard let quotes = jsonResponse as? [String: Any] else {
+                                    guard let jsonResponse = jsonResponse as? [String: Any] else {
                                         failSpec()
                                         
                                         return
                                     }
                                     
-                                    expect(quotes).toNot.beEmpty()
+                                    expect(jsonResponse).toNot.beEmpty()
                                 } else {
                                     failSpec()
                                 }
@@ -38,23 +38,18 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                 }
                 
                 describe("DELETE request") {
-                    beforeEach {
-                        subject = PequenoNetworking(baseURL: "https://httpbin.org",
-                                                    headers: nil)
-                    }
-                    
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(20)) { complete in
                             subject.delete(endpoint: "/delete",
                                            parameters: nil) { result in
                                 if case .success(let jsonResponse) = result {
-                                    guard let quotes = jsonResponse as? [String: Any] else {
+                                    guard let jsonResponse = jsonResponse as? [String: Any] else {
                                         failSpec()
                                         
                                         return
                                     }
                                     
-                                    expect(quotes).toNot.beEmpty()
+                                    expect(jsonResponse).toNot.beEmpty()
                                 } else {
                                     failSpec()
                                 }
@@ -66,23 +61,18 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                 }
                 
                 describe("POST request") {
-                    beforeEach {
-                        subject = PequenoNetworking(baseURL: "https://httpbin.org",
-                                                    headers: nil)
-                    }
-                    
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.post(endpoint: "/post",
                                          body: nil) { result in
                                 if case .success(let jsonResponse) = result {
-                                    guard let quotes = jsonResponse as? [String: Any] else {
+                                    guard let jsonResponse = jsonResponse as? [String: Any] else {
                                         failSpec()
                                         
                                         return
                                     }
                                     
-                                    expect(quotes).toNot.beEmpty()
+                                    expect(jsonResponse).toNot.beEmpty()
                                 } else {
                                     failSpec()
                                 }
@@ -94,23 +84,18 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                 }
                 
                 describe("PUT request") {
-                    beforeEach {
-                        subject = PequenoNetworking(baseURL: "https://httpbin.org",
-                                                    headers: nil)
-                    }
-                    
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.put(endpoint: "/put",
                                         body: nil) { result in
                                 if case .success(let jsonResponse) = result {
-                                    guard let quotes = jsonResponse as? [String: Any] else {
+                                    guard let jsonResponse = jsonResponse as? [String: Any] else {
                                         failSpec()
                                         
                                         return
                                     }
                                     
-                                    expect(quotes).toNot.beEmpty()
+                                    expect(jsonResponse).toNot.beEmpty()
                                 } else {
                                     failSpec()
                                 }
@@ -122,23 +107,18 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                 }
                 
                 describe("PATCH request") {
-                    beforeEach {
-                        subject = PequenoNetworking(baseURL: "https://httpbin.org",
-                                                    headers: nil)
-                    }
-                    
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.patch(endpoint: "/patch",
                                           body: nil) { result in
                                 if case .success(let jsonResponse) = result {
-                                    guard let quotes = jsonResponse as? [String: Any] else {
+                                    guard let jsonResponse = jsonResponse as? [String: Any] else {
                                         failSpec()
                                         
                                         return
                                     }
                                     
-                                    expect(quotes).toNot.beEmpty()
+                                    expect(jsonResponse).toNot.beEmpty()
                                 } else {
                                     failSpec()
                                 }
@@ -152,11 +132,6 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
             
             describe("using Codable") {
                 describe("GET request") {
-                    beforeEach {
-                        subject = PequenoNetworking(baseURL: "https://httpbin.org",
-                                                    headers: nil)
-                    }
-                    
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.get(endpoint: "/get",
@@ -174,11 +149,6 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                 }
                 
                 describe("DELETE request") {
-                    beforeEach {
-                        subject = PequenoNetworking(baseURL: "https://httpbin.org",
-                                                    headers: nil)
-                    }
-                    
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.delete(endpoint: "/delete",
@@ -196,11 +166,6 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                 }
                 
                 describe("POST request") {
-                    beforeEach {
-                        subject = PequenoNetworking(baseURL: "https://httpbin.org",
-                                                    headers: nil)
-                    }
-                    
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.post(endpoint: "/post",
@@ -218,11 +183,6 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                 }
                 
                 describe("PUT request") {
-                    beforeEach {
-                        subject = PequenoNetworking(baseURL: "https://httpbin.org",
-                                                    headers: nil)
-                    }
-                    
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.put(endpoint: "/put",
@@ -240,11 +200,6 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                 }
                 
                 describe("PATCH request") {
-                    beforeEach {
-                        subject = PequenoNetworking(baseURL: "https://httpbin.org",
-                                                    headers: nil)
-                    }
-                    
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.patch(endpoint: "/patch",
@@ -278,13 +233,13 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                         subject.get(endpoint: "/get",
                                     parameters: nil) { result in
                             if case .success(let jsonResponse) = result {
-                                guard let quotes = jsonResponse as? [String: Any] else {
+                                guard let jsonResponse = jsonResponse as? [String: Any] else {
                                     failSpec()
                                     
                                     return
                                 }
                                 
-                                expect(quotes).toNot.beEmpty()
+                                expect(jsonResponse).toNot.beEmpty()
                             } else {
                                 failSpec()
                             }
