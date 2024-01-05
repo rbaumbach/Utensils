@@ -74,7 +74,7 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
     
     public init() { }
     
-    // MARK: - <ClassicNetworkingEngineProtocol>
+    // MARK: - <NetworkingEngineProtocol>
     
     public func get<T: Codable>(baseURL: String,
                                 headers: [String: String]?,
@@ -88,11 +88,15 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         capturedGetCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            guard let typedStubbedResult = stubbedGetResult as? Result<T, PequenoNetworking.Error> else {
-                preconditionFailure("The stubbed codable get result is not the correct type")
+            let typedResult = stubbedGetResult.map { value in
+                guard let typedValue = value as? T else {
+                    preconditionFailure("The stubbed codable get result success value is not the correct type")
+                }
+                
+                return typedValue
             }
             
-            completionHandler(typedStubbedResult)
+            completionHandler(typedResult)
         }
     }
     
@@ -108,11 +112,15 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         capturedDeleteCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            guard let typedStubbedResult = stubbedDeleteResult as? Result<T, PequenoNetworking.Error> else {
-                preconditionFailure("The stubbed codable delete result is not the correct type")
+            let typedResult = stubbedDeleteResult.map { value in
+                guard let typedValue = value as? T else {
+                    preconditionFailure("The stubbed codable delete result success value is not the correct type")
+                }
+                
+                return typedValue
             }
             
-            completionHandler(typedStubbedResult)
+            completionHandler(typedResult)
         }
     }
     
@@ -128,11 +136,15 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         capturedPostCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            guard let typedStubbedResult = stubbedPostResult as? Result<T, PequenoNetworking.Error> else {
-                preconditionFailure("The stubbed codable post result is not the correct type")
+            let typedResult = stubbedPostResult.map { value in
+                guard let typedValue = value as? T else {
+                    preconditionFailure("The stubbed codable post result success value is not the correct type")
+                }
+                
+                return typedValue
             }
             
-            completionHandler(typedStubbedResult)
+            completionHandler(typedResult)
         }
     }
     
@@ -148,11 +160,15 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         capturedPutCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            guard let typedStubbedResult = stubbedPutResult as? Result<T, PequenoNetworking.Error> else {
-                preconditionFailure("The stubbed codable put result is not the correct type")
+            let typedResult = stubbedPutResult.map { value in
+                guard let typedValue = value as? T else {
+                    preconditionFailure("The stubbed codable put result success value is not the correct type")
+                }
+                
+                return typedValue
             }
             
-            completionHandler(typedStubbedResult)
+            completionHandler(typedResult)
         }
     }
     
@@ -168,11 +184,15 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         capturedPatchCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            guard let typedStubbedResult = stubbedPatchResult as? Result<T, PequenoNetworking.Error> else {
-                preconditionFailure("The stubbed codable patch result is not the correct type")
+            let typedResult = stubbedPatchResult.map { value in
+                guard let typedValue = value as? T else {
+                    preconditionFailure("The stubbed codable patch result success value is not the correct type")
+                }
+                
+                return typedValue
             }
             
-            completionHandler(typedStubbedResult)
+            completionHandler(typedResult)
         }
     }
 }
