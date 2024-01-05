@@ -30,10 +30,12 @@ public class FakeFileLoader: FileLoaderProtocol {
     public var capturedLoadJSONFileExtension: String?
     
     // MARK: - Stubbed properties
+        
+    public var stubbedLoadJSON: Any?
+    
+    // MARK: - Public properties
     
     public var shouldThrowErrorLoadingJSON = false
-    
-    public var stubbedLoadJSON: Any?
     
     // MARK: - Init methods
     

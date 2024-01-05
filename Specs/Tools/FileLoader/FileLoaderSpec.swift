@@ -4,7 +4,7 @@ import Capsule
 @testable import Utensils
 
 final class FileLoaderSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("FileLoader") {
             var subject: FileLoader!
             

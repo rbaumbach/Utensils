@@ -3,7 +3,7 @@ import Moocher
 @testable import Utensils
 
 final class PequenoNetworkingConstantsSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("PequenoNetworkingConstants") {
             it("has all required constants") {
                 expect(PequenoNetworkingConstants.BaseURLKey).to.equal("PequenoNetworkingBaseURLKey")

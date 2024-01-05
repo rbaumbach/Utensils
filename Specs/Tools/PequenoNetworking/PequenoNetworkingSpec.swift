@@ -4,7 +4,7 @@ import Capsule
 @testable import Utensils
 
 final class PequenoNetworkingSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("PequenoNetworking") {
             var subject: PequenoNetworking!
             

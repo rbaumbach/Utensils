@@ -3,7 +3,7 @@ import Moocher
 @testable import Utensils
 
 final class URLRequestInfoSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("URLRequestInfo") {
             var subject: URLRequestInfo!
             

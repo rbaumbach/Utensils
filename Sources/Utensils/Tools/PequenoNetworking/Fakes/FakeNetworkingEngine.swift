@@ -58,6 +58,18 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
     public var capturedPatchBody: [String: Any]?
     public var capturedPatchCompletionHandler: Any?
     
+    // MARK: - Stubbed properties
+    
+    public var stubbedGetResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedDeleteResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedPostResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedPutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedPatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    
+    // MARK: - Public properties
+    
+    public var shouldExecuteCompletionHandlersImmediately = false
+    
     // MARK: - Init methods
     
     public init() { }
@@ -73,8 +85,15 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         capturedGetHeaders = headers
         capturedGetEndpoint = endpoint
         capturedGetParameters = parameters
-        
         capturedGetCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            guard let typedStubbedResult = stubbedGetResult as? Result<T, PequenoNetworking.Error> else {
+                preconditionFailure("The stubbed codable get result is not the correct type")
+            }
+            
+            completionHandler(typedStubbedResult)
+        }
     }
     
     public func delete<T: Codable>(baseURL: String,
@@ -87,6 +106,14 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         capturedDeleteEndpoint = endpoint
         capturedDeleteParameters = parameters
         capturedDeleteCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            guard let typedStubbedResult = stubbedDeleteResult as? Result<T, PequenoNetworking.Error> else {
+                preconditionFailure("The stubbed codable delete result is not the correct type")
+            }
+            
+            completionHandler(typedStubbedResult)
+        }
     }
     
     public func post<T: Codable>(baseURL: String,
@@ -99,6 +126,14 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         capturedPostEndpoint = endpoint
         capturedPostBody = body
         capturedPostCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            guard let typedStubbedResult = stubbedPostResult as? Result<T, PequenoNetworking.Error> else {
+                preconditionFailure("The stubbed codable post result is not the correct type")
+            }
+            
+            completionHandler(typedStubbedResult)
+        }
     }
     
     public func put<T: Codable>(baseURL: String,
@@ -111,6 +146,14 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         capturedPutEndpoint = endpoint
         capturedPutBody = body
         capturedPutCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            guard let typedStubbedResult = stubbedPutResult as? Result<T, PequenoNetworking.Error> else {
+                preconditionFailure("The stubbed codable put result is not the correct type")
+            }
+            
+            completionHandler(typedStubbedResult)
+        }
     }
     
     public func patch<T: Codable>(baseURL: String,
@@ -123,5 +166,13 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         capturedPatchEndpoint = endpoint
         capturedPatchBody = body
         capturedPatchCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            guard let typedStubbedResult = stubbedPatchResult as? Result<T, PequenoNetworking.Error> else {
+                preconditionFailure("The stubbed codable patch result is not the correct type")
+            }
+            
+            completionHandler(typedStubbedResult)
+        }
     }
 }

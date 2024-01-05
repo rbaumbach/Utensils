@@ -3,7 +3,7 @@ import Moocher
 @testable import Utensils
 
 final class HTTPMethodSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("HTTPMethod") {
             it("has proper raw values") {
                 expect(HTTPMethod.get.rawValue).to.equal("GET")

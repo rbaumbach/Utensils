@@ -4,7 +4,7 @@ import Capsule
 @testable import Utensils
 
 final class TrunkSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("Trunk") {
             var subject: Trunk!
 

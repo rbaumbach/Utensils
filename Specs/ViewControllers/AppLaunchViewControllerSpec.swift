@@ -4,7 +4,7 @@ import Capsule
 @testable import Utensils
 
 final class AppLaunchViewControllerSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("AppLaunchViewController") {
             var subject: AppLaunchViewController!
             

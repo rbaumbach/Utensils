@@ -4,7 +4,7 @@ import Capsule
 @testable import Utensils
 
 final class ClassicNetworkingEngineSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("ClassicNetworkingEngine") {
             var subject: ClassicNetworkingEngine!
             
