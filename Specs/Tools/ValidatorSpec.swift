@@ -4,7 +4,7 @@ import Capsule
 @testable import Utensils
 
 final class ValidatorSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("Validator") {
             var subject: AnyValidator<Dog>!
 

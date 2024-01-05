@@ -4,7 +4,7 @@ import Capsule
 @testable import Utensils
 
 final class FileLoader_UtensilsSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("FileLoader+Utensils") {
             describe("<CaseIterable>)") {
                 it("has all required cases") {

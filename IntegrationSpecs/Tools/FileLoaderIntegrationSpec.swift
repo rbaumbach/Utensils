@@ -4,12 +4,12 @@ import Capsule
 @testable import Utensils
 
 final class FileLoaderIntegrationSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("FileLoader") {
             var subject: FileLoader!
             
             beforeEach {
-                let testBundle = Bundle(for: type(of: self))
+                let testBundle = Bundle(for: self)
                 
                 subject = FileLoader(bundle: testBundle)
             }

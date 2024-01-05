@@ -4,7 +4,7 @@ import Capsule
 @testable import Utensils
 
 final class DebouncerSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("Debouncer") {
             var subject: Debouncer!
             

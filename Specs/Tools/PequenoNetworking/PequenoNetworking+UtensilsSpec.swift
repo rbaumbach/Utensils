@@ -4,7 +4,7 @@ import Capsule
 @testable import Utensils
 
 final class PequenoNetworking_UtensilsSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("PequenoNetworking+Utensils") {
             var emptyURLRequestInfo: URLRequestInfo!
             

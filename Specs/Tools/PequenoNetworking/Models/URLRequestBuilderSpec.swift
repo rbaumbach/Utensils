@@ -4,7 +4,7 @@ import Capsule
 @testable import Utensils
 
 final class URLRequestBuilderSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("URLRequestBuilder") {
             var subject: URLRequestBuilder!
             var fakeJSONSerializationWrapper: FakeJSONSerializationWrapper!

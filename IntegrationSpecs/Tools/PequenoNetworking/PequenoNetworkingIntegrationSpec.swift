@@ -3,8 +3,8 @@ import Moocher
 import Capsule
 @testable import Utensils
 
-final class PequenoNetworkingV2IntegrationSpec: QuickSpec {
-    override func spec() {
+final class PequenoNetworkingIntegrationSpec: QuickSpec {
+    override class func spec() {
         describe("PequenoNetworking") {
             var subject: PequenoNetworking!
             

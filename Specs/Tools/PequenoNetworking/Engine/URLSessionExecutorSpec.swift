@@ -4,7 +4,7 @@ import Capsule
 @testable import Utensils
 
 final class URLSessionExecutorSpec: QuickSpec {
-    override func spec() {
+    override class func spec() {
         describe("URLSessionExecutor") {
             var subject: URLSessionExecutor!
             var fakeURLSession: FakeURLSession!

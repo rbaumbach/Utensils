@@ -5,22 +5,6 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
-      <BuildActionEntries>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "94341AF8238CCECF00BC8355"
-               BuildableName = "Utensils.framework"
-               BlueprintName = "Utensils"
-               ReferencedContainer = "container:Utensils.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-      </BuildActionEntries>
    </BuildAction>
    <TestAction
       buildConfiguration = "Debug"
@@ -35,16 +19,6 @@
                BlueprintIdentifier = "944A0118238D7CBD00957702"
                BuildableName = "Specs.xctest"
                BlueprintName = "Specs"
-               ReferencedContainer = "container:Utensils.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "94569E1B2B28EC93008494E1"
-               BuildableName = "IntegrationSpecs.xctest"
-               BlueprintName = "IntegrationSpecs"
                ReferencedContainer = "container:Utensils.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -67,15 +41,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "94341AF8238CCECF00BC8355"
-            BuildableName = "Utensils.framework"
-            BlueprintName = "Utensils"
-            ReferencedContainer = "container:Utensils.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
