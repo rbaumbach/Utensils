@@ -28,6 +28,10 @@ public class FakeDebouncer: DebouncerProtocol {
     public var capturedDebounceSeconds: Double?
     public var capturedDebounceExectution: (() -> Void)?
     
+    // MARK: - Public properties
+    
+    public var shouldExecuteImmediately = false
+    
     // MARK: - Init methods
     
     public init() { }
@@ -37,5 +41,9 @@ public class FakeDebouncer: DebouncerProtocol {
     public func mainDebounce(seconds: Double, execute: @escaping () -> Void) {
         capturedDebounceSeconds = seconds
         capturedDebounceExectution = execute
+        
+        if shouldExecuteImmediately {
+            execute()
+        }
     }
 }

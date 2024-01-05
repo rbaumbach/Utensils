@@ -53,6 +53,12 @@ public class FakeTrunk: TrunkProtocol {
     
     public var stubbedLoadData: Any?
     
+    public var stubbedLoadDataForCompletionHandler: Any = "data"
+    
+    // MARK: - Public properties
+    
+    public var shouldExecuteCompletionHandlersImmediately = false
+    
     // MARK: - Init methods
     
     public init() { }
@@ -79,31 +85,43 @@ public class FakeTrunk: TrunkProtocol {
         }
     }
     
-    public func save<T: Codable>(data: T, directory: Directory, filename: String) {
+    public func save<T: Codable>(data: T, 
+                                 directory: Directory,
+                                 filename: String) {
         capturedSaveData = data
         capturedSaveDirectory = directory
         capturedSaveFilename = filename
     }
     
-    public func save<T: Codable>(data: T, directory: Directory, filename: String, completionHandler: @escaping () -> Void) {
+    public func save<T: Codable>(data: T, 
+                                 directory: Directory,
+                                 filename: String,
+                                 completionHandler: @escaping () -> Void) {
         capturedSaveDataAsync = data
         capturedSaveDirectoryAsync = directory
         capturedSaveFilenameAsync = filename
         capturedSaveCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler()
+        }
     }
     
-    public func load<T: Codable>(directory: Directory, filename: String) -> T? {
+    public func load<T: Codable>(directory: Directory, 
+                                 filename: String) -> T? {
+        capturedLoadDirectory = directory
+        capturedLoadFilename = filename
+        
         guard let stubbedLoadData = stubbedLoadData else {
             return nil
         }
-        
-        capturedLoadDirectory = directory
-        capturedLoadFilename = filename
                 
         return stubbedLoadData as? T
     }
     
-    public func load<T: Codable>(directory: Directory, filename: String, completionHandler: @escaping (T?) -> Void) {
+    public func load<T: Codable>(directory: Directory, 
+                                 filename: String,
+                                 completionHandler: @escaping (T?) -> Void) {
         capturedLoadDirectoryAsync = directory
         capturedLoadFilenameAsync = filename
         
@@ -118,5 +136,9 @@ public class FakeTrunk: TrunkProtocol {
         }
         
         capturedLoadCompletionHandler = anyCompletionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedLoadDataForCompletionHandler as? T)
+        }
     }
 }

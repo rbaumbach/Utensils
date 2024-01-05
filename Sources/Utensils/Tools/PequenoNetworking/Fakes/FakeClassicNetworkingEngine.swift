@@ -55,6 +55,18 @@ public class FakeClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
     public var capturedPatchBody: [String: Any]?
     public var capturedPatchCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
     
+    // MARK: - Stubbed properties
+        
+    public var stubbedGetResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedDeleteResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedPostResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedPutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedPatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    
+    // MARK: - Public properties
+    
+    public var shouldExecuteCompletionHandlersImmediately = false
+    
     // MARK: - Init methods
     
     public init() { }
@@ -71,6 +83,10 @@ public class FakeClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         capturedGetEndpoint = endpoint
         capturedGetParameters = parameters
         capturedGetCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedGetResult)
+        }
     }
     
     public func delete(baseURL: String,
@@ -83,6 +99,10 @@ public class FakeClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         capturedDeleteEndpoint = endpoint
         capturedDeleteParameters = parameters
         capturedDeleteCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedDeleteResult)
+        }
     }
     
     public func post(baseURL: String,
@@ -95,6 +115,10 @@ public class FakeClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         capturedPostEndpoint = endpoint
         capturedPostBody = body
         capturedPostCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedPostResult)
+        }
     }
     
     public func put(baseURL: String,
@@ -107,6 +131,10 @@ public class FakeClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         capturedPutEndpoint = endpoint
         capturedPutBody = body
         capturedPutCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedPutResult)
+        }
     }
     
     public func patch(baseURL: String,
@@ -119,5 +147,9 @@ public class FakeClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         capturedPatchEndpoint = endpoint
         capturedPatchBody = body
         capturedPatchCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedPatchResult)
+        }
     }
 }
