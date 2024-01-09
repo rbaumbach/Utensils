@@ -23,7 +23,9 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                                                                     .invalidStatusCodeError(statusCode: 0),
                                                                     .dataError,
                                                                     .jsonDecodeError(wrappedError: EmptyError.empty),
-                                                                    .jsonObjectDecodeError(wrappedError: EmptyError.empty)]
+                                                                    .jsonObjectDecodeError(wrappedError: EmptyError.empty),
+                                                                    .downloadError,
+                                                                    .downloadTaskError(wrappedError: EmptyError.empty)]
                     
                     expect(PequenoNetworking.Error.allCases).to.equal(expectedCases)
                 }
@@ -94,6 +96,15 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                         let expectedJSONObjectDecodeError = "Unable to decode json object. Wrapped Error: \(EmptyError.empty.localizedDescription)"
                         
                         expect(jsonObjectDecodeError.localizedDescription).to.equal(expectedJSONObjectDecodeError)
+                        
+                        let downloadError = PequenoNetworking.Error.downloadError
+                        
+                        expect(downloadError.localizedDescription).to.equal("Download task does not contain url")
+                        
+                        let downloadTaskError = PequenoNetworking.Error.downloadTaskError(wrappedError: EmptyError.empty)
+                        let expectedDownloadTaskError = "Unable to complete download task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                        
+                        expect(downloadTaskError.localizedDescription).to.equal(expectedDownloadTaskError)
                     }
                 }
             }
@@ -132,6 +143,15 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                         let expectedJSONObjectDecodeError = "Unable to decode json object. Wrapped Error: \(EmptyError.empty.localizedDescription)"
                         
                         expect(jsonObjectDecodeError.errorDescription).to.equal(expectedJSONObjectDecodeError)
+                        
+                        let downloadError = PequenoNetworking.Error.downloadError
+                        
+                        expect(downloadError.errorDescription).to.equal("Download task does not contain url")
+                        
+                        let downloadTaskError = PequenoNetworking.Error.downloadTaskError(wrappedError: EmptyError.empty)
+                        let expectedDownloadTaskError = "Unable to complete download task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                        
+                        expect(downloadTaskError.errorDescription).to.equal(expectedDownloadTaskError)
                     }
                 }
                 
@@ -168,6 +188,15 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                         let expectedJSONObjectDecodeError = "Unable to decode json object. Wrapped Error: \(EmptyError.empty.localizedDescription)"
                         
                         expect(jsonObjectDecodeError.failureReason).to.equal(expectedJSONObjectDecodeError)
+                        
+                        let downloadError = PequenoNetworking.Error.downloadError
+                        
+                        expect(downloadError.failureReason).to.equal("Download task does not contain url")
+                        
+                        let downloadTaskError = PequenoNetworking.Error.downloadTaskError(wrappedError: EmptyError.empty)
+                        let expectedDownloadTaskError = "Unable to complete download task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                        
+                        expect(downloadTaskError.failureReason).to.equal(expectedDownloadTaskError)
                     }
                 }
                 
@@ -203,6 +232,15 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                         let expectedJSONObjectDecodeError = "Verify that your json data is can be deserialized to Foundation objects"
                         
                         expect(jsonObjectDecodeError.recoverySuggestion).to.equal(expectedJSONObjectDecodeError)
+                        
+                        let downloadError = PequenoNetworking.Error.downloadError
+                        
+                        expect(downloadError.recoverySuggestion).to.equal("Verify your server is returning valid data")
+                        
+                        let downloadTaskError = PequenoNetworking.Error.downloadTaskError(wrappedError: EmptyError.empty)
+                        let expectedDownloadTaskError = "Verify that your download task was built appropriately"
+                        
+                        expect(downloadTaskError.recoverySuggestion).to.equal(expectedDownloadTaskError)
                     }
                 }
             }

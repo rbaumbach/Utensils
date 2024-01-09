@@ -25,7 +25,7 @@ import Foundation
 public class FakeDirectory: DirectoryProtocol {
     // MARK: - Stubbed properties
     
-    public var stubbedURL = URL(string: "file:///fake-directory/extra-fake-directory")!
+    public var stubbedURL = URL(string: "file:///fake-directory/extra-fake-directory/")!
     
     // MARK: - Init methods
     

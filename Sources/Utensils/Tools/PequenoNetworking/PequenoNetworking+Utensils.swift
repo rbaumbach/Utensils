@@ -34,6 +34,8 @@ public extension PequenoNetworking {
         case dataError
         case jsonDecodeError(wrappedError: Swift.Error)
         case jsonObjectDecodeError(wrappedError: Swift.Error)
+        case downloadError
+        case downloadTaskError(wrappedError: Swift.Error)
         
         // MARK: - <CaseIterable>
         
@@ -48,7 +50,9 @@ public extension PequenoNetworking {
                     .invalidStatusCodeError(statusCode: 0),
                     .dataError,
                     .jsonDecodeError(wrappedError: EmptyError.empty),
-                    .jsonObjectDecodeError(wrappedError: EmptyError.empty)]
+                    .jsonObjectDecodeError(wrappedError: EmptyError.empty),
+                    .downloadError,
+                    .downloadTaskError(wrappedError: EmptyError.empty)]
         }
         
         // MARK: - <Error>
@@ -75,6 +79,10 @@ public extension PequenoNetworking {
                 return "Unable to decode json. Wrapped Error: \(error.localizedDescription)"
             case .jsonObjectDecodeError(let error):
                 return "Unable to decode json object. Wrapped Error: \(error.localizedDescription)"
+            case .downloadError:
+                return "Download task does not contain url"
+            case .downloadTaskError(let error):
+                return "Unable to complete download task successfully.  Wrapped Error: \(error.localizedDescription)"
             }
         }
         
@@ -104,6 +112,10 @@ public extension PequenoNetworking {
                 return "Verify that your Codable types match what is contained data from response"
             case .jsonObjectDecodeError:
                 return "Verify that your json data is can be deserialized to Foundation objects"
+            case .downloadError:
+                return "Verify your server is returning valid data"
+            case .downloadTaskError:
+                return "Verify that your download task was built appropriately"
             }
         }
         

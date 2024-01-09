@@ -33,7 +33,7 @@ final class URLSessionExecutorSpec: QuickSpec {
                     
                     expect(fakeURLSession.stubbedExtendedDataTaskForURLRequest.didCallResume).to.beTruthy()
                     
-                    expect(subject.lastExecutedDataTask).to.beKindOf(FakeURLSessionTask.self)
+                    expect(subject.lastExecutedURLSessionTask).to.beKindOf(FakeURLSessionTask.self)
                 }
                 
                 describe("when url session completes with error") {
