@@ -31,14 +31,14 @@ final class URLSessionExecutorSpec: QuickSpec {
                 it("hangs onto the executed data task and 'resumed'") {
                     fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, nil, nil)
                     
-                    expect(fakeURLSession.stubbedDataTaskWithURLRequest.didCallResume).to.beTruthy()
+                    expect(fakeURLSession.stubbedExtendedDataTaskForURLRequest.didCallResume).to.beTruthy()
                     
-                    expect(subject.lastExecutedDataTask).to.beKindOf(FakeURLSessionDataTask.self)
+                    expect(subject.lastExecutedDataTask).to.beKindOf(FakeURLSessionTask.self)
                 }
                 
                 describe("when url session completes with error") {
                     beforeEach {
-                        fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, nil, FakeGenericError.whoCares)
+                        fakeURLSession.capturedExtendedDataTaskURLRequestCompletionHandler?(nil, nil, FakeGenericError.whoCares)
                     }
                     
                     it("completes with dataTaskError") {
@@ -50,7 +50,7 @@ final class URLSessionExecutorSpec: QuickSpec {
                 
                 describe("when url session completes with malformed response") {
                     beforeEach {
-                        fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, nil, nil)
+                        fakeURLSession.capturedExtendedDataTaskURLRequestCompletionHandler?(nil, nil, nil)
                     }
                     
                     it("completes with malformedResponseError") {
@@ -68,7 +68,7 @@ final class URLSessionExecutorSpec: QuickSpec {
                                                        httpVersion: String.empty,
                                                        headerFields: nil)
                             
-                            fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(nil, response, nil)
+                            fakeURLSession.capturedExtendedDataTaskURLRequestCompletionHandler?(nil, response, nil)
                         }
                         
                         it("completes with invalidStatusCodeError") {
@@ -85,7 +85,7 @@ final class URLSessionExecutorSpec: QuickSpec {
                             
                             let data = "doesn't-matter".data(using: .utf8)
                             
-                            fakeURLSession.capturedDataTaskURLRequestCompletionHandler?(data, response, nil)
+                            fakeURLSession.capturedExtendedDataTaskURLRequestCompletionHandler?(data, response, nil)
                         }
                         
                         it("finally completes without error") {

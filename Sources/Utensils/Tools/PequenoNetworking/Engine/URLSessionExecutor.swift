@@ -35,7 +35,7 @@ public class URLSessionExecutor: URLSessionExecutorProtocol {
     
     // MARK: - Readonly properties
     
-    public private(set) var lastExecutedDataTask: URLSessionDataTaskProtocol?
+    public private(set) var lastExecutedDataTask: URLSessionTaskProtocol?
     
     // MARK: - Init methods
     
@@ -45,7 +45,7 @@ public class URLSessionExecutor: URLSessionExecutorProtocol {
     
     public func execute(urlRequest: URLRequest,
                         completionHandler: @escaping (Data?, PequenoNetworking.Error?) -> Void) {
-        lastExecutedDataTask = urlSession.dataTask(with: urlRequest) { data, response, error in
+        lastExecutedDataTask = urlSession.dataTask(urlRequest: urlRequest) { data, response, error in
             if let error = error {
                 completionHandler(nil, .dataTaskError(wrappedError: error))
                 
