@@ -95,7 +95,8 @@ public struct Directory: Equatable, Hashable {
         var directoryPath: URL
         
         if let additionalPathString = additionalPathString {
-            directoryPath = systemDirectory(searchPathDirectory).appendingPathComponent(additionalPathString)
+            directoryPath = systemDirectory(searchPathDirectory).appendingPathComponent(additionalPathString,
+                                                                                        isDirectory: true)
         } else {
             directoryPath = systemDirectory(searchPathDirectory)
         }
@@ -109,7 +110,8 @@ public struct Directory: Equatable, Hashable {
         var directoryPath: URL
         
         if let additionalPathString = additionalPathString {
-            directoryPath = fileManager.temporaryDirectory.appendingPathComponent(additionalPathString)
+            directoryPath = fileManager.temporaryDirectory.appendingPathComponent(additionalPathString,
+                                                                                  isDirectory: true)
             
             createDirectoryIfNoneExists(directoryPath: directoryPath)
         } else {
@@ -120,7 +122,8 @@ public struct Directory: Equatable, Hashable {
     }
     
     private func systemDirectory(_ directory: FileManager.SearchPathDirectory) -> URL {
-        guard let directoryURL = fileManager.urls(for: directory, in: .userDomainMask).first else {
+        guard let directoryURL = fileManager.urls(for: directory, 
+                                                  in: .userDomainMask).first else {
             preconditionFailure("Uh oh, unable to get system directory: \(directory)")
         }
 
