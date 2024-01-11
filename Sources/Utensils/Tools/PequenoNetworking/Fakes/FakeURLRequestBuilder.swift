@@ -25,8 +25,6 @@ import Foundation
 public class FakeURLRequestBuilder: URLRequestBuilderProtocol {
     // MARK: - Captured properties
     
-    public var capturedBuildBaseURL: String?
-    public var capturedBuildHeaders: [String: String]?
     public var capturedURLRequestInfo: URLRequestInfo?
     
     // MARK: - Stubbed properties
@@ -43,12 +41,8 @@ public class FakeURLRequestBuilder: URLRequestBuilderProtocol {
     
     // MARK: - <URLRequestBuilderProtocol>
     
-    public func build(baseURL: String,
-                      headers: [String: String]?,
-                      urlRequestInfo: URLRequestInfo,
+    public func build(urlRequestInfo: URLRequestInfo,
                       completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void) {
-        capturedBuildBaseURL = baseURL
-        capturedBuildHeaders = headers
         capturedURLRequestInfo = urlRequestInfo
         
         completionHandler(stubbedResult)

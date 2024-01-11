@@ -25,6 +25,8 @@ import Foundation
 public struct URLRequestInfo: Equatable {
     // MARK: - Readonly properties
     
+    public let baseURL: String
+    public let headers: [String: String]?
     public let httpMethod: HTTPMethod
     public let endpoint: String
     public let parameters: [String: String]?
@@ -33,7 +35,9 @@ public struct URLRequestInfo: Equatable {
     // MARK: - <Equatable>
     
     public static func == (lhs: URLRequestInfo, rhs: URLRequestInfo) -> Bool {
-        return lhs.httpMethod == rhs.httpMethod &&
+        return lhs.baseURL == rhs.baseURL &&
+               lhs.headers == rhs.headers &&
+               lhs.httpMethod == rhs.httpMethod &&
                lhs.endpoint == rhs.endpoint &&
                lhs.parameters == rhs.parameters &&
                lhs.body?.description == rhs.body?.description

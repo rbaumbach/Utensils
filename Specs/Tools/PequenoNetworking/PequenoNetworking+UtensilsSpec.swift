@@ -9,7 +9,9 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
             var emptyURLRequestInfo: URLRequestInfo!
             
             beforeEach {
-                emptyURLRequestInfo = URLRequestInfo(httpMethod: .get,
+                emptyURLRequestInfo = URLRequestInfo(baseURL: String.empty,
+                                                     headers: nil,
+                                                     httpMethod: .get,
                                                      endpoint: String.empty,
                                                      parameters: nil, 
                                                      body: nil)
@@ -37,7 +39,9 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                     
                     describe("when all info properties have content") {
                         beforeEach {
-                            urlRequestInfo = URLRequestInfo(httpMethod: .get,
+                            urlRequestInfo = URLRequestInfo(baseURL: "https://cinemassacre.com",
+                                                            headers: ["v": "1"],
+                                                            httpMethod: .get,
                                                             endpoint: "/avgn",
                                                             parameters: ["item": "power-glove"],
                                                             body: ["2nd-player": "behind-couch"])
@@ -45,15 +49,17 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                         
                         it("has proper localized description") {
                             let urlRequestError = PequenoNetworking.Error.urlRequestError(info: urlRequestInfo)
-                            let expectedRequestError = "Unable to build URLRequest:\nhttp verb:  GET\nendpoint:   /avgn\nparameters: [\"item\": \"power-glove\"]\nbody:       [\"2nd-player\": \"behind-couch\"]"
+                            let expectedRequestError = "Unable to build URLRequest:\nhost:       https://cinemassacre.com\nheaders:    [\"v\": \"1\"]\nhttp verb:  GET\nendpoint:   /avgn\nparameters: [\"item\": \"power-glove\"]\nbody:       [\"2nd-player\": \"behind-couch\"]"
                                                         
                             expect(urlRequestError.localizedDescription).to.equal(expectedRequestError)
                         }
                     }
                     
-                    describe("when parameters and body are nil") {
+                    describe("when headers, parameters and body are nil") {
                         beforeEach {
-                            urlRequestInfo = URLRequestInfo(httpMethod: .get,
+                            urlRequestInfo = URLRequestInfo(baseURL: "https://cinemassacre.com",
+                                                            headers: nil,
+                                                            httpMethod: .get,
                                                             endpoint: "/avgn",
                                                             parameters: nil,
                                                             body: nil)
@@ -61,7 +67,7 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                         
                         it("has proper localized description") {
                             let urlRequestError = PequenoNetworking.Error.urlRequestError(info: urlRequestInfo)
-                            let expectedRequestError = "Unable to build URLRequest:\nhttp verb:  GET\nendpoint:   /avgn\nparameters: N/A\nbody:       N/A"
+                            let expectedRequestError = "Unable to build URLRequest:\nhost:       https://cinemassacre.com\nheaders:    N/A\nhttp verb:  GET\nendpoint:   /avgn\nparameters: N/A\nbody:       N/A"
                                                         
                             expect(urlRequestError.localizedDescription).to.equal(expectedRequestError)
                         }
@@ -113,7 +119,7 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                 describe("#errorDescription") {
                     it("is the same as the localized description") {
                         let urlRequestError = PequenoNetworking.Error.urlRequestError(info: emptyURLRequestInfo)
-                        let expectedRequestError = "Unable to build URLRequest:\nhttp verb:  GET\nendpoint:   \nparameters: N/A\nbody:       N/A"
+                        let expectedRequestError = "Unable to build URLRequest:\nhost:       \nheaders:    N/A\nhttp verb:  GET\nendpoint:   \nparameters: N/A\nbody:       N/A"
                         
                         expect(urlRequestError.errorDescription).to.equal(expectedRequestError)
                         
@@ -158,7 +164,7 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
                 describe("#failureReason") {
                     it("is the same as the localized description") {
                         let urlRequestError = PequenoNetworking.Error.urlRequestError(info: emptyURLRequestInfo)
-                        let expectedRequestError = "Unable to build URLRequest:\nhttp verb:  GET\nendpoint:   \nparameters: N/A\nbody:       N/A"
+                        let expectedRequestError = "Unable to build URLRequest:\nhost:       \nheaders:    N/A\nhttp verb:  GET\nendpoint:   \nparameters: N/A\nbody:       N/A"
                         
                         expect(urlRequestError.failureReason).to.equal(expectedRequestError)
                         

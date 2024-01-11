@@ -41,9 +41,12 @@ public extension PequenoNetworking {
         // MARK: - <CaseIterable>
         
         public static var allCases: [PequenoNetworking.Error] {
-            let emptyURLRequestInfo = URLRequestInfo(httpMethod: .get,
+            let emptyURLRequestInfo = URLRequestInfo(baseURL: String.empty,
+                                                     headers: nil,
+                                                     httpMethod: .get,
                                                      endpoint: String.empty,
-                                                     parameters: nil, body: nil)
+                                                     parameters: nil, 
+                                                     body: nil)
             
             return [.urlRequestError(info: emptyURLRequestInfo),
                     .dataTaskError(wrappedError: EmptyError.empty),
@@ -60,9 +63,11 @@ public extension PequenoNetworking {
         
         public var localizedDescription: String {
             switch self {
-            case .urlRequestError(let info):
+            case .urlRequestError(let info):                
                 return """
                 Unable to build URLRequest:
+                host:       \(info.baseURL)
+                headers:    \(info.headers?.description ?? "N/A")
                 http verb:  \(info.httpMethod.rawValue)
                 endpoint:   \(info.endpoint)
                 parameters: \(info.parameters?.description ?? "N/A")

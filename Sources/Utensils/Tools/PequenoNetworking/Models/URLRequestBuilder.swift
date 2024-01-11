@@ -24,9 +24,7 @@ import Foundation
 import Capsule
 
 public protocol URLRequestBuilderProtocol {
-    func build(baseURL: String,
-               headers: [String: String]?,
-               urlRequestInfo: URLRequestInfo,
+    func build(urlRequestInfo: URLRequestInfo,
                completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void)
 }
 
@@ -43,11 +41,9 @@ public class URLRequestBuilder: URLRequestBuilderProtocol {
     
     // MARK: - Public methods
     
-    public func build(baseURL: String,
-                      headers: [String: String]?,
-                      urlRequestInfo: URLRequestInfo,
+    public func build(urlRequestInfo: URLRequestInfo,
                       completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void) {
-        guard var urlComponents = URLComponents(string: baseURL) else {
+        guard var urlComponents = URLComponents(string: urlRequestInfo.baseURL) else {
             completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
             
             return
@@ -68,7 +64,7 @@ public class URLRequestBuilder: URLRequestBuilderProtocol {
         var urlRequest = URLRequest(url: urlComponentsURL)
         urlRequest.httpMethod = urlRequestInfo.httpMethod.rawValue
         
-        headers?.forEach { key, value in
+        urlRequestInfo.headers?.forEach { key, value in
             urlRequest.addValue(value, forHTTPHeaderField: key)
         }
         

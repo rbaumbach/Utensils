@@ -57,12 +57,12 @@ public protocol NetworkingEngineProtocol {
                            completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
     
     func downloadFile(baseURL: String,
-                             headers: [String: String]?,
-                             endpoint: String,
-                             parameters: [String: String]?,
-                             filename: String,
-                             directory: DirectoryProtocol,
-                             completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void)
+                      headers: [String: String]?,
+                      endpoint: String,
+                      parameters: [String: String]?,
+                      filename: String,
+                      directory: DirectoryProtocol,
+                      completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void)
 }
 
 public class NetworkingEngine: NetworkingEngineProtocol {
@@ -86,20 +86,20 @@ public class NetworkingEngine: NetworkingEngineProtocol {
     }
     
     // MARK: - Public methods
-            
+    
     public func get<T: Codable>(baseURL: String,
                                 headers: [String: String]?,
                                 endpoint: String,
                                 parameters: [String: String]?,
                                 completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        let urlRequestInfo = URLRequestInfo(httpMethod: .get,
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .get,
                                             endpoint: endpoint,
                                             parameters: parameters,
                                             body: nil)
         
-        executeRequest(baseURL: baseURL,
-                              headers: headers,
-                              urlRequestInfo: urlRequestInfo) { [weak self] result in
+        executeRequest(urlRequestInfo: urlRequestInfo) { [weak self] result in
             self?.dispatchQueueWrapper.mainAsync {
                 completionHandler(result)
             }
@@ -111,30 +111,30 @@ public class NetworkingEngine: NetworkingEngineProtocol {
                                    endpoint: String,
                                    parameters: [String: String]?,
                                    completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        let urlRequestInfo = URLRequestInfo(httpMethod: .delete,
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .delete,
                                             endpoint: endpoint,
                                             parameters: parameters,
                                             body: nil)
         
-        executeRequest(baseURL: baseURL,
-                              headers: headers,
-                              urlRequestInfo: urlRequestInfo,
-                              completionHandler: completionHandler)
+        executeRequest(urlRequestInfo: urlRequestInfo,
+                       completionHandler: completionHandler)
     }
-            
+    
     public func post<T: Codable>(baseURL: String,
                                  headers: [String: String]?,
                                  endpoint: String,
                                  body: [String: Any]?,
                                  completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        let urlRequestInfo = URLRequestInfo(httpMethod: .post,
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .post,
                                             endpoint: endpoint,
                                             parameters: nil,
                                             body: body)
         
-        executeRequest(baseURL: baseURL,
-                              headers: headers,
-                              urlRequestInfo: urlRequestInfo) { [weak self] result in
+        executeRequest(urlRequestInfo: urlRequestInfo) { [weak self] result in
             self?.dispatchQueueWrapper.mainAsync {
                 completionHandler(result)
             }
@@ -146,14 +146,14 @@ public class NetworkingEngine: NetworkingEngineProtocol {
                                 endpoint: String,
                                 body: [String: Any]?,
                                 completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        let urlRequestInfo = URLRequestInfo(httpMethod: .put,
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .put,
                                             endpoint: endpoint,
                                             parameters: nil,
                                             body: body)
         
-        executeRequest(baseURL: baseURL,
-                              headers: headers,
-                              urlRequestInfo: urlRequestInfo) { [weak self] result in
+        executeRequest(urlRequestInfo: urlRequestInfo) { [weak self] result in
             self?.dispatchQueueWrapper.mainAsync {
                 completionHandler(result)
             }
@@ -165,14 +165,14 @@ public class NetworkingEngine: NetworkingEngineProtocol {
                                   endpoint: String,
                                   body: [String: Any]?,
                                   completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        let urlRequestInfo = URLRequestInfo(httpMethod: .patch,
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .patch,
                                             endpoint: endpoint,
                                             parameters: nil,
                                             body: body)
         
-        executeRequest(baseURL: baseURL,
-                       headers: headers,
-                       urlRequestInfo: urlRequestInfo) { [weak self] result in
+        executeRequest(urlRequestInfo: urlRequestInfo) { [weak self] result in
             self?.dispatchQueueWrapper.mainAsync {
                 completionHandler(result)
             }
@@ -186,14 +186,14 @@ public class NetworkingEngine: NetworkingEngineProtocol {
                              filename: String,
                              directory: DirectoryProtocol,
                              completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
-        let urlRequestInfo = URLRequestInfo(httpMethod: .delete,
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .delete,
                                             endpoint: endpoint,
                                             parameters: parameters,
                                             body: nil)
         
-        executeDownloadRequest(baseURL: baseURL, 
-                               headers: headers,
-                               urlRequestInfo: urlRequestInfo,
+        executeDownloadRequest(urlRequestInfo: urlRequestInfo,
                                filename: filename,
                                directory: directory) { [weak self] result in
             self?.dispatchQueueWrapper.mainAsync {
@@ -204,13 +204,9 @@ public class NetworkingEngine: NetworkingEngineProtocol {
     
     // MARK: - Private methods
     
-    private func executeRequest<T: Codable>(baseURL: String,
-                                            headers: [String: String]?,
-                                            urlRequestInfo: URLRequestInfo,
+    private func executeRequest<T: Codable>(urlRequestInfo: URLRequestInfo,
                                             completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        urlRequestBuilder.build(baseURL: baseURL,
-                                headers: headers,
-                                urlRequestInfo: urlRequestInfo) { result in
+        urlRequestBuilder.build(urlRequestInfo: urlRequestInfo) { result in
             switch result {
             case .success(let urlRequest):
                 urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] data, error in
@@ -224,15 +220,11 @@ public class NetworkingEngine: NetworkingEngineProtocol {
         }
     }
     
-    private func executeDownloadRequest(baseURL: String,
-                                        headers: [String: String]?,
-                                        urlRequestInfo: URLRequestInfo,
+    private func executeDownloadRequest(urlRequestInfo: URLRequestInfo,
                                         filename: String,
                                         directory: DirectoryProtocol,
                                         completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
-        urlRequestBuilder.build(baseURL: baseURL,
-                                headers: headers,
-                                urlRequestInfo: urlRequestInfo) { result in
+        urlRequestBuilder.build(urlRequestInfo: urlRequestInfo) { result in
             switch result {
             case .success(let urlRequest):
                 urlSessionExecutor.executeDownload(urlRequest: urlRequest,

@@ -8,12 +8,22 @@ final class URLRequestInfoSpec: QuickSpec {
             var subject: URLRequestInfo!
             
             beforeEach {
-                subject = URLRequestInfo(httpMethod: .get,
+                subject = URLRequestInfo(baseURL: "https://3s.company",
+                                         headers: ["version": "1"],
+                                         httpMethod: .get,
                                          endpoint: "/home",
                                          parameters: ["address": "2912-4th-st."],
                                          body: ["occupants": ["jack-tripper",
                                                               "janet-wood",
                                                               "chrissy-snow"]])
+            }
+            
+            it("has a baseURL") {
+                expect(subject.baseURL).to.equal("https://3s.company")
+            }
+            
+            it("has headers") {
+                expect(subject.headers).to.equal(["version": "1"])
             }
             
             it("has httpMethod") {
@@ -40,7 +50,9 @@ final class URLRequestInfoSpec: QuickSpec {
             
             describe("<Equatable>") {
                 it("is equatable") {
-                    let moreInfo = URLRequestInfo(httpMethod: .get,
+                    let moreInfo = URLRequestInfo(baseURL: "https://3s.company",
+                                                  headers: ["version": "1"],
+                                                  httpMethod: .get,
                                                   endpoint: "/home",
                                                   parameters: ["address": "2912-4th-st."],
                                                   body: ["occupants": ["jack-tripper",

@@ -32,14 +32,14 @@ final class URLRequestBuilderSpec: QuickSpec {
                 
                 describe("when everything is good") {
                     beforeEach {
-                        let urlRequestInfo = URLRequestInfo(httpMethod: .get,
+                        let urlRequestInfo = URLRequestInfo(baseURL: "https://cinemassacre.com",
+                                                            headers: ["version": "99.9"],
+                                                            httpMethod: .get,
                                                             endpoint: "/avgn",
                                                             parameters: ["episode":"1"],
                                                             body: ["console": "nintendo"])
                         
-                        subject.build(baseURL: "https://cinemassacre.com",
-                                      headers: ["version": "99.9"],
-                                      urlRequestInfo: urlRequestInfo) { result in
+                        subject.build(urlRequestInfo: urlRequestInfo) { result in
                             urlRequest = try! result.get()
                         }
                     }
