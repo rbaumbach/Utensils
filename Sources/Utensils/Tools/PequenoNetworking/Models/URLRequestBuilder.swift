@@ -24,8 +24,7 @@ import Foundation
 import Capsule
 
 public protocol URLRequestBuilderProtocol {
-    func build(urlRequestInfo: URLRequestInfo,
-               completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void)
+    func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, PequenoNetworking.Error>
 }
 
 open class URLRequestBuilder: URLRequestBuilderProtocol {
@@ -41,12 +40,9 @@ open class URLRequestBuilder: URLRequestBuilderProtocol {
     
     // MARK: - Public methods
     
-    public func build(urlRequestInfo: URLRequestInfo,
-                      completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void) {
+    public func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, PequenoNetworking.Error> {
         guard var urlComponents = URLComponents(string: urlRequestInfo.baseURL) else {
-            completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
-            
-            return
+            return .failure(.urlRequestError(info: urlRequestInfo))
         }
         
         urlComponents.path = urlRequestInfo.endpoint
@@ -56,9 +52,7 @@ open class URLRequestBuilder: URLRequestBuilderProtocol {
         }
         
         guard let urlComponentsURL = urlComponents.url else {
-            completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
-            
-            return
+            return .failure(.urlRequestError(info: urlRequestInfo))
         }
         
         var urlRequest = URLRequest(url: urlComponentsURL)
@@ -70,14 +64,12 @@ open class URLRequestBuilder: URLRequestBuilderProtocol {
         
         if let body = urlRequestInfo.body {
             guard let body = try? jsonSerializationWrapper.data(withJSONObject: body) else {
-                completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
-                
-                return
+                return .failure(.urlRequestError(info: urlRequestInfo))
             }
             
             urlRequest.httpBody = body
         }
         
-        completionHandler(.success(urlRequest))
+        return .success(urlRequest)
     }
 }

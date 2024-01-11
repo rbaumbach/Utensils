@@ -41,10 +41,9 @@ open class FakeURLRequestBuilder: URLRequestBuilderProtocol {
     
     // MARK: - <URLRequestBuilderProtocol>
     
-    public func build(urlRequestInfo: URLRequestInfo,
-                      completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void) {
+    public func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, PequenoNetworking.Error> {
         capturedURLRequestInfo = urlRequestInfo
         
-        completionHandler(stubbedResult)
+        return stubbedResult
     }
 }

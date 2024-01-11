@@ -185,17 +185,17 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
                                 headers: [String: String]?,
                                 urlRequestInfo: URLRequestInfo,
                                 completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        urlRequestBuilder.build(urlRequestInfo: urlRequestInfo) { result in
-            switch result {
-            case .success(let urlRequest):
-                urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] data, error in
-                    self?.handleResponse(data: data,
-                                         error: error,
-                                         completionHandler: completionHandler)
-                }
-            case .failure(let error):
-                completionHandler(.failure(error))
+        let result = urlRequestBuilder.build(urlRequestInfo: urlRequestInfo)
+        
+        switch result {
+        case .success(let urlRequest):
+            urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] data, error in
+                self?.handleResponse(data: data,
+                                     error: error,
+                                     completionHandler: completionHandler)
             }
+        case .failure(let error):
+            completionHandler(.failure(error))
         }
     }
     

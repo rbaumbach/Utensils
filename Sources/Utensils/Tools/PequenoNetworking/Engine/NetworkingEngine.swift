@@ -206,17 +206,16 @@ open class NetworkingEngine: NetworkingEngineProtocol {
     
     private func executeRequest<T: Codable>(urlRequestInfo: URLRequestInfo,
                                             completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        urlRequestBuilder.build(urlRequestInfo: urlRequestInfo) { result in
-            switch result {
-            case .success(let urlRequest):
-                urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] data, error in
-                    self?.handleResponse(data: data,
-                                         error: error,
-                                         completionHandler: completionHandler)
-                }
-            case .failure(let error):
-                completionHandler(.failure(error))
+        let result = urlRequestBuilder.build(urlRequestInfo: urlRequestInfo)
+        switch result {
+        case .success(let urlRequest):
+            urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] data, error in
+                self?.handleResponse(data: data,
+                                     error: error,
+                                     completionHandler: completionHandler)
             }
+        case .failure(let error):
+            completionHandler(.failure(error))
         }
     }
     
@@ -224,20 +223,21 @@ open class NetworkingEngine: NetworkingEngineProtocol {
                                         filename: String,
                                         directory: DirectoryProtocol,
                                         completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
-        urlRequestBuilder.build(urlRequestInfo: urlRequestInfo) { result in
-            switch result {
-            case .success(let urlRequest):
-                urlSessionExecutor.executeDownload(urlRequest: urlRequest,
-                                                   customFilename: filename,
-                                                   directory: directory) { [weak self] url, error in
-                    self?.handleDownloadResponse(url: url,
-                                                 error: error,
-                                                 completionHandler: completionHandler)
-                }
-            case .failure(let error):
-                completionHandler(.failure(error))
+        let result = urlRequestBuilder.build(urlRequestInfo: urlRequestInfo)
+        
+        switch result {
+        case .success(let urlRequest):
+            urlSessionExecutor.executeDownload(urlRequest: urlRequest,
+                                               customFilename: filename,
+                                               directory: directory) { [weak self] url, error in
+                self?.handleDownloadResponse(url: url,
+                                             error: error,
+                                             completionHandler: completionHandler)
             }
+        case .failure(let error):
+            completionHandler(.failure(error))
         }
+        
     }
     
     private func handleResponse<T: Codable>(data: Data?,
