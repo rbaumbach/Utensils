@@ -56,6 +56,7 @@
 		947266442B4E208700353F4E /* CleanupUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947266432B4E208700353F4E /* CleanupUtils.swift */; };
 		947266472B4F85E900353F4E /* FileManager+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947266452B4F671A00353F4E /* FileManager+Utensils.swift */; };
 		9472664B2B4F86EA00353F4E /* FakeFileManagerUtensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947266492B4F86C500353F4E /* FakeFileManagerUtensils.swift */; };
+		947266542B505D6400353F4E /* TrunkIntegrationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947266532B505D6400353F4E /* TrunkIntegrationSpec.swift */; };
 		94872AF42915D16F00D3528B /* DefaultAppLaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AF22915D16F00D3528B /* DefaultAppLaunchView.swift */; };
 		94872AF52915D16F00D3528B /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AF32915D16F00D3528B /* AppLaunchViewController.swift */; };
 		94872AF92915D20700D3528B /* Bundle+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AF82915D20700D3528B /* Bundle+Utensils.swift */; };
@@ -158,6 +159,7 @@
 		947266432B4E208700353F4E /* CleanupUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanupUtils.swift; sourceTree = "<group>"; };
 		947266452B4F671A00353F4E /* FileManager+Utensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Utensils.swift"; sourceTree = "<group>"; };
 		947266492B4F86C500353F4E /* FakeFileManagerUtensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeFileManagerUtensils.swift; sourceTree = "<group>"; };
+		947266532B505D6400353F4E /* TrunkIntegrationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrunkIntegrationSpec.swift; sourceTree = "<group>"; };
 		94872AEE2915CD5A00D3528B /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		94872AF22915D16F00D3528B /* DefaultAppLaunchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAppLaunchView.swift; sourceTree = "<group>"; };
 		94872AF32915D16F00D3528B /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
@@ -349,9 +351,10 @@
 		94569E1D2B28EC93008494E1 /* IntegrationSpecs */ = {
 			isa = PBXGroup;
 			children = (
-				94569E292B28EEFE008494E1 /* Resources */,
+				9472664F2B5056A500353F4E /* Models */,
 				94569E592B30E765008494E1 /* Spec Files */,
 				94569E262B28EE49008494E1 /* Tools */,
+				94569E292B28EEFE008494E1 /* Resources */,
 			);
 			path = IntegrationSpecs;
 			sourceTree = "<group>";
@@ -359,9 +362,9 @@
 		94569E262B28EE49008494E1 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				947266552B505D6F00353F4E /* FileLoader */,
 				94B2AE6F2B3740770081B1FE /* PequenoNetworking */,
-				9472663F2B4DBDDD00353F4E /* DirectoryIntegrationSpec.swift */,
-				94569E272B28EE64008494E1 /* FileLoaderIntegrationSpec.swift */,
+				947266522B505D5700353F4E /* Trunk */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -449,6 +452,30 @@
 				947266492B4F86C500353F4E /* FakeFileManagerUtensils.swift */,
 			);
 			path = Fakes;
+			sourceTree = "<group>";
+		};
+		9472664F2B5056A500353F4E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9472663F2B4DBDDD00353F4E /* DirectoryIntegrationSpec.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		947266522B505D5700353F4E /* Trunk */ = {
+			isa = PBXGroup;
+			children = (
+				947266532B505D6400353F4E /* TrunkIntegrationSpec.swift */,
+			);
+			path = Trunk;
+			sourceTree = "<group>";
+		};
+		947266552B505D6F00353F4E /* FileLoader */ = {
+			isa = PBXGroup;
+			children = (
+				94569E272B28EE64008494E1 /* FileLoaderIntegrationSpec.swift */,
+			);
+			path = FileLoader;
 			sourceTree = "<group>";
 		};
 		94872AF12915D15400D3528B /* ViewControllers */ = {
@@ -907,6 +934,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				947266542B505D6400353F4E /* TrunkIntegrationSpec.swift in Sources */,
 				94B2AE712B3740900081B1FE /* PequenoNetworkingIntegrationSpec.swift in Sources */,
 				94569E5B2B30E776008494E1 /* SpecModels.swift in Sources */,
 				947266402B4DBDDD00353F4E /* DirectoryIntegrationSpec.swift in Sources */,

@@ -91,6 +91,10 @@ open class Trunk: TrunkProtocol {
     
     // MARK: - Public methods
     
+    // TODO: Update to use Result type
+    // TODO: Rethink file extension .json functionality
+    // TODO: Throw error for non completion handler versions (Using Result type)
+    
     public func save<T: Codable>(data: T,
                                  directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
                                  filename: String = "trunk") {
@@ -99,7 +103,7 @@ open class Trunk: TrunkProtocol {
         }
 
         let fullFileURL = buildFullFileURL(directory: directory, filename: filename)
-
+        
         do {
             try dataWrapper.write(data: encodedJSONData, toPath: fullFileURL)
         } catch { }
@@ -121,7 +125,7 @@ open class Trunk: TrunkProtocol {
     public func load<T: Codable>(directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
                                  filename: String = "trunk") -> T? {
         let fullFileURL = buildFullFileURL(directory: directory, filename: filename)
-        
+                
         guard let jsonData = try? dataWrapper.loadData(contentsOfPath: fullFileURL) else {
             return nil
         }
@@ -138,12 +142,14 @@ open class Trunk: TrunkProtocol {
                                  completionHandler: @escaping (T?) -> Void) {
         dispatchQueueWrapper.globalAsync(qos: .background) { [weak self] in
             let modelData: T? = self?.load(directory: directory, filename: filename)
-            
+                        
             self?.dispatchQueueWrapper.mainAsync {
                 completionHandler(modelData)
             }
         }
     }
+    
+    // TODO: Add functionality to delete trunk files
     
     // MARK: - Private methods
     

@@ -230,6 +230,8 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                                     
                                     return
                                 }
+                                
+                                expect(imageData.count).to.beGreaterThan(0)
                             } else {
                                 failSpec()
                                 
