@@ -35,7 +35,7 @@ public protocol URLSessionExecutorProtocol {
                          completionHandler: @escaping (URL?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol
 }
 
-public class URLSessionExecutor: URLSessionExecutorProtocol {
+open class URLSessionExecutor: URLSessionExecutorProtocol {
     // MARK: - Private properties
         
     private let urlSession: URLSessionProtocol

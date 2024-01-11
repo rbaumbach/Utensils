@@ -23,7 +23,7 @@
 import Foundation
 import Capsule
 
-public class FakeFileLoader: FileLoaderProtocol {
+open class FakeFileLoader: FileLoaderProtocol {
     // MARK: - Captured properties
     
     public var capturedLoadJSONName: String?

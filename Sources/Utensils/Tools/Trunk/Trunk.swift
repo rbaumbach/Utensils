@@ -34,7 +34,7 @@ public protocol TrunkProtocol {
     func load<T: Codable>(directory: Directory, filename: String, completionHandler: @escaping (T?) -> Void)
 }
 
-public class Trunk: TrunkProtocol {
+open class Trunk: TrunkProtocol {
     // MARK: - Public enums
     
     public enum OutputFormat {

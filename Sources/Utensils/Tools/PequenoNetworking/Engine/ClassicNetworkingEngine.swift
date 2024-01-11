@@ -55,7 +55,7 @@ public protocol ClassicNetworkingEngineProtocol {
                completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
 }
 
-public class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
+open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
     // MARK: - Private properties
     
     private let urlRequestBuilder: URLRequestBuilderProtocol

@@ -69,7 +69,7 @@ public protocol PequenoNetworkingProtocol {
                            completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
 }
 
-public class PequenoNetworking: PequenoNetworkingProtocol {
+open class PequenoNetworking: PequenoNetworkingProtocol {
     // MARK: - Private properties
     
     private let classicNetworkingEngine: ClassicNetworkingEngineProtocol

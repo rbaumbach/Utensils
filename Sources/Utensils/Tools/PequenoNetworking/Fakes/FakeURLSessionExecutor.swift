@@ -23,7 +23,7 @@
 import Foundation
 import Capsule
 
-public class FakeURLSessionExecutor: URLSessionExecutorProtocol {
+open class FakeURLSessionExecutor: URLSessionExecutorProtocol {
     // MARK: - Captured properties
     
     public var capturedExecuteURLRequest: URLRequest?

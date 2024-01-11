@@ -22,7 +22,7 @@
 
 import Foundation
 
-public class FakeURLRequestBuilder: URLRequestBuilderProtocol {
+open class FakeURLRequestBuilder: URLRequestBuilderProtocol {
     // MARK: - Captured properties
     
     public var capturedURLRequestInfo: URLRequestInfo?

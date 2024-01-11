@@ -22,7 +22,7 @@
 
 import Foundation
 
-public class FakeDebouncer: DebouncerProtocol {
+open class FakeDebouncer: DebouncerProtocol {
     // MARK: - Captured properties
     
     public var capturedDebounceSeconds: Double?

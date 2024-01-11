@@ -27,7 +27,7 @@ public protocol FileLoaderProtocol {
     func loadJSON<T: Codable>(name: String, fileExtension: String) throws -> T?
 }
 
-public class FileLoader {
+open class FileLoader {
     // MARK: - Private properties
     
     private let bundle: BundleProtocol

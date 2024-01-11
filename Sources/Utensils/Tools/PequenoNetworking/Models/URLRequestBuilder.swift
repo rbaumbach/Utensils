@@ -28,7 +28,7 @@ public protocol URLRequestBuilderProtocol {
                completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void)
 }
 
-public class URLRequestBuilder: URLRequestBuilderProtocol {
+open class URLRequestBuilder: URLRequestBuilderProtocol {
     // MARK: - Private properties
     
     private let jsonSerializationWrapper: JSONSerializationWrapperProtocol

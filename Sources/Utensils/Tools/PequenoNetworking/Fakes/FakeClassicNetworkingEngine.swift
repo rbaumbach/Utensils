@@ -22,7 +22,7 @@
 
 import Foundation
 
-public class FakeClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
+open class FakeClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
     // MARK: - Captured properties
     
     public var capturedGetBaseURL: String?

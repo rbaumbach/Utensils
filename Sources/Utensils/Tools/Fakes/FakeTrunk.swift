@@ -22,7 +22,7 @@
 
 import Foundation
 
-public class FakeTrunk: TrunkProtocol {
+open class FakeTrunk: TrunkProtocol {
     // MARK: - Captured properties
     
     public var capturedOutputFormat: Trunk.OutputFormat?

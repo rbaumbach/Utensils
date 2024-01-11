@@ -23,7 +23,7 @@
 import Foundation
 import Capsule
 
-public class FakeFileManagerUtensils: FakeFileManager, FileManagerUtensilsProtocol {
+open class FakeFileManagerUtensils: FakeFileManager, FileManagerUtensilsProtocol {
     // MARK: - Captured properties
     
     public var capturedMigrateFileSRCURL: URL?
