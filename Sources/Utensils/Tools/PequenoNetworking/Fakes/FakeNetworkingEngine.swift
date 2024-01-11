@@ -59,7 +59,7 @@ open class FakeNetworkingEngine: NetworkingEngineProtocol {
     public var capturedPatchCompletionHandler: Any?
     
     public var capturedDownloadBaseURL: String?
-    public var capturedDownloadHeaders: [String: Any]?
+    public var capturedDownloadHeaders: [String: String]?
     public var capturedDownloadEndpoint: String?
     public var capturedDownloadParameters: [String: String]?
     public var capturedDownloadFilename: String?

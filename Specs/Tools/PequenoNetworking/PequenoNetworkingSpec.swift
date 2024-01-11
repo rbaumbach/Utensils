@@ -12,6 +12,7 @@ final class PequenoNetworkingSpec: QuickSpec {
             var fakeNetworkingEngine: FakeNetworkingEngine!
             
             var fakeUserDefaults: FakeUserDefaults!
+            var fakeDirectory: FakeDirectory!
             
             beforeEach {
                 fakeClassicNetworkingEngine = FakeClassicNetworkingEngine()
@@ -20,6 +21,8 @@ final class PequenoNetworkingSpec: QuickSpec {
                 fakeUserDefaults = FakeUserDefaults()
                 fakeUserDefaults.stubbedString = "https://ghost.busters"
                 fakeUserDefaults.stubbedObject = ["city": "new-york"]
+                
+                fakeDirectory = FakeDirectory()
             }
             
             it("has a convience init method that uses user defaults for baseURL and headers") {
@@ -202,6 +205,10 @@ final class PequenoNetworkingSpec: QuickSpec {
                     
                     it("returns the proper result") {
                         expect(actualResult).to.equal(stubbedResult)
+                        
+                        expect(fakeNetworkingEngine.capturedGetBaseURL).to.equal("https://ghost.busters")
+                        expect(fakeNetworkingEngine.capturedGetHeaders).to.equal(["city": "new-york"])
+                        expect(fakeNetworkingEngine.capturedGetParameters).to.equal(["ghost": "slimer"])
                     }
                 }
                 
@@ -219,6 +226,10 @@ final class PequenoNetworkingSpec: QuickSpec {
                     
                     it("returns the proper result") {
                         expect(actualResult).to.equal(stubbedResult)
+                        
+                        expect(fakeNetworkingEngine.capturedDeleteBaseURL).to.equal("https://ghost.busters")
+                        expect(fakeNetworkingEngine.capturedDeleteHeaders).to.equal(["city": "new-york"])
+                        expect(fakeNetworkingEngine.capturedDeleteParameters).to.equal(["ghost": "slimer"])
                     }
                 }
                 
@@ -236,6 +247,13 @@ final class PequenoNetworkingSpec: QuickSpec {
                     
                     it("returns the proper result") {
                         expect(actualResult).to.equal(stubbedResult)
+                        
+                        expect(fakeNetworkingEngine.capturedPostBaseURL).to.equal("https://ghost.busters")
+                        expect(fakeNetworkingEngine.capturedPostHeaders).to.equal(["city": "new-york"])
+                        
+                        let typedBody = fakeNetworkingEngine.capturedPostBody as! [String: String]
+                        
+                        expect(typedBody).to.equal(["ghost": "slimer"])
                     }
                 }
                 
@@ -253,6 +271,13 @@ final class PequenoNetworkingSpec: QuickSpec {
                     
                     it("returns the proper result") {
                         expect(actualResult).to.equal(stubbedResult)
+                        
+                        expect(fakeNetworkingEngine.capturedPutBaseURL).to.equal("https://ghost.busters")
+                        expect(fakeNetworkingEngine.capturedPutHeaders).to.equal(["city": "new-york"])
+                        
+                        let typedBody = fakeNetworkingEngine.capturedPutBody as! [String: String]
+                        
+                        expect(typedBody).to.equal(["ghost": "slimer"])
                     }
                 }
                 
@@ -270,7 +295,51 @@ final class PequenoNetworkingSpec: QuickSpec {
                     
                     it("returns the proper result") {
                         expect(actualResult).to.equal(stubbedResult)
+                        
+                        expect(fakeNetworkingEngine.capturedPatchBaseURL).to.equal("https://ghost.busters")
+                        expect(fakeNetworkingEngine.capturedPatchHeaders).to.equal(["city": "new-york"])
+                        
+                        let typedBody = fakeNetworkingEngine.capturedPatchBody as! [String: String]
+                        
+                        expect(typedBody).to.equal(["ghost": "slimer"])
                     }
+                }
+            }
+            
+            describe("downloading") {
+                var stubbedResult: Result<URL, PequenoNetworking.Error>!
+                var actualResult: Result<URL, PequenoNetworking.Error>!
+                
+                beforeEach {
+                    subject = PequenoNetworking(baseURL: "https://ghost.busters",
+                                                headers: ["city": "new-york"],
+                                                classicNetworkingEngine: fakeClassicNetworkingEngine,
+                                                networkingEngine: fakeNetworkingEngine)
+                    
+                    subject.downloadFile(endpoint: "/download",
+                                         parameters: ["ghost": "scoleri-brothers"],
+                                         filename: "scoleri-brothers",
+                                         directory: fakeDirectory) { result in
+                        actualResult = result
+                    }
+                    
+                    stubbedResult = fakeNetworkingEngine.stubbedDownloadResult
+                    
+                    fakeNetworkingEngine.capturedDownloadCompletionHandler?(stubbedResult)
+                }
+                
+                it("returns proper result") {
+                    expect(actualResult).to.equal(stubbedResult)
+                    
+                    expect(fakeNetworkingEngine.capturedDownloadBaseURL).to.equal( "https://ghost.busters")
+                    expect(fakeNetworkingEngine.capturedDownloadHeaders).to.equal(["city": "new-york"])
+                    expect(fakeNetworkingEngine.capturedDownloadEndpoint).to.equal("/download")
+                    expect(fakeNetworkingEngine.capturedDownloadParameters).to.equal(["ghost": "scoleri-brothers"])
+                    expect(fakeNetworkingEngine.capturedDownloadFilename).to.equal("scoleri-brothers")
+                    
+                    let actualDirectoryURLString = fakeNetworkingEngine.capturedDownloadDirectory?.url().absoluteString
+                    
+                    expect(actualDirectoryURLString).to.equal("file:///fake-directory/extra-fake-directory/")
                 }
             }
         }

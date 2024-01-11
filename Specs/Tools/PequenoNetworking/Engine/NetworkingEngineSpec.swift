@@ -12,6 +12,7 @@ final class NetworkingEngineSpec: QuickSpec {
             var fakeURLSessionExecutor: FakeURLSessionExecutor!
             var fakeJSONDecoder: FakeJSONDecoder!
             var fakeDispatchQueueWrapper: FakeDispatchQueueWrapper!
+            var fakeDirectory: FakeDirectory!
             
             var actualResult: Result<String, PequenoNetworking.Error>!
             
@@ -20,6 +21,7 @@ final class NetworkingEngineSpec: QuickSpec {
                 fakeURLSessionExecutor = FakeURLSessionExecutor()
                 fakeJSONDecoder = FakeJSONDecoder()
                 fakeDispatchQueueWrapper = FakeDispatchQueueWrapper()
+                fakeDirectory = FakeDirectory()
                 
                 subject = NetworkingEngine(urlRequestBuilder: fakeURLRequestBuilder,
                                            urlSessionExecutor: fakeURLSessionExecutor,
@@ -599,6 +601,106 @@ final class NetworkingEngineSpec: QuickSpec {
                                 expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
 
                                 expect(decodedJSON).to.equal("String is Codable")
+                            } else {
+                                failSpec()
+                            }
+                        }
+                    }
+                }
+            }
+            
+            describe("#download(baseURL:headers:endpoint:parameters:filename:directory:completionHandler:)") {
+                var actualDownloadResult: Result<URL, PequenoNetworking.Error>!
+                
+                describe("when url request cannot be built") {
+                    beforeEach {
+                        fakeURLRequestBuilder.stubbedResult = .failure(.dataError)
+                        
+                        subject.downloadFile(baseURL: String.empty,
+                                             headers: nil,
+                                             endpoint: String.empty,
+                                             parameters: nil,
+                                             filename: "hi.txt",
+                                             directory: fakeDirectory) { result in
+                            actualDownloadResult = result
+                        }
+                        
+                        fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
+                    }
+                    
+                    it("completes with url request builder error") {
+                        if case let .failure(error) = actualDownloadResult {
+                            expect(error).to.equal(.dataError)
+                        } else {
+                            failSpec()
+                        }
+                    }
+                }
+                
+                describe("when url request can be built") {
+                    beforeEach {
+                        subject.downloadFile(baseURL: String.empty,
+                                             headers: nil,
+                                             endpoint: String.empty,
+                                             parameters: nil,
+                                             filename: "hi.txt",
+                                             directory: fakeDirectory) { result in
+                            actualDownloadResult = result
+                        }
+                        
+                        fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
+                    }
+                    
+                    describe("when url session download executor completes with error") {
+                        beforeEach {
+                            fakeURLSessionExecutor.capturedExecuteDownloadCompletionHandler?(nil, .dataError)
+                            
+                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
+                        }
+                        
+                        it("completes with url session executor error") {
+                            if case .failure(let error) = actualDownloadResult {
+                                expect(error).to.equal(.dataError)
+                            } else {
+                                failSpec()
+                            }
+                        }
+                    }
+                    
+                    describe("when url session download executor completes with nil url") {
+                        beforeEach {
+                            fakeURLSessionExecutor.capturedExecuteDownloadCompletionHandler?(nil, nil)
+                            
+                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
+                        }
+                        
+                        it("completes with data error") {
+                            if case .failure(let error) = actualDownloadResult {
+                                expect(error).to.equal(.downloadError)
+                            } else {
+                                failSpec()
+                            }
+                        }
+                    }
+                    
+                    describe("whem url session download executor completes with url") {
+                        var url: URL!
+                        
+                        beforeEach {
+                            url = URL(string: "https://99-finally-dot-com.net")
+                            
+                            fakeURLSessionExecutor.capturedExecuteDownloadCompletionHandler?(url, nil)
+                            
+                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
+                        }
+                        
+                        it("finally completes with url result") {
+                            if case .success(let actualURL) = actualDownloadResult {
+                                let expectedURLRequest = try! fakeURLRequestBuilder.stubbedResult.get()
+                                
+                                expect(fakeURLSessionExecutor.capturedExecuteDownloadURLRequest).to.equal(expectedURLRequest)
+
+                                expect(actualURL).to.equal(url)
                             } else {
                                 failSpec()
                             }
