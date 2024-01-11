@@ -1,6 +1,7 @@
 disabled_rules:
   - comment_spacing
   - force_cast
+  - force_try
   - trailing_whitespace
 
   # SwiftLint is having issues with my Carthage frameworks, have to disable this even though

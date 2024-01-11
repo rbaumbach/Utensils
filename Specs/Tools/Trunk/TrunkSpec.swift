@@ -80,7 +80,7 @@ final class TrunkSpec: QuickSpec {
                             
                             expect(typeSafeCapturedEncodeValue).to.equal([0, 1, 2, 3, 4])
                             
-                            let expectedURL = directory.url().appendingPathComponent("array-of-ints.json")
+                            let expectedURL = try! directory.url().appendingPathComponent("array-of-ints.json")
 
                             expect(fakeDataWrapper.capturedWriteURL).to.equal(expectedURL)
                         }
@@ -100,7 +100,7 @@ final class TrunkSpec: QuickSpec {
                             
                             expect(fakeDataWrapper.capturedWriteData).to.equal(fakeJSONCodableWrapper.stubbedEncodeData)
                             
-                            let expectedURL = directory.url().appendingPathComponent("array-of-ints.json")
+                            let expectedURL = try! directory.url().appendingPathComponent("array-of-ints.json")
                             
                             expect(fakeDataWrapper.capturedWriteURL).to.equal(expectedURL)
                         }
@@ -131,7 +131,7 @@ final class TrunkSpec: QuickSpec {
                     
                     expect(fakeDataWrapper.capturedWriteData).to.equal(fakeJSONCodableWrapper.stubbedEncodeData)
                     
-                    let expectedURL = directory.url().appendingPathComponent("trunk.json")
+                    let expectedURL = try! directory.url().appendingPathComponent("trunk.json")
                     
                     expect(fakeDataWrapper.capturedWriteURL).to.equal(expectedURL)
                 }
@@ -153,7 +153,7 @@ final class TrunkSpec: QuickSpec {
                     }
                     
                     it("returns nil") {
-                        let expectedURL = directory.url().appendingPathComponent("array-of-ints.json")
+                        let expectedURL = try! directory.url().appendingPathComponent("array-of-ints.json")
                         
                         expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
 
@@ -176,7 +176,7 @@ final class TrunkSpec: QuickSpec {
                         }
                         
                         it("returns nil") {
-                            let expectedURL = directory.url().appendingPathComponent("array-of-ints.json")
+                            let expectedURL = try! directory.url().appendingPathComponent("array-of-ints.json")
                             
                             expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
                             
@@ -194,7 +194,7 @@ final class TrunkSpec: QuickSpec {
                         }
                         
                         it("returns the model data that was retrieved from disk") {
-                            let expectedURL = directory.url().appendingPathComponent("array-of-ints.json")
+                            let expectedURL = try! directory.url().appendingPathComponent("array-of-ints.json")
                             
                             expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
                             
@@ -224,7 +224,7 @@ final class TrunkSpec: QuickSpec {
                 it("returns the model data that was retrieved from disk on a background queue") {
                     expect(fakeDispatchQueueWrapper.capturedGlobalAsyncQOS).to.equal(.background)
 
-                    let expectedURL = directory.url().appendingPathComponent("trunk.json")
+                    let expectedURL = try! directory.url().appendingPathComponent("trunk.json")
                     
                     expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
                     

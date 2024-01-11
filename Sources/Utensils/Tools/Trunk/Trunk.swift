@@ -94,6 +94,7 @@ open class Trunk: TrunkProtocol {
     // TODO: Update to use Result type
     // TODO: Rethink file extension .json functionality
     // TODO: Throw error for non completion handler versions (Using Result type)
+    // TODO: Handle try!s
     
     public func save<T: Codable>(data: T,
                                  directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
@@ -101,10 +102,10 @@ open class Trunk: TrunkProtocol {
         guard let encodedJSONData = try? jsonCodableWrapper.encode(data) else {
             return
         }
-
-        let fullFileURL = buildFullFileURL(directory: directory, filename: filename)
         
         do {
+            let fullFileURL = try! buildFullFileURL(directory: directory, filename: filename)
+
             try dataWrapper.write(data: encodedJSONData, toPath: fullFileURL)
         } catch { }
     }
@@ -124,7 +125,7 @@ open class Trunk: TrunkProtocol {
     
     public func load<T: Codable>(directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
                                  filename: String = "trunk") -> T? {
-        let fullFileURL = buildFullFileURL(directory: directory, filename: filename)
+        let fullFileURL = try! buildFullFileURL(directory: directory, filename: filename)
                 
         guard let jsonData = try? dataWrapper.loadData(contentsOfPath: fullFileURL) else {
             return nil
@@ -153,9 +154,9 @@ open class Trunk: TrunkProtocol {
     
     // MARK: - Private methods
     
-    private func buildFullFileURL(directory: Directory, filename: String) -> URL {
+    private func buildFullFileURL(directory: Directory, filename: String) throws -> URL {
         let fullFilename = filename + fileExtension
         
-        return directory.url().appendingPathComponent(fullFilename)
+        return try directory.url().appendingPathComponent(fullFilename)
     }
 }

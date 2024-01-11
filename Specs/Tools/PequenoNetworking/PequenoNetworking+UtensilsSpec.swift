@@ -34,83 +34,85 @@ final class PequenoNetworking_UtensilsSpec: QuickSpec {
             }
             
             describe("<Error>") {
-                describe(".urlRequestError") {
-                    var urlRequestInfo: URLRequestInfo!
-                    
-                    describe("when all info properties have content") {
-                        beforeEach {
-                            urlRequestInfo = URLRequestInfo(baseURL: "https://cinemassacre.com",
-                                                            headers: ["v": "1"],
-                                                            httpMethod: .get,
-                                                            endpoint: "/avgn",
-                                                            parameters: ["item": "power-glove"],
-                                                            body: ["2nd-player": "behind-couch"])
+                describe("#localizedDescription") {
+                    describe(".urlRequestError") {
+                        var urlRequestInfo: URLRequestInfo!
+                        
+                        describe("when all info properties have content") {
+                            beforeEach {
+                                urlRequestInfo = URLRequestInfo(baseURL: "https://cinemassacre.com",
+                                                                headers: ["v": "1"],
+                                                                httpMethod: .get,
+                                                                endpoint: "/avgn",
+                                                                parameters: ["item": "power-glove"],
+                                                                body: ["2nd-player": "behind-couch"])
+                            }
+                            
+                            it("has proper localized description") {
+                                let urlRequestError = PequenoNetworking.Error.urlRequestError(info: urlRequestInfo)
+                                let expectedRequestError = "Unable to build URLRequest:\nhost:       https://cinemassacre.com\nheaders:    [\"v\": \"1\"]\nhttp verb:  GET\nendpoint:   /avgn\nparameters: [\"item\": \"power-glove\"]\nbody:       [\"2nd-player\": \"behind-couch\"]"
+                                                            
+                                expect(urlRequestError.localizedDescription).to.equal(expectedRequestError)
+                            }
                         }
                         
-                        it("has proper localized description") {
-                            let urlRequestError = PequenoNetworking.Error.urlRequestError(info: urlRequestInfo)
-                            let expectedRequestError = "Unable to build URLRequest:\nhost:       https://cinemassacre.com\nheaders:    [\"v\": \"1\"]\nhttp verb:  GET\nendpoint:   /avgn\nparameters: [\"item\": \"power-glove\"]\nbody:       [\"2nd-player\": \"behind-couch\"]"
-                                                        
-                            expect(urlRequestError.localizedDescription).to.equal(expectedRequestError)
+                        describe("when headers, parameters and body are nil") {
+                            beforeEach {
+                                urlRequestInfo = URLRequestInfo(baseURL: "https://cinemassacre.com",
+                                                                headers: nil,
+                                                                httpMethod: .get,
+                                                                endpoint: "/avgn",
+                                                                parameters: nil,
+                                                                body: nil)
+                            }
+                            
+                            it("has proper localized description") {
+                                let urlRequestError = PequenoNetworking.Error.urlRequestError(info: urlRequestInfo)
+                                let expectedRequestError = "Unable to build URLRequest:\nhost:       https://cinemassacre.com\nheaders:    N/A\nhttp verb:  GET\nendpoint:   /avgn\nparameters: N/A\nbody:       N/A"
+                                                            
+                                expect(urlRequestError.localizedDescription).to.equal(expectedRequestError)
+                            }
                         }
                     }
                     
-                    describe("when headers, parameters and body are nil") {
-                        beforeEach {
-                            urlRequestInfo = URLRequestInfo(baseURL: "https://cinemassacre.com",
-                                                            headers: nil,
-                                                            httpMethod: .get,
-                                                            endpoint: "/avgn",
-                                                            parameters: nil,
-                                                            body: nil)
-                        }
-                        
+                    describe("all other errors") {
                         it("has proper localized description") {
-                            let urlRequestError = PequenoNetworking.Error.urlRequestError(info: urlRequestInfo)
-                            let expectedRequestError = "Unable to build URLRequest:\nhost:       https://cinemassacre.com\nheaders:    N/A\nhttp verb:  GET\nendpoint:   /avgn\nparameters: N/A\nbody:       N/A"
-                                                        
-                            expect(urlRequestError.localizedDescription).to.equal(expectedRequestError)
+                            let dataTaskError = PequenoNetworking.Error.dataTaskError(wrappedError: EmptyError.empty)
+                            let expectedDataTaskError = "Unable to complete data task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                            
+                            expect(dataTaskError.localizedDescription).to.equal(expectedDataTaskError)
+                            
+                            let malformedResponseError = PequenoNetworking.Error.malformedResponseError
+                            
+                            expect(malformedResponseError.localizedDescription).to.equal("Unable to process response")
+                            
+                            let invalidStatusCodeError = PequenoNetworking.Error.invalidStatusCodeError(statusCode: 99)
+                            
+                            expect(invalidStatusCodeError.localizedDescription).to.equal("99: Invalid status code")
+                            
+                            let dataError = PequenoNetworking.Error.dataError
+                            
+                            expect(dataError.localizedDescription).to.equal("Data task does not contain data")
+                            
+                            let jsonDecodeError = PequenoNetworking.Error.jsonDecodeError(wrappedError: EmptyError.empty)
+                            let expectedJSONDecodeError = "Unable to decode json. Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                            
+                            expect(jsonDecodeError.localizedDescription).to.equal(expectedJSONDecodeError)
+                            
+                            let jsonObjectDecodeError = PequenoNetworking.Error.jsonObjectDecodeError(wrappedError: EmptyError.empty)
+                            let expectedJSONObjectDecodeError = "Unable to decode json object. Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                            
+                            expect(jsonObjectDecodeError.localizedDescription).to.equal(expectedJSONObjectDecodeError)
+                            
+                            let downloadError = PequenoNetworking.Error.downloadError
+                            
+                            expect(downloadError.localizedDescription).to.equal("Download task does not contain url")
+                            
+                            let downloadTaskError = PequenoNetworking.Error.downloadTaskError(wrappedError: EmptyError.empty)
+                            let expectedDownloadTaskError = "Unable to complete download task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                            
+                            expect(downloadTaskError.localizedDescription).to.equal(expectedDownloadTaskError)
                         }
-                    }
-                }
-                
-                describe("all other errors") {
-                    it("has proper localized description") {
-                        let dataTaskError = PequenoNetworking.Error.dataTaskError(wrappedError: EmptyError.empty)
-                        let expectedDataTaskError = "Unable to complete data task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
-                        
-                        expect(dataTaskError.localizedDescription).to.equal(expectedDataTaskError)
-                        
-                        let malformedResponseError = PequenoNetworking.Error.malformedResponseError
-                        
-                        expect(malformedResponseError.localizedDescription).to.equal("Unable to process response")
-                        
-                        let invalidStatusCodeError = PequenoNetworking.Error.invalidStatusCodeError(statusCode: 99)
-                        
-                        expect(invalidStatusCodeError.localizedDescription).to.equal("99: Invalid status code")
-                        
-                        let dataError = PequenoNetworking.Error.dataError
-                        
-                        expect(dataError.localizedDescription).to.equal("Data task does not contain data")
-                        
-                        let jsonDecodeError = PequenoNetworking.Error.jsonDecodeError(wrappedError: EmptyError.empty)
-                        let expectedJSONDecodeError = "Unable to decode json. Wrapped Error: \(EmptyError.empty.localizedDescription)"
-                        
-                        expect(jsonDecodeError.localizedDescription).to.equal(expectedJSONDecodeError)
-                        
-                        let jsonObjectDecodeError = PequenoNetworking.Error.jsonObjectDecodeError(wrappedError: EmptyError.empty)
-                        let expectedJSONObjectDecodeError = "Unable to decode json object. Wrapped Error: \(EmptyError.empty.localizedDescription)"
-                        
-                        expect(jsonObjectDecodeError.localizedDescription).to.equal(expectedJSONObjectDecodeError)
-                        
-                        let downloadError = PequenoNetworking.Error.downloadError
-                        
-                        expect(downloadError.localizedDescription).to.equal("Download task does not contain url")
-                        
-                        let downloadTaskError = PequenoNetworking.Error.downloadTaskError(wrappedError: EmptyError.empty)
-                        let expectedDownloadTaskError = "Unable to complete download task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
-                        
-                        expect(downloadTaskError.localizedDescription).to.equal(expectedDownloadTaskError)
                     }
                 }
             }

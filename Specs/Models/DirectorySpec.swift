@@ -19,7 +19,7 @@ final class DirectorySpec: QuickSpec {
                 
                 let expectedURL = URL(string: "file:///fake-documents-directory/")!
                 
-                expect(subject.url()).to.equal(expectedURL)
+                expect(try! subject.url()).to.equal(expectedURL)
                 expect(fakeFileManager.capturedSearchPathDirectory).to.equal(.documentDirectory)
             }
             
@@ -33,7 +33,7 @@ final class DirectorySpec: QuickSpec {
                                 subject = Directory(.documents(additionalPath: "abc/123/"),
                                                     fileManager: fakeFileManager)
                                 
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("creates the the additional path directory in documents") {
@@ -53,7 +53,7 @@ final class DirectorySpec: QuickSpec {
                                 subject = Directory(.documents(additionalPath: "abc/123/"),
                                                     fileManager: fakeFileManager)
                                 
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("builds the correct URL") {
@@ -67,7 +67,7 @@ final class DirectorySpec: QuickSpec {
                             subject = Directory(.documents(),
                                                 fileManager: fakeFileManager)
                             
-                            url = subject.url()
+                            url = try! subject.url()
                         }
                         
                         it("builds the correct URL") {
@@ -82,7 +82,7 @@ final class DirectorySpec: QuickSpec {
                             beforeEach {
                                 subject = Directory(.temp(additionalPath: "abc/123/"), fileManager: fakeFileManager)
                                 
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("creates the the additional path directory in temp") {
@@ -101,7 +101,7 @@ final class DirectorySpec: QuickSpec {
                                 
                                 subject = Directory(.temp(additionalPath: "abc/123/"), fileManager: fakeFileManager)
                                 
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("builds the correct URL") {
@@ -114,7 +114,7 @@ final class DirectorySpec: QuickSpec {
                         beforeEach {
                             subject = Directory(.temp(), fileManager: fakeFileManager)
                             
-                            url = subject.url()
+                            url = try! subject.url()
                         }
                         
                         it("builds the correct URL") {
@@ -129,7 +129,7 @@ final class DirectorySpec: QuickSpec {
                             beforeEach {
                                 subject = Directory(.library(additionalPath: "abc/123/"), fileManager: fakeFileManager)
                                 
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("creates the the additional path directory in library") {
@@ -148,7 +148,7 @@ final class DirectorySpec: QuickSpec {
                                 
                                 subject = Directory(.library(additionalPath: "abc/123/"), fileManager: fakeFileManager)
                                 
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("builds the correct URL") {
@@ -161,7 +161,7 @@ final class DirectorySpec: QuickSpec {
                         beforeEach {
                             subject = Directory(.library(), fileManager: fakeFileManager)
                             
-                            url = subject.url()
+                            url = try! subject.url()
                         }
                         
                         it("builds the correct URL") {
@@ -176,7 +176,7 @@ final class DirectorySpec: QuickSpec {
                             beforeEach {
                                 subject = Directory(.caches(additionalPath: "abc/123/"), fileManager: fakeFileManager)
                                 
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("creates the the additional path directory in caches") {
@@ -195,7 +195,7 @@ final class DirectorySpec: QuickSpec {
                                 
                                 subject = Directory(.caches(additionalPath: "abc/123/"), fileManager: fakeFileManager)
                                 
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("builds the correct URL") {
@@ -208,7 +208,7 @@ final class DirectorySpec: QuickSpec {
                         beforeEach {
                             subject = Directory(.caches(), fileManager: fakeFileManager)
                             
-                            url = subject.url()
+                            url = try! subject.url()
                         }
                         
                         it("builds the correct URL") {
@@ -223,7 +223,7 @@ final class DirectorySpec: QuickSpec {
                             beforeEach {
                                 subject = Directory(.applicationSupport(additionalPath: "abc/123/"), fileManager: fakeFileManager)
                                 
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("creates the application support directory") {
@@ -242,7 +242,7 @@ final class DirectorySpec: QuickSpec {
                                 
                                 subject = Directory(.applicationSupport(additionalPath: "abc/123/"), fileManager: fakeFileManager)
                                 
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("builds the correct URL") {
@@ -258,7 +258,7 @@ final class DirectorySpec: QuickSpec {
                             beforeEach {
                                 subject = Directory(.applicationSupport(), fileManager: fakeFileManager)
                                                                
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("creates the application support directory") {
@@ -277,7 +277,7 @@ final class DirectorySpec: QuickSpec {
                                 
                                 subject = Directory(.applicationSupport(), fileManager: fakeFileManager)
                                                                
-                                url = subject.url()
+                                url = try! subject.url()
                             }
                             
                             it("builds the correct URL") {

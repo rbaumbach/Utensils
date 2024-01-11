@@ -337,7 +337,8 @@ final class PequenoNetworkingSpec: QuickSpec {
                     expect(fakeNetworkingEngine.capturedDownloadParameters).to.equal(["ghost": "scoleri-brothers"])
                     expect(fakeNetworkingEngine.capturedDownloadFilename).to.equal("scoleri-brothers")
                     
-                    let actualDirectoryURLString = fakeNetworkingEngine.capturedDownloadDirectory?.url().absoluteString
+                    let actualDirectoryURL = try! fakeNetworkingEngine.capturedDownloadDirectory!.url()
+                    let actualDirectoryURLString = actualDirectoryURL.absoluteString
                     
                     expect(actualDirectoryURLString).to.equal("file:///fake-directory/extra-fake-directory/")
                 }

@@ -144,8 +144,8 @@ open class URLSessionExecutor: URLSessionExecutorProtocol {
                              tempURL: URL) throws -> URL {
         let downloadedTempFileName = tempURL.lastPathComponent
         let filemame = customFilename ?? downloadedTempFileName
-        
-        let fullMigrationFileLocationAndName = directory.url().appendingPathComponent(filemame)
+                
+        let fullMigrationFileLocationAndName = try directory.url().appendingPathComponent(filemame)
         
         try fileManager.migrateFile(at: tempURL, 
                                     to: fullMigrationFileLocationAndName)

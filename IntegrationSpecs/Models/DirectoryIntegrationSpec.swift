@@ -16,7 +16,7 @@ final class DirectoryIntegrationSpec: QuickSpec {
                         it("has proper URL") {
                             subject = Directory()
                             
-                            url = subject.url()
+                            url = try! subject.url()
                             
                             // Note: The absolute/relativeString properties contain the scheme
                             // and closing forward slash '/' in path
@@ -56,7 +56,7 @@ final class DirectoryIntegrationSpec: QuickSpec {
                         it("has proper URL") {
                             subject = Directory(.documents(additionalPath: "filez/"))
                             
-                            url = subject.url()
+                            url = try! subject.url()
                             
                             // Note: The absolute/relativeString properties contain the scheme
                             // and closing forward slash '/' in path
@@ -98,7 +98,7 @@ final class DirectoryIntegrationSpec: QuickSpec {
                         it("has proper URL") {
                             subject = Directory(.caches())
                             
-                            url = subject.url()
+                            url = try! subject.url()
                             
                             // Note: The absolute/relativeString properties contain the scheme
                             // and closing forward slash '/' in path
@@ -138,7 +138,7 @@ final class DirectoryIntegrationSpec: QuickSpec {
                         it("has proper URL") {
                             subject = Directory(.caches(additionalPath: "filez/"))
                             
-                            url = subject.url()
+                            url = try! subject.url()
                             
                             // Note: The absolute/relativeString properties contain the scheme
                             // and closing forward slash '/' in path
@@ -180,7 +180,7 @@ final class DirectoryIntegrationSpec: QuickSpec {
                         it("has proper URL") {
                             subject = Directory(.temp())
                             
-                            url = subject.url()
+                            url = try! subject.url()
                             
                             // Note: The absolute/relativeString properties contain the scheme
                             // and closing forward slash '/' in path
@@ -220,7 +220,7 @@ final class DirectoryIntegrationSpec: QuickSpec {
                         it("has proper URL") {
                             subject = Directory(.temp(additionalPath: "filez/"))
                             
-                            url = subject.url()
+                            url = try! subject.url()
                                                         
                             // Note: The absolute/relativeString properties contain the scheme
                             // and closing forward slash '/' in path
