@@ -23,7 +23,7 @@
 import Foundation
 import Capsule
 
-open class FakeURLSessionExecutor: URLSessionExecutorProtocol {
+open class FakeURLSessionExecutor: Fake, URLSessionExecutorProtocol {
     // MARK: - Captured properties
     
     public var capturedExecuteURLRequest: URLRequest?
@@ -50,7 +50,7 @@ open class FakeURLSessionExecutor: URLSessionExecutorProtocol {
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <URLSessionExecutorProtocol>
     

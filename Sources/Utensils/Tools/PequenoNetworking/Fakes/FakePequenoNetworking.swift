@@ -21,11 +21,12 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
 // Note: Any? is used for the capturedCompletionHandlers due to warning messages about "shadowing" at the
 // class level. As a consumer you can cast to (Result<T, PequenoNetworking.Error>) -> Void).
 
-open class FakePequenoNetworking: PequenoNetworkingProtocol {
+open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     // MARK: - Captured properties
     
     // MARK: - JSONSerialization (ol' skoo)
@@ -112,7 +113,7 @@ open class FakePequenoNetworking: PequenoNetworkingProtocol {
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <PequenoNetworkingProtocol>
     

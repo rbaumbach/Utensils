@@ -23,7 +23,7 @@
 import Foundation
 import Capsule
 
-open class FakeFileLoader: FileLoaderProtocol {
+open class FakeFileLoader: Fake, FileLoaderProtocol {
     // MARK: - Captured properties
     
     public var capturedLoadJSONName: String?
@@ -39,7 +39,7 @@ open class FakeFileLoader: FileLoaderProtocol {
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - FileLoaderProtocol
     

@@ -21,8 +21,9 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
-open class FakeDebouncer: DebouncerProtocol {
+open class FakeDebouncer: Fake, DebouncerProtocol {
     // MARK: - Captured properties
     
     public var capturedDebounceSeconds: Double?
@@ -34,7 +35,7 @@ open class FakeDebouncer: DebouncerProtocol {
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <DebouncerProtocol>
     

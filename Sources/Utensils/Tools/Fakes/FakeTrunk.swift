@@ -21,8 +21,9 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
-open class FakeTrunk: TrunkProtocol {
+open class FakeTrunk: Fake, TrunkProtocol {
     // MARK: - Captured properties
     
     public var capturedOutputFormat: Trunk.OutputFormat?
@@ -61,7 +62,7 @@ open class FakeTrunk: TrunkProtocol {
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <TrunkProtocol>
     

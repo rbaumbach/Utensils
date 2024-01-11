@@ -21,15 +21,16 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
-open class FakeDirectory: DirectoryProtocol {
+open class FakeDirectory: Fake, DirectoryProtocol {
     // MARK: - Stubbed properties
     
     public var stubbedURL = URL(string: "file:///fake-directory/extra-fake-directory/")!
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <DirectoryProtocol>
     

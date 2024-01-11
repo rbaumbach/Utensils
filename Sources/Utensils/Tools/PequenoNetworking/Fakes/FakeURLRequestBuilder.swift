@@ -21,8 +21,9 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
-open class FakeURLRequestBuilder: URLRequestBuilderProtocol {
+open class FakeURLRequestBuilder: Fake, URLRequestBuilderProtocol {
     // MARK: - Captured properties
     
     public var capturedURLRequestInfo: URLRequestInfo?
@@ -37,7 +38,7 @@ open class FakeURLRequestBuilder: URLRequestBuilderProtocol {
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <URLRequestBuilderProtocol>
     

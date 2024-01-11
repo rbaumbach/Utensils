@@ -21,11 +21,12 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
 // Note: Any? is used for the capturedCompletionHandlers due to warning messages about "shadowing" at the
 // class level. As a consumer you can cast to (Result<T, PequenoNetworking.Error>) -> Void).
 
-open class FakeNetworkingEngine: NetworkingEngineProtocol {
+open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
     // MARK: - Captured properties
     
     public var capturedGetBaseURL: String?
@@ -85,7 +86,7 @@ open class FakeNetworkingEngine: NetworkingEngineProtocol {
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <NetworkingEngineProtocol>
     
