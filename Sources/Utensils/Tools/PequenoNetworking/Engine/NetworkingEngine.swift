@@ -188,7 +188,7 @@ open class NetworkingEngine: NetworkingEngineProtocol {
                              completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
         let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
                                             headers: headers,
-                                            httpMethod: .delete,
+                                            httpMethod: .get,
                                             endpoint: endpoint,
                                             parameters: parameters,
                                             body: nil)

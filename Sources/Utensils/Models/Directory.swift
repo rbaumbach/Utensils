@@ -137,6 +137,10 @@ public struct Directory: DirectoryProtocol, Equatable, Hashable {
                                                 withIntermediateDirectories: true,
                                                 attributes: nil)
             } catch {
+                // TODO: Since this can fail for valid reasons, this error needs passed up
+                // and handled by the user
+                // ex: not enough disk space, invalid path, file with same directory name
+                
                 preconditionFailure("Uh oh, unable to create directory: \(directoryPath)")
             }
         }

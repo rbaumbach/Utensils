@@ -58,6 +58,14 @@ open class FakeNetworkingEngine: NetworkingEngineProtocol {
     public var capturedPatchBody: [String: Any]?
     public var capturedPatchCompletionHandler: Any?
     
+    public var capturedDownloadBaseURL: String?
+    public var capturedDownloadHeaders: [String: Any]?
+    public var capturedDownloadEndpoint: String?
+    public var capturedDownloadParameters: [String: String]?
+    public var capturedDownloadFilename: String?
+    public var capturedDownloadDirectory: DirectoryProtocol?
+    public var capturedDownloadCompletionHandler: ((Result<URL, PequenoNetworking.Error>) -> Void)?
+    
     // MARK: - Stubbed properties
     
     public var stubbedGetResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
@@ -65,6 +73,11 @@ open class FakeNetworkingEngine: NetworkingEngineProtocol {
     public var stubbedPostResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     public var stubbedPutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     public var stubbedPatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedDownloadResult: Result<URL, PequenoNetworking.Error> = {
+       let url = URL(string: "https://99-stubby-99.party")!
+        
+        return .success(url)
+    }()
     
     // MARK: - Public properties
     
@@ -203,6 +216,16 @@ open class FakeNetworkingEngine: NetworkingEngineProtocol {
                              filename: String,
                              directory: DirectoryProtocol,
                              completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
-        // TODO: Finish this
+        capturedDownloadBaseURL = baseURL
+        capturedDownloadHeaders = headers
+        capturedDownloadEndpoint = endpoint
+        capturedDownloadParameters = parameters
+        capturedDownloadFilename = filename
+        capturedDownloadDirectory = directory
+        capturedDownloadCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedDownloadResult)
+        }
     }
 }

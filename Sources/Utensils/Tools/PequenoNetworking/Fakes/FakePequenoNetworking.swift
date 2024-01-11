@@ -72,6 +72,14 @@ open class FakePequenoNetworking: PequenoNetworkingProtocol {
     public var capturedCodablePatchBody: [String: Any]?
     public var capturedCodablePatchCompletionHandler: Any?
     
+    // MARK: - Downloading
+    
+    public var capturedDownloadEndpoint: String?
+    public var capturedDownloadParameters: [String: Any]?
+    public var capturedDownloadFilename: String?
+    public var capturedDownloadDirectory: DirectoryProtocol?
+    public var capturedDownloadCompletionHandler: ((Result<URL, PequenoNetworking.Error>) -> Void)?
+    
     // MARK: - Stubbed properties
     
     // MARK: - JSONSerialization (ol' skoo)
@@ -89,6 +97,14 @@ open class FakePequenoNetworking: PequenoNetworkingProtocol {
     public var stubbedCodablePostResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     public var stubbedCodablePutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     public var stubbedCodablePatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    
+    // MARK: - Downloading
+    
+    public var stubbedDownloadResult: Result<URL, PequenoNetworking.Error> = {
+        let url = URL(string: "http://99-downloads-loaderdowns.party")!
+        
+        return .success(url)
+    }()
     
     // MARK: - Public properties
     
@@ -261,6 +277,22 @@ open class FakePequenoNetworking: PequenoNetworkingProtocol {
             }
             
             completionHandler(typedResult)
+        }
+    }
+    
+    public func downloadFile(endpoint: String,
+                             parameters: [String: String]?,
+                             filename: String,
+                             directory: DirectoryProtocol,
+                             completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
+        capturedDownloadEndpoint = endpoint
+        capturedDownloadParameters = parameters
+        capturedDownloadFilename = filename
+        capturedDownloadDirectory = directory
+        capturedDownloadCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedDownloadResult)
         }
     }
 }

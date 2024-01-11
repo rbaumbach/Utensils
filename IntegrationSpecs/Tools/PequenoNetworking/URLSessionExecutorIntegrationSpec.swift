@@ -26,7 +26,7 @@ final class URLSessionExecutorIntegrationSpec: QuickSpec {
                     urlRequest = URLRequest(url: urlComponents.url!)
                 }
                 
-                it("completes with url to cached image") {
+                it("completes with url to downloaded image") {
                     hangOn(for: .seconds(5)) { complete in
                         subject.executeDownload(urlRequest: urlRequest,
                                                 customFilename: "animal.jpeg",

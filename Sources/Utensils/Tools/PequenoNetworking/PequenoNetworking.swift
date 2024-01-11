@@ -67,6 +67,14 @@ public protocol PequenoNetworkingProtocol {
     func patch<T: Codable>(endpoint: String,
                            body: [String: Any]?,
                            completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+    
+    // MARK: - Downloading
+    
+    func downloadFile(endpoint: String,
+                      parameters: [String: String]?,
+                      filename: String,
+                      directory: DirectoryProtocol,
+                      completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void)
 }
 
 open class PequenoNetworking: PequenoNetworkingProtocol {
@@ -202,5 +210,19 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
                                endpoint: endpoint,
                                body: body,
                                completionHandler: completionHandler)
+    }
+    
+    public func downloadFile(endpoint: String,
+                             parameters: [String: String]?,
+                             filename: String,
+                             directory: DirectoryProtocol,
+                             completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
+        networkingEngine.downloadFile(baseURL: baseURL,
+                                      headers: headers,
+                                      endpoint: endpoint,
+                                      parameters: parameters,
+                                      filename: filename,
+                                      directory: directory,
+                                      completionHandler: completionHandler)
     }
 }
