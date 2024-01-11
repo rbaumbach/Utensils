@@ -55,6 +55,14 @@ public protocol NetworkingEngineProtocol {
                            endpoint: String,
                            body: [String: Any]?,
                            completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+    
+    func downloadFile(baseURL: String,
+                             headers: [String: String]?,
+                             endpoint: String,
+                             parameters: [String: String]?,
+                             filename: String,
+                             directory: DirectoryProtocol,
+                             completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void)
 }
 
 public class NetworkingEngine: NetworkingEngineProtocol {
@@ -163,8 +171,31 @@ public class NetworkingEngine: NetworkingEngineProtocol {
                                             body: body)
         
         executeRequest(baseURL: baseURL,
-                              headers: headers,
-                              urlRequestInfo: urlRequestInfo) { [weak self] result in
+                       headers: headers,
+                       urlRequestInfo: urlRequestInfo) { [weak self] result in
+            self?.dispatchQueueWrapper.mainAsync {
+                completionHandler(result)
+            }
+        }
+    }
+    
+    public func downloadFile(baseURL: String,
+                             headers: [String: String]?,
+                             endpoint: String,
+                             parameters: [String: String]?,
+                             filename: String,
+                             directory: DirectoryProtocol,
+                             completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(httpMethod: .delete,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
+        
+        executeDownloadRequest(baseURL: baseURL, 
+                               headers: headers,
+                               urlRequestInfo: urlRequestInfo,
+                               filename: filename,
+                               directory: directory) { [weak self] result in
             self?.dispatchQueueWrapper.mainAsync {
                 completionHandler(result)
             }
@@ -186,6 +217,30 @@ public class NetworkingEngine: NetworkingEngineProtocol {
                     self?.handleResponse(data: data,
                                          error: error,
                                          completionHandler: completionHandler)
+                }
+            case .failure(let error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    private func executeDownloadRequest(baseURL: String,
+                                        headers: [String: String]?,
+                                        urlRequestInfo: URLRequestInfo,
+                                        filename: String,
+                                        directory: DirectoryProtocol,
+                                        completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
+        urlRequestBuilder.build(baseURL: baseURL,
+                                headers: headers,
+                                urlRequestInfo: urlRequestInfo) { result in
+            switch result {
+            case .success(let urlRequest):
+                urlSessionExecutor.executeDownload(urlRequest: urlRequest,
+                                                   customFilename: filename,
+                                                   directory: directory) { [weak self] url, error in
+                    self?.handleDownloadResponse(url: url,
+                                                 error: error,
+                                                 completionHandler: completionHandler)
                 }
             case .failure(let error):
                 completionHandler(.failure(error))
@@ -218,5 +273,23 @@ public class NetworkingEngine: NetworkingEngineProtocol {
         }
         
         completionHandler(result)
+    }
+    
+    private func handleDownloadResponse(url: URL?,
+                                        error: PequenoNetworking.Error?,
+                                        completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
+        if let error = error {
+            completionHandler(.failure(error))
+            
+            return
+        }
+        
+        guard let url = url else {
+            completionHandler(.failure(.downloadError))
+            
+            return
+        }
+        
+        completionHandler(.success(url))
     }
 }

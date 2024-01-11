@@ -52,6 +52,10 @@
 		94630F0B23AA76CB0054BAAD /* SpecModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94630F0A23AA76CB0054BAAD /* SpecModels.swift */; };
 		946AB1792390568C003D0016 /* TrunkSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946AB1782390568C003D0016 /* TrunkSpec.swift */; };
 		947266402B4DBDDD00353F4E /* DirectoryIntegrationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9472663F2B4DBDDD00353F4E /* DirectoryIntegrationSpec.swift */; };
+		947266422B4DE92500353F4E /* URLSessionExecutorIntegrationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947266412B4DE92500353F4E /* URLSessionExecutorIntegrationSpec.swift */; };
+		947266442B4E208700353F4E /* CleanupUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947266432B4E208700353F4E /* CleanupUtils.swift */; };
+		947266472B4F85E900353F4E /* FileManager+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947266452B4F671A00353F4E /* FileManager+Utensils.swift */; };
+		9472664B2B4F86EA00353F4E /* FakeFileManagerUtensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947266492B4F86C500353F4E /* FakeFileManagerUtensils.swift */; };
 		94872AF42915D16F00D3528B /* DefaultAppLaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AF22915D16F00D3528B /* DefaultAppLaunchView.swift */; };
 		94872AF52915D16F00D3528B /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AF32915D16F00D3528B /* AppLaunchViewController.swift */; };
 		94872AF92915D20700D3528B /* Bundle+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AF82915D20700D3528B /* Bundle+Utensils.swift */; };
@@ -150,6 +154,10 @@
 		94630F0A23AA76CB0054BAAD /* SpecModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecModels.swift; sourceTree = "<group>"; };
 		946AB1782390568C003D0016 /* TrunkSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrunkSpec.swift; sourceTree = "<group>"; };
 		9472663F2B4DBDDD00353F4E /* DirectoryIntegrationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryIntegrationSpec.swift; sourceTree = "<group>"; };
+		947266412B4DE92500353F4E /* URLSessionExecutorIntegrationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionExecutorIntegrationSpec.swift; sourceTree = "<group>"; };
+		947266432B4E208700353F4E /* CleanupUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanupUtils.swift; sourceTree = "<group>"; };
+		947266452B4F671A00353F4E /* FileManager+Utensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Utensils.swift"; sourceTree = "<group>"; };
+		947266492B4F86C500353F4E /* FakeFileManagerUtensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeFileManagerUtensils.swift; sourceTree = "<group>"; };
 		94872AEE2915CD5A00D3528B /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		94872AF22915D16F00D3528B /* DefaultAppLaunchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultAppLaunchView.swift; sourceTree = "<group>"; };
 		94872AF32915D16F00D3528B /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
@@ -429,9 +437,18 @@
 		94569E592B30E765008494E1 /* Spec Files */ = {
 			isa = PBXGroup;
 			children = (
+				947266432B4E208700353F4E /* CleanupUtils.swift */,
 				94569E5A2B30E776008494E1 /* SpecModels.swift */,
 			);
 			path = "Spec Files";
+			sourceTree = "<group>";
+		};
+		947266482B4F86B200353F4E /* Fakes */ = {
+			isa = PBXGroup;
+			children = (
+				947266492B4F86C500353F4E /* FakeFileManagerUtensils.swift */,
+			);
+			path = Fakes;
 			sourceTree = "<group>";
 		};
 		94872AF12915D15400D3528B /* ViewControllers */ = {
@@ -453,7 +470,9 @@
 		94872AF72915D1CE00D3528B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				947266482B4F86B200353F4E /* Fakes */,
 				94872AF82915D20700D3528B /* Bundle+Utensils.swift */,
+				947266452B4F671A00353F4E /* FileManager+Utensils.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -502,6 +521,7 @@
 			isa = PBXGroup;
 			children = (
 				94B2AE702B3740900081B1FE /* PequenoNetworkingIntegrationSpec.swift */,
+				947266412B4DE92500353F4E /* URLSessionExecutorIntegrationSpec.swift */,
 			);
 			path = PequenoNetworking;
 			sourceTree = "<group>";
@@ -825,12 +845,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				94FD505D2B3B48280090455F /* URLSessionExecutor.swift in Sources */,
+				9472664B2B4F86EA00353F4E /* FakeFileManagerUtensils.swift in Sources */,
 				94569E302B29F596008494E1 /* FakeFileLoader.swift in Sources */,
 				94BCF31C2B485F38008A5D78 /* FakePequenoNetworking.swift in Sources */,
 				94FD50582B3B24770090455F /* URLRequestBuilder.swift in Sources */,
 				94569E372B2CB1EE008494E1 /* FileLoader+Utensils.swift in Sources */,
 				9404C5722B431AF6001626C8 /* FakeClassicNetworkingEngine.swift in Sources */,
 				94FD50632B3C7C4F0090455F /* NetworkingEngine.swift in Sources */,
+				947266472B4F85E900353F4E /* FileManager+Utensils.swift in Sources */,
 				940F9DFB239B14630028937B /* FakeTrunk.swift in Sources */,
 				94569E462B2F35BE008494E1 /* PequenoNetworking+Utensils.swift in Sources */,
 				94872AF52915D16F00D3528B /* AppLaunchViewController.swift in Sources */,
@@ -888,8 +910,10 @@
 				94B2AE712B3740900081B1FE /* PequenoNetworkingIntegrationSpec.swift in Sources */,
 				94569E5B2B30E776008494E1 /* SpecModels.swift in Sources */,
 				947266402B4DBDDD00353F4E /* DirectoryIntegrationSpec.swift in Sources */,
+				947266422B4DE92500353F4E /* URLSessionExecutorIntegrationSpec.swift in Sources */,
 				94569E282B28EE64008494E1 /* FileLoaderIntegrationSpec.swift in Sources */,
 				94569E582B30E19D008494E1 /* SomeTestFunctions.swift in Sources */,
+				947266442B4E208700353F4E /* CleanupUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

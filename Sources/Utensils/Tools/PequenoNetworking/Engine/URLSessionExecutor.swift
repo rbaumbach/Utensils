@@ -24,28 +24,41 @@ import Foundation
 import Capsule
 
 public protocol URLSessionExecutorProtocol {
+    @discardableResult
     func execute(urlRequest: URLRequest,
-                 completionHandler: @escaping (Data?, PequenoNetworking.Error?) -> Void)
+                 completionHandler: @escaping (Data?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol
+    
+    @discardableResult
+    func executeDownload(urlRequest: URLRequest,
+                         customFilename: String?,
+                         directory: DirectoryProtocol,
+                         completionHandler: @escaping (URL?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol
 }
 
 public class URLSessionExecutor: URLSessionExecutorProtocol {
     // MARK: - Private properties
-    
+        
     private let urlSession: URLSessionProtocol
+    private let fileManager: FileManagerUtensilsProtocol
     
     // MARK: - Readonly properties
     
-    public private(set) var lastExecutedDataTask: URLSessionTaskProtocol?
+    public private(set) var lastExecutedURLSessionTask: URLSessionTaskProtocol?
     
     // MARK: - Init methods
     
-    public init(urlSession: URLSessionProtocol = URLSession.shared) {
+    public init(urlSession: URLSessionProtocol = URLSession.shared,
+                fileManager: FileManagerUtensilsProtocol = FileManager.default) {
         self.urlSession = urlSession
+        self.fileManager = fileManager
     }
     
+    // MARK: - Public methods
+    
+    @discardableResult
     public func execute(urlRequest: URLRequest,
-                        completionHandler: @escaping (Data?, PequenoNetworking.Error?) -> Void) {
-        lastExecutedDataTask = urlSession.dataTask(urlRequest: urlRequest) { data, response, error in
+                        completionHandler: @escaping (Data?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol {
+        let dataTask = urlSession.dataTask(urlRequest: urlRequest) { data, response, error in
             if let error = error {
                 completionHandler(nil, .dataTaskError(wrappedError: error))
                 
@@ -67,6 +80,76 @@ public class URLSessionExecutor: URLSessionExecutorProtocol {
             completionHandler(data, nil)
         }
         
-        lastExecutedDataTask?.resume()
+        dataTask.resume()
+        
+        lastExecutedURLSessionTask = dataTask
+        
+        return dataTask
+    }
+    
+    @discardableResult
+    public func executeDownload(urlRequest: URLRequest,
+                                customFilename: String?,
+                                directory: DirectoryProtocol,
+                                completionHandler: @escaping (URL?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol {
+        let downloadTask = urlSession.downloadTask(urlRequest: urlRequest) { [weak self] tempURL, response, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                completionHandler(nil, .downloadTaskError(wrappedError: error))
+                
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                completionHandler(nil, .malformedResponseError)
+                
+                return
+            }
+            
+            guard (200...299).contains(response.statusCode) else {
+                completionHandler(nil, .invalidStatusCodeError(statusCode: response.statusCode))
+                
+                return
+            }
+            
+            guard let tempURL = tempURL else {
+                completionHandler(nil, .downloadError)
+                
+                return
+            }
+            
+            do {
+                let migratedFileURL = try self.migrateFile(customFilename: customFilename,
+                                                           directory: directory,
+                                                           tempURL: tempURL)
+                
+                completionHandler(migratedFileURL, nil)
+            } catch {
+                completionHandler(nil, .downloadFileManagerError(wrappedError: error))
+            }
+        }
+        
+        downloadTask.resume()
+        
+        lastExecutedURLSessionTask = downloadTask
+        
+        return downloadTask
+    }
+    
+    // MARK: - Private methods
+        
+    private func migrateFile(customFilename: String?,
+                             directory: DirectoryProtocol,
+                             tempURL: URL) throws -> URL {
+        let downloadedTempFileName = tempURL.lastPathComponent
+        let filemame = customFilename ?? downloadedTempFileName
+        
+        let fullMigrationFileLocationAndName = directory.url().appendingPathComponent(filemame)
+        
+        try fileManager.migrateFile(at: tempURL, 
+                                    to: fullMigrationFileLocationAndName)
+        
+        return fullMigrationFileLocationAndName
     }
 }

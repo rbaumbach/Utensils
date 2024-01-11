@@ -195,4 +195,14 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
             completionHandler(typedResult)
         }
     }
+    
+    public func downloadFile(baseURL: String,
+                             headers: [String: String]?,
+                             endpoint: String,
+                             parameters: [String: String]?,
+                             filename: String,
+                             directory: DirectoryProtocol,
+                             completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
+        // TODO: Finish this
+    }
 }

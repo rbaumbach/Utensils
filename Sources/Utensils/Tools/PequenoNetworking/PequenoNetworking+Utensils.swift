@@ -36,6 +36,7 @@ public extension PequenoNetworking {
         case jsonObjectDecodeError(wrappedError: Swift.Error)
         case downloadError
         case downloadTaskError(wrappedError: Swift.Error)
+        case downloadFileManagerError(wrappedError: Swift.Error)
         
         // MARK: - <CaseIterable>
         
@@ -83,6 +84,8 @@ public extension PequenoNetworking {
                 return "Download task does not contain url"
             case .downloadTaskError(let error):
                 return "Unable to complete download task successfully.  Wrapped Error: \(error.localizedDescription)"
+            case .downloadFileManagerError(let error):
+                return "Unable to save file to disk. Wrapped Error: \(error.localizedDescription)"
             }
         }
         
@@ -116,6 +119,8 @@ public extension PequenoNetworking {
                 return "Verify your server is returning valid data"
             case .downloadTaskError:
                 return "Verify that your download task was built appropriately"
+            case .downloadFileManagerError:
+                return "Verify you can modify files on disk"
             }
         }
         
