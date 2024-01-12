@@ -60,7 +60,7 @@ public struct Directory: DirectoryProtocol, Equatable, Hashable {
         case .documents(let additionalPath):
             return try generateSystemDirectoryPath(searchPathDirectory: .documentDirectory,
                                                    additionalPathString: additionalPath)
-            
+
         case .temp(let additionalPath):
             return try generateTemporaryDirectoryPath(additionalPathString: additionalPath)
             
@@ -126,7 +126,9 @@ public struct Directory: DirectoryProtocol, Equatable, Hashable {
     private func systemDirectory(_ directory: FileManager.SearchPathDirectory) throws -> URL {
         guard let directoryURL = fileManager.urls(for: directory,
                                                   in: .userDomainMask).first else {
-            throw Directory.Error.systemDirectoryDoom
+            let message = "Unable to access system directory: \(directory.name)"
+            
+            throw Doom.error(message)
         }
         
         return directoryURL
@@ -136,7 +138,7 @@ public struct Directory: DirectoryProtocol, Equatable, Hashable {
         do {
             try fileManager.createDirectory(url: directoryPath)
         } catch {
-            throw Directory.Error.unableToCreateDirectory((directoryPath, error))
+            throw Directory.Error.unableToCreateDirectory(url: directoryPath, wrappedError: error)
         }
     }
 }

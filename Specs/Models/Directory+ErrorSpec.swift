@@ -8,8 +8,7 @@ final class Directory_ErrorSpec: QuickSpec {
         describe("Directory+Error") {
             describe("<CaseIterable>)") {
                 it("has all required cases") {
-                    let expectedCases: [Directory.Error] = [.systemDirectoryDoom,
-                                                            .unableToCreateDirectory((url: URL.empty, wrappedError: EmptyError.empty))]
+                    let expectedCases: [Directory.Error] = [.unableToCreateDirectory(url: URL.empty, wrappedError: EmptyError.empty)]
                     
                     expect(Directory.Error.allCases).to.equal(expectedCases)
                 }
@@ -17,23 +16,14 @@ final class Directory_ErrorSpec: QuickSpec {
             
             describe("<Error>") {
                 describe("#localizedDescription") {
-                    describe(".systemDirectoryDoom") {
-                        it("has proper error description") {
-                            let systemDirectoryDoomErrorDescription = Directory.Error.systemDirectoryDoom.localizedDescription
-                            let expectedLocalizedDescription = "Unable to retrieve system search path directory"
-                            
-                            expect(systemDirectoryDoomErrorDescription).to.equal(expectedLocalizedDescription)
-                        }
-                    }
-                    
                     describe(".unableToCreateDirectory") {
                         it("has proper error description") {
-                            let tuple = (url: URL(string: "file:///root")!, wrappedError: FakeGenericError.whoCares)
+                            let url = URL(string: "file:///root")!
+                            let error = Directory.Error.unableToCreateDirectory(url: url, wrappedError: FakeGenericError.whoCares)
                             
-                            let unableToCreateDirectoryDescription = Directory.Error.unableToCreateDirectory(tuple).localizedDescription
-                            let expectedLocalizedDescription = "Unable to create directory:\nfile:///root\nwrappedError:\nwhoCares"
+                            let expectedDescription = "Unable to create directory:\nfile:///root\nwrappedError:\nwhoCares"
                             
-                            expect(unableToCreateDirectoryDescription).to.equal(expectedLocalizedDescription)
+                            expect(error.localizedDescription).to.equal(expectedDescription)
                         }
                     }
                 }
@@ -42,54 +32,35 @@ final class Directory_ErrorSpec: QuickSpec {
             describe("<LocalizedError>") {
                 describe("#errorDescription") {
                     it("is the same as the localized description") {
-                        let systemDirectoryDoomDescription = Directory.Error.systemDirectoryDoom.errorDescription
-                        let expectedDirectoryDoomDescription = "Unable to retrieve system search path directory"
+                        let url = URL(string: "file:///root")!
+                        let error = Directory.Error.unableToCreateDirectory(url: url, wrappedError: FakeGenericError.whoCares)
                         
-                        expect(systemDirectoryDoomDescription).to.equal(expectedDirectoryDoomDescription)
+                        let expectedDescription = "Unable to create directory:\nfile:///root\nwrappedError:\nwhoCares"
                         
-                        let tuple = (url: URL(string: "file:///root")!, wrappedError: FakeGenericError.whoCares)
-                        
-                        let unableToCreateDirectoryDescription = Directory.Error.unableToCreateDirectory(tuple).errorDescription
-                        let expectedUnableToCreateDirectoryDescription = "Unable to create directory:\nfile:///root\nwrappedError:\nwhoCares"
-                        
-                        expect(unableToCreateDirectoryDescription).to.equal(expectedUnableToCreateDirectoryDescription)
+                        expect(error.errorDescription).to.equal(expectedDescription)
                     }
                 }
                 
                 describe("#failureReason") {
                     it("is the same as the localized description") {
-                        let systemDirectoryDoomDescription = Directory.Error.systemDirectoryDoom.failureReason
-                        let expectedDirectoryDoomDescription = "Unable to retrieve system search path directory"
+                        let url = URL(string: "file:///root")!
+                        let error = Directory.Error.unableToCreateDirectory(url: url, wrappedError: FakeGenericError.whoCares)
                         
-                        expect(systemDirectoryDoomDescription).to.equal(expectedDirectoryDoomDescription)
+                        let expectedDescription = "Unable to create directory:\nfile:///root\nwrappedError:\nwhoCares"
                         
-                        let tuple = (url: URL(string: "file:///root")!, wrappedError: FakeGenericError.whoCares)
-                        
-                        let unableToCreateDirectoryDescription = Directory.Error.unableToCreateDirectory(tuple).errorDescription
-                        let expectedUnableToCreateDirectoryDescription = "Unable to create directory:\nfile:///root\nwrappedError:\nwhoCares"
-                        
-                        expect(unableToCreateDirectoryDescription).to.equal(expectedUnableToCreateDirectoryDescription)
+                        expect(error.failureReason).to.equal(expectedDescription)
                     }
                 }
                 
                 describe("#recoverySuggestion") {
                     describe(".systemDirectoryDoom") {
                         it("has proper recovery suggestion description") {
-                            let systemDirectoryDoomErrorDescription = Directory.Error.systemDirectoryDoom.recoverySuggestion
-                            let expectedLocalizedDescription = "Unable to get system directory.  Something is seriously wrong with your device"
+                            let url = URL(string: "file:///root")!
+                            let error = Directory.Error.unableToCreateDirectory(url: url, wrappedError: FakeGenericError.whoCares)
                             
-                            expect(systemDirectoryDoomErrorDescription).to.equal(expectedLocalizedDescription)
-                        }
-                    }
-                    
-                    describe(".unableToCreateDirectory") {
-                        it("has proper recovery suggestion description") {
-                            let tuple = (url: URL(string: "file:///root")!, wrappedError: FakeGenericError.whoCares)
+                            let expectedDescription = "Verify path is valid, current file doesn\'t have same directory name and/or have enough disk space"
                             
-                            let unableToCreateDirectoryDescription = Directory.Error.unableToCreateDirectory(tuple).recoverySuggestion
-                            let expectedLocalizedDescription = "Verify path is valid, current file doesn't have same directory name and/or have enough disk space"
-                            
-                            expect(unableToCreateDirectoryDescription).to.equal(expectedLocalizedDescription)
+                            expect(error.recoverySuggestion).to.equal(expectedDescription)
                         }
                     }
                 }
@@ -97,15 +68,16 @@ final class Directory_ErrorSpec: QuickSpec {
             
             describe("<Equatable") {
                 it("is equatable") {
-                    let systemDoomError = Directory.Error.systemDirectoryDoom
+                    let url1 = URL(string: "file:///root")!
+                    let error1 = Directory.Error.unableToCreateDirectory(url: url1, wrappedError: FakeGenericError.whoCares)
                     
-                    expect(systemDoomError).to.equal(Directory.Error.systemDirectoryDoom)
+                    let error2 = Directory.Error.unableToCreateDirectory(url: url1, wrappedError: FakeGenericError.whoCares)
                     
-                    let tuple = (url: URL(string: "file:///root")!, wrappedError: FakeGenericError.whoCares)
+                    let url2 = URL(string: "file:///chihuahua")!
+                    let error3 = Directory.Error.unableToCreateDirectory(url: url2, wrappedError: FakeGenericError.whoCares)
                     
-                    let unableToCreateDirectoryError = Directory.Error.unableToCreateDirectory(tuple)
-                    
-                    expect(systemDoomError).toNot.equal(unableToCreateDirectoryError)
+                    expect(error1).to.equal(error2)
+                    expect(error1).toNot.equal(error3)
                 }
             }
         }

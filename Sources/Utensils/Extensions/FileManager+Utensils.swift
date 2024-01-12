@@ -49,3 +49,64 @@ extension FileManager: FileManagerUtensilsProtocol {
         }
     }
 }
+
+public extension FileManager.SearchPathDirectory {
+    var name: String {
+        switch self {
+        case .applicationDirectory:
+            return "application"
+        case .demoApplicationDirectory:
+            return "demo application"
+        case .developerApplicationDirectory:
+            return "developer application"
+        case .adminApplicationDirectory:
+            return "admin application"
+        case .libraryDirectory:
+            return "library"
+        case .developerDirectory:
+            return "developer"
+        case .userDirectory:
+            return "user"
+        case .documentationDirectory:
+            return "documentation"
+        case .documentDirectory:
+            return "document"
+        case .coreServiceDirectory:
+            return "core service"
+        case .autosavedInformationDirectory:
+            return "autosaved innformation"
+        case .desktopDirectory:
+            return "desktop"
+        case .cachesDirectory:
+            return "caches"
+        case .applicationSupportDirectory:
+            return "application support"
+        case .downloadsDirectory:
+            return "downloads"
+        case .inputMethodsDirectory:
+            return "input methods"
+        case .moviesDirectory:
+            return "movies"
+        case .musicDirectory:
+            return "music"
+        case .picturesDirectory:
+            return "pictures"
+        case .printerDescriptionDirectory:
+            return "printer description"
+        case .sharedPublicDirectory:
+            return "shared public"
+        case .preferencePanesDirectory:
+            return "preference panes"
+        case .itemReplacementDirectory:
+            return "item replacement"
+        case .allApplicationsDirectory:
+            return "all applications"
+        case .allLibrariesDirectory:
+            return "all libraries"
+        case .trashDirectory:
+            return "trash"
+        @unknown default:
+            return "Unknown"
+        }
+    }
+}

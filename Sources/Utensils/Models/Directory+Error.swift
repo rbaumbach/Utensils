@@ -27,31 +27,24 @@ public extension Directory {
     // MARK: - Enums
     
     enum Error: CaseIterable, LocalizedError, Equatable {
-        // TODO: Wrap FileManager.SearchPathDirectory enum so it can be used with doom case
-        // TODO: Move doom to it's own Error enum in Capsule
-        
-        case systemDirectoryDoom
-        case unableToCreateDirectory((url: URL, wrappedError: Swift.Error))
+        case unableToCreateDirectory(url: URL, wrappedError: Swift.Error)
         
         // MARK: - <CaseIterable>
         
         public static var allCases: [Directory.Error] {
-            return [.systemDirectoryDoom,
-                    .unableToCreateDirectory((url: URL.empty, wrappedError: EmptyError.empty))]
+            return [.unableToCreateDirectory(url: URL.empty, wrappedError: EmptyError.empty)]
         }
         
         // MARK: - <Error>
         
         public var localizedDescription: String {
             switch self {
-            case .systemDirectoryDoom:
-                return "Unable to retrieve system search path directory"
-            case .unableToCreateDirectory(let tuple):
+            case .unableToCreateDirectory(let url, let wrappedError):
                 return """
                 Unable to create directory:
-                \(tuple.url)
+                \(url)
                 wrappedError:
-                \(tuple.wrappedError)
+                \(wrappedError)
                 """
             }
         }
@@ -68,8 +61,6 @@ public extension Directory {
         
         public var recoverySuggestion: String? {
             switch self {
-            case .systemDirectoryDoom:
-                return "Unable to get system directory.  Something is seriously wrong with your device"
             case .unableToCreateDirectory:
                 return "Verify path is valid, current file doesn't have same directory name and/or have enough disk space"
             }
