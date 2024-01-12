@@ -23,6 +23,8 @@
 import Foundation
 import Capsule
 
+// TODO: Add functionality to delete trunk files
+
 public protocol TrunkProtocol {
     var outputFormat: Trunk.OutputFormat { get set }
     var dateFormat: Trunk.DateFormat { get set }
@@ -149,8 +151,6 @@ open class Trunk: TrunkProtocol {
             }
         }
     }
-    
-    // TODO: Add functionality to delete trunk files
     
     // MARK: - Private methods
     

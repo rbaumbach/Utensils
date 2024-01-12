@@ -30,6 +30,8 @@ public protocol DirectoryProtocol {
 public struct Directory: DirectoryProtocol, Equatable, Hashable {
     // MARK: - Public Enums
     
+    // TODO: Find easy way to sanitize the SystemDirectory additionaPath String inputs
+    
     public enum SystemDirectory: Equatable, Hashable {
         case documents(additionalPath: String? = nil)
         case temp(additionalPath: String? = nil)
@@ -41,12 +43,12 @@ public struct Directory: DirectoryProtocol, Equatable, Hashable {
     // MARK: - Private properties
     
     private let systemDirectory: SystemDirectory
-    private let fileManager: FileManagerProtocol
+    private let fileManager: FileManagerUtensilsProtocol
     
     // MARK: - Init methods
     
     public init(_ directoryEnum: SystemDirectory = .documents(),
-                fileManager: FileManagerProtocol = FileManager.default) {
+                fileManager: FileManagerUtensilsProtocol = FileManager.default) {
         self.systemDirectory = directoryEnum
         self.fileManager = fileManager
     }
@@ -97,12 +99,12 @@ public struct Directory: DirectoryProtocol, Equatable, Hashable {
         if let additionalPathString = additionalPathString {
             directoryPath = try systemDirectory(searchPathDirectory).appendingPathComponent(additionalPathString,
                                                                                             isDirectory: true)
+            
+            try createDirectoryIfNoneExists(directoryPath: directoryPath)
         } else {
             directoryPath = try systemDirectory(searchPathDirectory)
         }
-        
-        try createDirectoryIfNoneExists(directoryPath: directoryPath)
-        
+                
         return directoryPath
     }
     
@@ -131,18 +133,10 @@ public struct Directory: DirectoryProtocol, Equatable, Hashable {
     }
     
     private func createDirectoryIfNoneExists(directoryPath: URL) throws {
-        if !fileManager.fileExists(atPath: directoryPath.path) {
-            do {
-                try fileManager.createDirectory(at: directoryPath,
-                                                withIntermediateDirectories: true,
-                                                attributes: nil)
-            } catch {
-                if directoryPath.absoluteString.contains("/data/tmp/") {
-                    throw Directory.Error.systemDirectoryDoom
-                }
-                
-                throw Directory.Error.unableToCreateDirectory((directoryPath, error))
-            }
+        do {
+            try fileManager.createDirectory(url: directoryPath)
+        } catch {
+            throw Directory.Error.unableToCreateDirectory((directoryPath, error))
         }
     }
 }

@@ -10,14 +10,14 @@ final class TrunkSpec: QuickSpec {
 
             var fakeJSONCodableWrapper: FakeJSONCodableWrapper!
             var fakeDataWrapper: FakeDataWrapper!
-            var fakeFileManager: FakeFileManager!
+            var fakeFileManager: FakeFileManagerUtensils!
             var fakeDispatchQueueWrapper: FakeDispatchQueueWrapper!
             var directory: Directory!
 
             beforeEach {
                 fakeJSONCodableWrapper = FakeJSONCodableWrapper()
                 fakeDataWrapper = FakeDataWrapper()
-                fakeFileManager = FakeFileManager()
+                fakeFileManager = FakeFileManagerUtensils()
                 fakeDispatchQueueWrapper = FakeDispatchQueueWrapper()
                 
                 directory = Directory(fileManager: fakeFileManager)

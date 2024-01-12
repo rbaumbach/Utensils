@@ -25,18 +25,27 @@ import Capsule
 
 public protocol FileManagerUtensilsProtocol: FileManagerProtocol {
     func migrateFile(at srcURL: URL, to dstURL: URL) throws
+    func createDirectory(url: URL) throws
 }
 
-// Note: The moveItem() method will throw an error if a file already exists in the destination
-// location. This migrateFile() method deletes the file if it already exists and then
-// moves the file.
-
 extension FileManager: FileManagerUtensilsProtocol {
+    // Note: The moveItem() method will throw an error if a file already exists in the destination
+    // location. This migrateFile() method deletes the file if it already exists and then
+    // moves the file.
+    
     public func migrateFile(at srcURL: URL, to dstURL: URL) throws {
         if fileExists(atPath: dstURL.path) {
             try removeItem(at: dstURL)
         }
         
         try moveItem(at: srcURL, to: dstURL)
+    }
+    
+    public func createDirectory(url: URL) throws {
+        if !fileExists(atPath: url.path) {
+            try createDirectory(at: url,
+                                withIntermediateDirectories: true,
+                                attributes: nil)
+        }
     }
 }

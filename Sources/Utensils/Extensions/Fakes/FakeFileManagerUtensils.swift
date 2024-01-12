@@ -29,6 +29,8 @@ open class FakeFileManagerUtensils: FakeFileManager, FileManagerUtensilsProtocol
     public var capturedMigrateFileSRCURL: URL?
     public var capturedMigrateFileDSTURL: URL?
     
+    public var capturedCreateDirectoryUtensilsURL: URL?
+    
     // MARK: - Public properties
     
     public var shouldThrowMigrateFileError = false
@@ -44,6 +46,14 @@ open class FakeFileManagerUtensils: FakeFileManager, FileManagerUtensilsProtocol
         capturedMigrateFileDSTURL = dstURL
         
         if shouldThrowMigrateFileError {
+            throw FakeGenericError.whoCares
+        }
+    }
+    
+    public func createDirectory(url: URL) throws {
+        capturedCreateDirectoryUtensilsURL = url
+        
+        if shouldThrowCreateDirectoryError {
             throw FakeGenericError.whoCares
         }
     }

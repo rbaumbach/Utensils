@@ -28,6 +28,7 @@ public extension Directory {
     
     enum Error: CaseIterable, LocalizedError, Equatable {
         // TODO: Wrap FileManager.SearchPathDirectory enum so it can be used with doom case
+        // TODO: Move doom to it's own Error enum in Capsule
         
         case systemDirectoryDoom
         case unableToCreateDirectory((url: URL, wrappedError: Swift.Error))
