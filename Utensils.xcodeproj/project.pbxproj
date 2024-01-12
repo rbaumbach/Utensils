@@ -39,10 +39,10 @@
 		94569E302B29F596008494E1 /* FakeFileLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E2F2B29F596008494E1 /* FakeFileLoader.swift */; };
 		94569E372B2CB1EE008494E1 /* FileLoader+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E362B2CB1EE008494E1 /* FileLoader+Utensils.swift */; };
 		94569E3A2B2DDBA4008494E1 /* FileLoader+UtensilsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E392B2DDBA4008494E1 /* FileLoader+UtensilsSpec.swift */; };
-		94569E462B2F35BE008494E1 /* PequenoNetworking+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E452B2F35BE008494E1 /* PequenoNetworking+Utensils.swift */; };
+		94569E462B2F35BE008494E1 /* PequenoNetworking+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E452B2F35BE008494E1 /* PequenoNetworking+Error.swift */; };
 		94569E482B2F9FDA008494E1 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E472B2F9FDA008494E1 /* HTTPMethod.swift */; };
 		94569E512B2FDCAC008494E1 /* HTTPMethodSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E502B2FDCAC008494E1 /* HTTPMethodSpec.swift */; };
-		94569E532B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E522B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift */; };
+		94569E532B2FDEA7008494E1 /* PequenoNetworking+ErrorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E522B2FDEA7008494E1 /* PequenoNetworking+ErrorSpec.swift */; };
 		94569E552B2FE491008494E1 /* PequenoNetworkingSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E542B2FE491008494E1 /* PequenoNetworkingSpec.swift */; };
 		94569E582B30E19D008494E1 /* SomeTestFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E162B28E279008494E1 /* SomeTestFunctions.swift */; };
 		94569E5B2B30E776008494E1 /* SpecModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E5A2B30E776008494E1 /* SpecModels.swift */; };
@@ -145,10 +145,10 @@
 		94569E2F2B29F596008494E1 /* FakeFileLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeFileLoader.swift; sourceTree = "<group>"; };
 		94569E362B2CB1EE008494E1 /* FileLoader+Utensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileLoader+Utensils.swift"; sourceTree = "<group>"; };
 		94569E392B2DDBA4008494E1 /* FileLoader+UtensilsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileLoader+UtensilsSpec.swift"; sourceTree = "<group>"; };
-		94569E452B2F35BE008494E1 /* PequenoNetworking+Utensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PequenoNetworking+Utensils.swift"; sourceTree = "<group>"; };
+		94569E452B2F35BE008494E1 /* PequenoNetworking+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PequenoNetworking+Error.swift"; sourceTree = "<group>"; };
 		94569E472B2F9FDA008494E1 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		94569E502B2FDCAC008494E1 /* HTTPMethodSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethodSpec.swift; sourceTree = "<group>"; };
-		94569E522B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PequenoNetworking+UtensilsSpec.swift"; sourceTree = "<group>"; };
+		94569E522B2FDEA7008494E1 /* PequenoNetworking+ErrorSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PequenoNetworking+ErrorSpec.swift"; sourceTree = "<group>"; };
 		94569E542B2FE491008494E1 /* PequenoNetworkingSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingSpec.swift; sourceTree = "<group>"; };
 		94569E5A2B30E776008494E1 /* SpecModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecModels.swift; sourceTree = "<group>"; };
 		94569E5C2B36498F008494E1 /* PequenoNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworking.swift; sourceTree = "<group>"; };
@@ -424,7 +424,7 @@
 				942B4E812B3B224C0086D749 /* Engine */,
 				94FD50562B3B24590090455F /* Models */,
 				94569E5C2B36498F008494E1 /* PequenoNetworking.swift */,
-				94569E452B2F35BE008494E1 /* PequenoNetworking+Utensils.swift */,
+				94569E452B2F35BE008494E1 /* PequenoNetworking+Error.swift */,
 				942B4E792B3A92150086D749 /* PequenoNetworkingConstants.swift */,
 			);
 			path = PequenoNetworking;
@@ -435,7 +435,7 @@
 			children = (
 				9404C5632B431448001626C8 /* Engine */,
 				94FD50592B3B25D40090455F /* Models */,
-				94569E522B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift */,
+				94569E522B2FDEA7008494E1 /* PequenoNetworking+ErrorSpec.swift */,
 				942B4E7D2B3B206E0086D749 /* PequenoNetworkingConstantsSpec.swift */,
 				94569E542B2FE491008494E1 /* PequenoNetworkingSpec.swift */,
 			);
@@ -888,7 +888,7 @@
 				94FD50632B3C7C4F0090455F /* NetworkingEngine.swift in Sources */,
 				947266472B4F85E900353F4E /* FileManager+Utensils.swift in Sources */,
 				940F9DFB239B14630028937B /* FakeTrunk.swift in Sources */,
-				94569E462B2F35BE008494E1 /* PequenoNetworking+Utensils.swift in Sources */,
+				94569E462B2F35BE008494E1 /* PequenoNetworking+Error.swift in Sources */,
 				94872AF52915D16F00D3528B /* AppLaunchViewController.swift in Sources */,
 				9404C5692B43162E001626C8 /* FakeURLRequestBuilder.swift in Sources */,
 				940F9DF5239B14440028937B /* Directory.swift in Sources */,
@@ -917,7 +917,7 @@
 			files = (
 				940F9C6E23974A060028937B /* CustomView.swift in Sources */,
 				9404C5652B431523001626C8 /* ClassicNetworkingEngineSpec.swift in Sources */,
-				94569E532B2FDEA7008494E1 /* PequenoNetworking+UtensilsSpec.swift in Sources */,
+				94569E532B2FDEA7008494E1 /* PequenoNetworking+ErrorSpec.swift in Sources */,
 				94569E152B274845008494E1 /* FileLoaderSpec.swift in Sources */,
 				946AB1792390568C003D0016 /* TrunkSpec.swift in Sources */,
 				9472665C2B5076AA00353F4E /* Directory+ErrorSpec.swift in Sources */,

@@ -23,8 +23,6 @@
 import Foundation
 import Capsule
 
-// TODO: Rename file to PequenoNetworking+Error
-
 public extension PequenoNetworking {
     // MARK: - Enums
     

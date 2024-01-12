@@ -3,9 +3,9 @@ import Moocher
 import Capsule
 @testable import Utensils
 
-final class PequenoNetworking_UtensilsSpec: QuickSpec {
+final class PequenoNetworking_ErrorSpec: QuickSpec {
     override class func spec() {
-        describe("PequenoNetworking+Utensils") {
+        describe("PequenoNetworking+Error") {
             var emptyURLRequestInfo: URLRequestInfo!
             
             beforeEach {
