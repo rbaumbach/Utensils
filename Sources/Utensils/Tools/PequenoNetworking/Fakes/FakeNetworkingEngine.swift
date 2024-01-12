@@ -104,7 +104,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedGetResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable get result success value is not the correct type")
+                    preconditionFailure("The stubbed codable get result value is not the correct type")
                 }
                 
                 return typedValue
@@ -128,8 +128,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedDeleteResult.map { value in
                 guard let typedValue = value as? T else {
-                    // TODO: update string to not say success since it can fail too
-                    preconditionFailure("The stubbed codable delete result success value is not the correct type")
+                    preconditionFailure("The stubbed codable delete result value is not the correct type")
                 }
                 
                 return typedValue
@@ -153,7 +152,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedPostResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable post result success value is not the correct type")
+                    preconditionFailure("The stubbed codable post result value is not the correct type")
                 }
                 
                 return typedValue
@@ -177,7 +176,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedPutResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable put result success value is not the correct type")
+                    preconditionFailure("The stubbed codable put result value is not the correct type")
                 }
                 
                 return typedValue
@@ -201,7 +200,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedPatchResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable patch result success value is not the correct type")
+                    preconditionFailure("The stubbed codable patch result value is not the correct type")
                 }
                 
                 return typedValue
