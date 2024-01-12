@@ -24,7 +24,7 @@ final class TrunkIntegrationSpec: QuickSpec {
                     beforeEach {
                         subject.save(data: junkDrawer)
                         
-                        retrievedData = subject.load()
+                        retrievedData = try? subject.load().get()
                     }
                     
                     it("writes the data to disk") {
@@ -38,11 +38,11 @@ final class TrunkIntegrationSpec: QuickSpec {
                                      directory: Directory(.library(additionalPath: "junkDrawer/")),
                                      filename: "junkDrawer")
                         
-                        retrievedData = subject.load(directory: Directory(.library(additionalPath: "junkDrawer/")),
-                                                     filename: "junkDrawer")
+                        retrievedData = try? subject.load(directory: Directory(.library(additionalPath: "junkDrawer/")),
+                                                          filename: "junkDrawer").get()
                     }
                     
-                    it("writes the data to disk (usi") {
+                    it("writes the data to disk") {
                         expect(retrievedData).to.equal(junkDrawer)
                     }
                 }
@@ -52,8 +52,8 @@ final class TrunkIntegrationSpec: QuickSpec {
                 describe("using defaults") {
                     it("writes the data to disk") {
                         hangOn(for: .seconds(5)) { complete in
-                            subject.save(data: junkDrawer) {
-                                retrievedData = subject.load()
+                            subject.save(data: junkDrawer) { _ in
+                                retrievedData = try? subject.load().get()
                                 
                                 expect(retrievedData).to.equal(junkDrawer)
                                 
@@ -68,9 +68,9 @@ final class TrunkIntegrationSpec: QuickSpec {
                         hangOn(for: .seconds(5)) { complete in
                             subject.save(data: junkDrawer,
                                          directory: Directory(.temp(additionalPath: "junkDrawerSaveAsync/")),
-                                         filename: "junkDrawerSaveAsync") {
-                                retrievedData = subject.load(directory: Directory(.temp(additionalPath: "junkDrawerSaveAsync/")),
-                                                             filename: "junkDrawerSaveAsync")
+                                         filename: "junkDrawerSaveAsync") { _ in
+                                retrievedData = try? subject.load(directory: Directory(.temp(additionalPath: "junkDrawerSaveAsync/")),
+                                                                  filename: "junkDrawerSaveAsync").get()
                                 
                                 expect(retrievedData).to.equal(junkDrawer)
                                 
@@ -89,7 +89,9 @@ final class TrunkIntegrationSpec: QuickSpec {
                     
                     it("retrieves the data from disk") {
                         hangOn(for: .seconds(5)) { complete in
-                            subject.load { data in
+                            subject.load { (result: Result<[String], Error>) in
+                                let data = try? result.get()
+                                
                                 expect(data).to.equal(junkDrawer)
                                 
                                 complete()
@@ -108,7 +110,9 @@ final class TrunkIntegrationSpec: QuickSpec {
                     it("retrieves the data from disk") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.load(directory: Directory(.caches(additionalPath: "junkDrawerLoadAsync/")),
-                                         filename: "junkDrawerLoadAsync") { data in
+                                         filename: "junkDrawerLoadAsync") { (result: Result<[String], Error>) in
+                                let data = try? result.get()
+                                
                                 expect(data).to.equal(junkDrawer)
                                 
                                 complete()

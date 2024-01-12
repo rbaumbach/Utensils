@@ -128,6 +128,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedDeleteResult.map { value in
                 guard let typedValue = value as? T else {
+                    // TODO: update string to not say success since it can fail too
                     preconditionFailure("The stubbed codable delete result success value is not the correct type")
                 }
                 

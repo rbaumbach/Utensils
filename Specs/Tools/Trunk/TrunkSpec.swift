@@ -48,16 +48,22 @@ final class TrunkSpec: QuickSpec {
             }
 
             describe("#save(data:directory:filename:)") {
+                var actualResult: Result<Void, Error>!
+                
                 describe("when data can NOT be encoded to data") {
                     beforeEach {
                         fakeJSONCodableWrapper.shouldThrowEncodeException = true
 
-                        subject.save(data: [0, 1, 2, 3, 4],
-                                     directory: Directory(.documents()),
-                                     filename: "array-of-ints")
+                        actualResult = subject.save(data: [0, 1, 2, 3, 4],
+                                                    directory: Directory(.documents()),
+                                                    filename: "array-of-ints")
                     }
 
-                    it("does nothing") {
+                    it("returns error result") {
+                        if case .failure(let error) = actualResult {
+                            expect(error).toNot.beNil()
+                        } else { failSpec() }
+                        
                         let typeSafeCapturedEncodeValue = fakeJSONCodableWrapper.capturedEncodeValue as! [Int]
                         
                         expect(typeSafeCapturedEncodeValue).to.equal([0, 1, 2, 3, 4])
@@ -70,12 +76,16 @@ final class TrunkSpec: QuickSpec {
                         beforeEach {
                             fakeDataWrapper.shouldThrowWriteException = true
                             
-                            subject.save(data: [0, 1, 2, 3, 4],
-                                         directory: directory,
-                                         filename: "array-of-ints")
+                            actualResult = subject.save(data: [0, 1, 2, 3, 4],
+                                                        directory: directory,
+                                                        filename: "array-of-ints")
                         }
 
-                        it("does nothing") {
+                        it("returns error result") {
+                            if case .failure(let error) = actualResult {
+                                expect(error).toNot.beNil()
+                            } else { failSpec() }
+                            
                             let typeSafeCapturedEncodeValue = fakeJSONCodableWrapper.capturedEncodeValue as! [Int]
                             
                             expect(typeSafeCapturedEncodeValue).to.equal([0, 1, 2, 3, 4])
@@ -88,12 +98,16 @@ final class TrunkSpec: QuickSpec {
 
                     describe("when data can be saved to disk") {
                         beforeEach {
-                            subject.save(data: [0, 1, 2, 3, 4],
-                                         directory: directory,
-                                         filename: "array-of-ints")
+                            actualResult = subject.save(data: [0, 1, 2, 3, 4],
+                                                        directory: directory,
+                                                        filename: "array-of-ints")
                         }
 
-                        it("saves the data to disk") {
+                        it("saves the data to disk and returns successful result") {
+                            if case .failure = actualResult {
+                                failSpec()
+                            }
+                            
                             let typeSafeCapturedEncodeValue = fakeJSONCodableWrapper.capturedEncodeValue as! [Int]
 
                             expect(typeSafeCapturedEncodeValue).to.equal([0, 1, 2, 3, 4])
@@ -110,11 +124,13 @@ final class TrunkSpec: QuickSpec {
             
             describe("#save(data:directory:filename:completionHandler:)") {
                 var didComplete: Bool!
+                var actualResult: Result<Void, Error>!
                 
                 beforeEach {
                     didComplete = false
                     
-                    subject.save(data: [0, 1, 2, 3, 4], directory: directory) {
+                    subject.save(data: [0, 1, 2, 3, 4], directory: directory) { result in
+                        actualResult = result
                         didComplete = true
                     }
                     
@@ -136,7 +152,9 @@ final class TrunkSpec: QuickSpec {
                     expect(fakeDataWrapper.capturedWriteURL).to.equal(expectedURL)
                 }
                 
-                it("executes the completion handler on the main queue") {
+                it("completes with result (on main queue)") {
+                    if case .failure = actualResult { failSpec() }
+                    
                     expect(didComplete).to.beTruthy()
                 }
             }
@@ -148,12 +166,12 @@ final class TrunkSpec: QuickSpec {
                     beforeEach {
                         fakeDataWrapper.shouldThrowLoadDataException = true
                         
-                        modelData = subject.load(directory: directory,
-                                                 filename: "array-of-ints")
+                        modelData = try? subject.load(directory: directory,
+                                                      filename: "array-of-ints").get()
                     }
                     
-                    it("returns nil") {
-                        let expectedURL = try! directory.url().appendingPathComponent("array-of-ints.json")
+                    it("returns result with error") {
+                        let expectedURL = try? directory.url().appendingPathComponent("array-of-ints.json")
                         
                         expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
 
@@ -170,17 +188,17 @@ final class TrunkSpec: QuickSpec {
                     describe("when the data can NOT be decoded to it's appropriate model") {
                         beforeEach {
                             fakeJSONCodableWrapper.shouldThrowDecodeException = true
-                                                        
-                            modelData = subject.load(directory: directory,
-                                                     filename: "array-of-ints")
+                            
+                            modelData = try? subject.load(directory: directory,
+                                                          filename: "array-of-ints").get()
                         }
                         
                         it("returns nil") {
-                            let expectedURL = try! directory.url().appendingPathComponent("array-of-ints.json")
+                            let expectedURL = try? directory.url().appendingPathComponent("array-of-ints.json")
                             
                             expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
                             
-                            expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to.equal("Array<Int>.Type")
+                            expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to.contain("Array<Int>")
                             expect(fakeJSONCodableWrapper.capturedDecodeData).to.equal(fakeDataWrapper.stubbedLoadData)
                             
                             expect(modelData).to.beNil()
@@ -189,16 +207,16 @@ final class TrunkSpec: QuickSpec {
                     
                     describe("when the data can be decoded to it's appropriate model") {
                         beforeEach {
-                            modelData = subject.load(directory: directory,
-                                                     filename: "array-of-ints")
+                            modelData = try? subject.load(directory: directory,
+                                                          filename: "array-of-ints").get()
                         }
                         
                         it("returns the model data that was retrieved from disk") {
-                            let expectedURL = try! directory.url().appendingPathComponent("array-of-ints.json")
+                            let expectedURL = try? directory.url().appendingPathComponent("array-of-ints.json")
                             
                             expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
                             
-                            expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to.equal("Array<Int>.Type")
+                            expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to.contain("Array<Int>")
                             expect(fakeJSONCodableWrapper.capturedDecodeData).to.equal(fakeDataWrapper.stubbedLoadData)
                             
                             expect(modelData).to.equal([0, 1, 2, 3, 4])
@@ -208,13 +226,13 @@ final class TrunkSpec: QuickSpec {
             }
             
             describe("#load(directory:filename:completionHandler:)") {
-                var capturedModelData: [Int]!
+                var actualResult: Result<[Int], Error>!
                 
                 beforeEach {
                     fakeJSONCodableWrapper.stubbedDecodedData = [0, 1, 2, 3, 4]
                     
-                    subject.load(directory: directory) { modelData in
-                        capturedModelData = modelData
+                    subject.load(directory: directory) { result in
+                        actualResult = result
                     }
                     
                     fakeDispatchQueueWrapper.capturedGlobalAsyncExecutionBlock?()
@@ -228,13 +246,16 @@ final class TrunkSpec: QuickSpec {
                     
                     expect(fakeDataWrapper.capturedLoadDataURL).to.equal(expectedURL)
                     
-                    expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to.equal("Array<Int>.Type")
+                    expect(fakeJSONCodableWrapper.capturedDecodeTypeAsString).to.contain("Array<Int>")
                     expect(fakeJSONCodableWrapper.capturedDecodeData).to.equal(fakeDataWrapper.stubbedLoadData)
                 }
                 
-                it("executes the completion handler with model data on the main queue") {
-                    
-                    expect(capturedModelData).to.equal([0, 1, 2, 3, 4])
+                it("completes with a result (on main queue)") {
+                    if case .success(let modelData) = actualResult {
+                        expect(modelData).to.equal([0, 1, 2, 3, 4])
+                    } else {
+                        failSpec()
+                    }
                 }
             }
         }
