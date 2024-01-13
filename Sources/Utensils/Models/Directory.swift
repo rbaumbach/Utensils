@@ -29,9 +29,7 @@ public protocol DirectoryProtocol {
 
 public struct Directory: DirectoryProtocol, Equatable, Hashable {
     // MARK: - Public Enums
-    
-    // TODO: Find easy way to sanitize the SystemDirectory additionaPath String inputs
-    
+        
     public enum SystemDirectory: Equatable, Hashable {
         case documents(additionalPath: String? = nil)
         case temp(additionalPath: String? = nil)
@@ -91,13 +89,15 @@ public struct Directory: DirectoryProtocol, Equatable, Hashable {
     }
     
     // MARK: - Private methods
-    
+        
     private func generateSystemDirectoryPath(searchPathDirectory: FileManager.SearchPathDirectory,
                                              additionalPathString: String?) throws -> URL {
         var directoryPath: URL
         
         if let additionalPathString = additionalPathString {
-            directoryPath = try systemDirectory(searchPathDirectory).appendingPathComponent(additionalPathString,
+            let sanitizedAdditionalPathString = sanitize(additionalPathString: additionalPathString)
+            
+            directoryPath = try systemDirectory(searchPathDirectory).appendingPathComponent(sanitizedAdditionalPathString,
                                                                                             isDirectory: true)
             
             try createDirectoryIfNoneExists(directoryPath: directoryPath)
@@ -112,7 +112,9 @@ public struct Directory: DirectoryProtocol, Equatable, Hashable {
         var directoryPath: URL
         
         if let additionalPathString = additionalPathString {
-            directoryPath = fileManager.temporaryDirectory.appendingPathComponent(additionalPathString,
+            let sanitizedAdditionalPathString = sanitize(additionalPathString: additionalPathString)
+            
+            directoryPath = fileManager.temporaryDirectory.appendingPathComponent(sanitizedAdditionalPathString,
                                                                                   isDirectory: true)
             
             try createDirectoryIfNoneExists(directoryPath: directoryPath)
@@ -121,6 +123,17 @@ public struct Directory: DirectoryProtocol, Equatable, Hashable {
         }
         
         return directoryPath
+    }
+    
+    private func sanitize(additionalPathString: String) -> String {
+        let lowercasedString = additionalPathString.lowercased()
+        var adjustedString = lowercasedString.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if adjustedString.hasPrefix("/") {
+            adjustedString.removeFirst()
+        }
+        
+        return adjustedString
     }
     
     private func systemDirectory(_ directory: FileManager.SearchPathDirectory) throws -> URL {

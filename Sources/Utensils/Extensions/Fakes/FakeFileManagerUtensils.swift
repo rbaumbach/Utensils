@@ -31,9 +31,15 @@ open class FakeFileManagerUtensils: FakeFileManager, FileManagerUtensilsProtocol
     
     public var capturedCreateDirectoryUtensilsURL: URL?
     
+    public var capturedDeleteFileURL: URL?
+    
+    public var capturedDeleteDirectoryAndItsContentsURL: URL?
+    
     // MARK: - Public properties
     
     public var shouldThrowMigrateFileError = false
+    public var shouldThrowDeleteFileError = false
+    public var shouldThrowDeleteDirectoryAndItsContents = false
     
     // MARK: - Init methods
     
@@ -54,6 +60,22 @@ open class FakeFileManagerUtensils: FakeFileManager, FileManagerUtensilsProtocol
         capturedCreateDirectoryUtensilsURL = url
         
         if shouldThrowCreateDirectoryError {
+            throw FakeGenericError.whoCares
+        }
+    }
+    
+    public func deleteFile(url: URL) throws {
+        capturedDeleteFileURL = url
+        
+        if shouldThrowDeleteFileError {
+            throw FakeGenericError.whoCares
+        }
+    }
+    
+    public func deleteDirectoryAndItsContents(url: URL) throws {
+        capturedDeleteDirectoryAndItsContentsURL = url
+        
+        if shouldThrowDeleteDirectoryAndItsContents {
             throw FakeGenericError.whoCares
         }
     }

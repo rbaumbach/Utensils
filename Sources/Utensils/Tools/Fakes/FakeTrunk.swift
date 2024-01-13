@@ -31,20 +31,25 @@ open class FakeTrunk: Fake, TrunkProtocol {
     public var capturedDateFormat: Trunk.DateFormat?
     
     public var capturedSaveData: Any?
-    public var capturedSaveDirectory: Directory?
     public var capturedSaveFilename: String?
+    public var capturedSaveDirectory: Directory?
     
     public var capturedSaveDataAsync: Any?
-    public var capturedSaveDirectoryAsync: Directory?
     public var capturedSaveFilenameAsync: String?
+    public var capturedSaveDirectoryAsync: Directory?
     public var capturedSaveCompletionHandler: ((Result<Void, Error>) -> Void)?
     
-    public var capturedLoadDirectory: Directory?
     public var capturedLoadFilename: String?
+    public var capturedLoadDirectory: Directory?
     
-    public var capturedLoadDirectoryAsync: Directory?
     public var capturedLoadFilenameAsync: String?
+    public var capturedLoadDirectoryAsync: Directory?
     public var capturedLoadCompletionHandler: Any?
+    
+    public var capturedDeleteFileFilename: String?
+    public var capturedDeleteFileDirectory: Directory?
+    
+    public var capturedDeleteDirectoryDirectory: Directory?
     
     // MARK: - Stubbed properties
     
@@ -56,6 +61,9 @@ open class FakeTrunk: Fake, TrunkProtocol {
     
     public var stubbedLoadResult: Result<Any, Error> = .success("Éxito")
     public var stubbedLoadCompletionHandlerResult: Result<Any, Error> = .success("Éxito")
+    
+    public var stubbedDeleteFileResult: Result<Void, Error> = .success(())
+    public var stubbedDeleteDirectoryResult: Result<Void, Error> = .success(())
     
     // MARK: - Public properties
     
@@ -89,22 +97,22 @@ open class FakeTrunk: Fake, TrunkProtocol {
     
     @discardableResult
     public func save<T: Codable>(data: T,
-                                 directory: Directory,
-                                 filename: String) -> Result<Void, Error> {
+                                 filename: String,
+                                 directory: Directory) -> Result<Void, Error> {
         capturedSaveData = data
-        capturedSaveDirectory = directory
         capturedSaveFilename = filename
+        capturedSaveDirectory = directory
         
         return stubbedSaveResult
     }
     
     public func save<T: Codable>(data: T,
-                                 directory: Directory,
                                  filename: String,
+                                 directory: Directory,
                                  completionHandler: @escaping (Result<Void, Error>) -> Void) {
         capturedSaveDataAsync = data
-        capturedSaveDirectoryAsync = directory
         capturedSaveFilenameAsync = filename
+        capturedSaveDirectoryAsync = directory
         capturedSaveCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
@@ -113,27 +121,27 @@ open class FakeTrunk: Fake, TrunkProtocol {
     }
     
     @discardableResult
-    public func load<T: Codable>(directory: Directory,
-                                 filename: String) -> Result<T, Error> {
-        capturedLoadDirectory = directory
+    public func load<T: Codable>(filename: String,
+                                 directory: Directory) -> Result<T, Error> {
         capturedLoadFilename = filename
-        
-        let typedResult = stubbedLoadResult.map { value in
-            guard let typedValue = value as? T else {
-                preconditionFailure("The stubbed load result value is not the correct type")
-            }
-            
-            return typedValue
-        }
-                
-        return typedResult
-    }
+        capturedLoadDirectory = directory
     
-    public func load<T: Codable>(directory: Directory, 
-                                 filename: String,
+    let typedResult = stubbedLoadResult.map { value in
+        guard let typedValue = value as? T else {
+            preconditionFailure("The stubbed load result value is not the correct type")
+        }
+        
+        return typedValue
+    }
+            
+    return typedResult
+}
+    
+    public func load<T: Codable>(filename: String,
+                                 directory: Directory,
                                  completionHandler: @escaping (Result<T, Error>) -> Void) {
-        capturedLoadDirectoryAsync = directory
         capturedLoadFilenameAsync = filename
+        capturedLoadDirectoryAsync = directory
         capturedLoadCompletionHandler = completionHandler
 
         if shouldExecuteCompletionHandlersImmediately {
@@ -147,5 +155,19 @@ open class FakeTrunk: Fake, TrunkProtocol {
             
             completionHandler(typedResult)
         }
+    }
+    
+    public func delete(directory: Directory) -> Result<Void, Error> {
+        capturedDeleteDirectoryDirectory = directory
+        
+        return stubbedDeleteDirectoryResult
+    }
+    
+    public func delete(filename: String,
+                       directory: Directory) -> Result<Void, Error> {
+        capturedDeleteFileFilename = filename
+        capturedDeleteFileDirectory = directory
+        
+        return stubbedDeleteFileResult
     }
 }

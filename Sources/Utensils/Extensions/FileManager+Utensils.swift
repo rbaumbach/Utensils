@@ -23,16 +23,21 @@
 import Foundation
 import Capsule
 
+// Note: These are some convenience FileManager methods that chain a few of the methods together
+// to handle scenarios a bit quicker without throwing errors.
+
+// ex: The moveItem() method will throw an error if a file already exists in the destination
+// location. This migrateFile() method deletes the file if it already exists and then
+// moves the file.
+
 public protocol FileManagerUtensilsProtocol: FileManagerProtocol {
     func migrateFile(at srcURL: URL, to dstURL: URL) throws
     func createDirectory(url: URL) throws
+    func deleteFile(url: URL) throws
+    func deleteDirectoryAndItsContents(url: URL) throws
 }
 
 extension FileManager: FileManagerUtensilsProtocol {
-    // Note: The moveItem() method will throw an error if a file already exists in the destination
-    // location. This migrateFile() method deletes the file if it already exists and then
-    // moves the file.
-    
     public func migrateFile(at srcURL: URL, to dstURL: URL) throws {
         if fileExists(atPath: dstURL.path) {
             try removeItem(at: dstURL)
@@ -47,6 +52,23 @@ extension FileManager: FileManagerUtensilsProtocol {
                                 withIntermediateDirectories: true,
                                 attributes: nil)
         }
+    }
+    
+    public func deleteFile(url: URL) throws {
+        if fileExists(atPath: url.path) {
+            try removeItem(at: url)
+        }
+    }
+    
+    public func deleteDirectoryAndItsContents(url: URL) throws {
+        let directoryContents = try contentsOfDirectory(at: url,
+                                                        includingPropertiesForKeys: nil)
+        
+        try directoryContents.forEach { url in
+            try removeItem(at: url)
+        }
+        
+        try removeItem(at: url)
     }
 }
 

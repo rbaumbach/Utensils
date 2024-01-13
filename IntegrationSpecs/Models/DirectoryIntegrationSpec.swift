@@ -7,7 +7,7 @@ final class DirectoryIntegrationSpec: QuickSpec {
     override class func spec() {
         describe("Directory") {
             var subject: Directory!
-
+            
             describe("#url()") {
                 var url: URL!
                 
@@ -253,6 +253,46 @@ final class DirectoryIntegrationSpec: QuickSpec {
                             expect(url.path).to.contain("tmp/filez")
                             
                             expect(url.scheme).to.equal("file")
+                        }
+                    }
+                }
+                
+                describe("additional path sanitiziation") {
+                    describe("when the additional path string has uppercase letters") {
+                        it("lowercases the uppercased letters and can build the url properly") {
+                            subject = Directory(.temp(additionalPath: "FiLEz"))
+                            
+                            url = try! subject.url()
+                            
+                            expect(url.absoluteString).to.contain("/filez/")
+                        }
+                    }
+                    
+                    describe("when there is extra space before and after the additional path string") {
+                        it("removes it and can build the url properly") {
+                            subject = Directory(.temp(additionalPath: "    filez   \n\t"))
+                            
+                            url = try! subject.url()
+                            
+                            expect(url.absoluteString).to.contain("/filez/")
+                        }
+                    }
+                    
+                    describe("when there is a forward slash before the additional path string") {
+                        it("it removes it and can build the url properly") {
+                            subject = Directory(.temp(additionalPath: "/filez"))
+                            
+                            url = try! subject.url()
+                            
+                            expect(url.absoluteString).toNot.contain("//filez/")
+                            expect(url.absoluteString).to.contain("/filez/")
+                            
+                            subject = Directory(.temp(additionalPath: "    /filez"))
+                            
+                            url = try! subject.url()
+                            
+                            expect(url.absoluteString).toNot.contain("//filez/")
+                            expect(url.absoluteString).to.contain("/filez/")
                         }
                     }
                 }

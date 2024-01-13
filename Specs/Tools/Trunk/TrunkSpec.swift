@@ -24,6 +24,7 @@ final class TrunkSpec: QuickSpec {
 
                 subject = Trunk(jsonCodableWrapper: fakeJSONCodableWrapper,
                                 dataWrapper: fakeDataWrapper,
+                                fileManager: fakeFileManager,
                                 dispatchQueueWrapper: fakeDispatchQueueWrapper)
             }
             
@@ -47,7 +48,7 @@ final class TrunkSpec: QuickSpec {
                 }
             }
 
-            describe("#save(data:directory:filename:)") {
+            describe("#save(data:filename:directory:)") {
                 var actualResult: Result<Void, Error>!
                 
                 describe("when data can NOT be encoded to data") {
@@ -55,8 +56,8 @@ final class TrunkSpec: QuickSpec {
                         fakeJSONCodableWrapper.shouldThrowEncodeException = true
 
                         actualResult = subject.save(data: [0, 1, 2, 3, 4],
-                                                    directory: Directory(.documents()),
-                                                    filename: "array-of-ints")
+                                                    filename: "array-of-ints",
+                                                    directory: Directory(.documents()))
                     }
 
                     it("returns error result") {
@@ -77,8 +78,8 @@ final class TrunkSpec: QuickSpec {
                             fakeDataWrapper.shouldThrowWriteException = true
                             
                             actualResult = subject.save(data: [0, 1, 2, 3, 4],
-                                                        directory: directory,
-                                                        filename: "array-of-ints")
+                                                        filename: "array-of-ints",
+                                                        directory: directory)
                         }
 
                         it("returns error result") {
@@ -99,8 +100,8 @@ final class TrunkSpec: QuickSpec {
                     describe("when data can be saved to disk") {
                         beforeEach {
                             actualResult = subject.save(data: [0, 1, 2, 3, 4],
-                                                        directory: directory,
-                                                        filename: "array-of-ints")
+                                                        filename: "array-of-ints",
+                                                        directory: directory)
                         }
 
                         it("saves the data to disk and returns successful result") {
@@ -122,14 +123,16 @@ final class TrunkSpec: QuickSpec {
                 }
             }
             
-            describe("#save(data:directory:filename:completionHandler:)") {
+            describe("#save(data:filename:directory:completionHandler:)") {
                 var didComplete: Bool!
                 var actualResult: Result<Void, Error>!
                 
                 beforeEach {
                     didComplete = false
-                    
-                    subject.save(data: [0, 1, 2, 3, 4], directory: directory) { result in
+
+                    subject.save(data: [0, 1, 2, 3, 4],
+                                 filename: "trunk",
+                                 directory: directory) { result in
                         actualResult = result
                         didComplete = true
                     }
@@ -159,15 +162,15 @@ final class TrunkSpec: QuickSpec {
                 }
             }
 
-            describe("#load(directory:filename:)") {
+            describe("#load(filename:directory)") {
                 var modelData: [Int]!
                 
                 describe("when the data can NOT be loaded from disk") {
                     beforeEach {
                         fakeDataWrapper.shouldThrowLoadDataException = true
                         
-                        modelData = try? subject.load(directory: directory,
-                                                      filename: "array-of-ints").get()
+                        modelData = try? subject.load(filename: "array-of-ints",
+                                                      directory: directory).get()
                     }
                     
                     it("returns result with error") {
@@ -189,8 +192,8 @@ final class TrunkSpec: QuickSpec {
                         beforeEach {
                             fakeJSONCodableWrapper.shouldThrowDecodeException = true
                             
-                            modelData = try? subject.load(directory: directory,
-                                                          filename: "array-of-ints").get()
+                            modelData = try? subject.load(filename: "array-of-ints",
+                                                          directory: directory).get()
                         }
                         
                         it("returns nil") {
@@ -207,8 +210,8 @@ final class TrunkSpec: QuickSpec {
                     
                     describe("when the data can be decoded to it's appropriate model") {
                         beforeEach {
-                            modelData = try? subject.load(directory: directory,
-                                                          filename: "array-of-ints").get()
+                            modelData = try? subject.load(filename: "array-of-ints",
+                                                          directory: directory).get()
                         }
                         
                         it("returns the model data that was retrieved from disk") {
@@ -225,13 +228,13 @@ final class TrunkSpec: QuickSpec {
                 }
             }
             
-            describe("#load(directory:filename:completionHandler:)") {
+            describe("#load(filename:directory:completionHandler:)") {
                 var actualResult: Result<[Int], Error>!
                 
                 beforeEach {
                     fakeJSONCodableWrapper.stubbedDecodedData = [0, 1, 2, 3, 4]
                     
-                    subject.load(directory: directory) { result in
+                    subject.load(filename: "trunk", directory: directory) { result in
                         actualResult = result
                     }
                     
@@ -255,6 +258,122 @@ final class TrunkSpec: QuickSpec {
                         expect(modelData).to.equal([0, 1, 2, 3, 4])
                     } else {
                         failSpec()
+                    }
+                }
+            }
+            
+            describe("#delete(directory:)") {
+                var actualResult: Result<Void, Error>!
+                
+                describe("when the directory url cannot be constructed") {
+                    beforeEach {
+                        // Note: This will make the Directory.url() method throw an error
+                        
+                        directory = Directory(.documents(additionalPath: "landfill/"),
+                                              fileManager: fakeFileManager)
+                        
+                        fakeFileManager.shouldThrowCreateDirectoryError = true
+                        
+                        actualResult = subject.delete(filename: "garbage",
+                                                      directory: directory)
+                    }
+                    
+                    it("returns an error result") {
+                        if case .failure(let error) = actualResult {
+                            expect(error).toNot.beNil()
+                        }
+                    }
+                }
+                
+                describe("when the directory and it's contents cannot be deleted") {
+                    beforeEach {
+                        fakeFileManager.shouldThrowDeleteDirectoryAndItsContents = true
+                        
+                        actualResult = subject.delete(directory: directory)
+                    }
+                    
+                    it("returns an error result") {
+                        if case .success = actualResult { failSpec() }
+                        
+                        let expectedDeletionURL = try! directory.url()
+                        
+                        expect(fakeFileManager.capturedDeleteDirectoryAndItsContentsURL).to.equal(expectedDeletionURL)
+                    }
+                }
+                
+                describe("when the directory and it's contents can be deleted") {
+                    beforeEach {
+                        actualResult = subject.delete(directory: directory)
+                    }
+                    
+                    it("it returns a success result") {
+                        if case .failure = actualResult {
+                            failSpec()
+                        }
+                        
+                        let expectedDeletionURL = try! directory.url()
+                        
+                        expect(fakeFileManager.capturedDeleteDirectoryAndItsContentsURL).to.equal(expectedDeletionURL)
+                    }
+                }
+            }
+            
+            describe("#delete(filename:directory:)") {
+                var actualResult: Result<Void, Error>!
+                
+                describe("when the directory url cannot be constructed") {
+                    beforeEach {
+                        // Note: This will make the Directory.url() method throw an error
+                        
+                        directory = Directory(.documents(additionalPath: "landfill/"),
+                                              fileManager: fakeFileManager)
+                        
+                        fakeFileManager.shouldThrowCreateDirectoryError = true
+                        
+                        actualResult = subject.delete(filename: "garbage",
+                                                      directory: directory)
+                    }
+                    
+                    it("returns an error result") {
+                        if case .failure(let error) = actualResult {
+                            expect(error).toNot.beNil()
+                        }
+                    }
+                }
+                
+                describe("when the file cannot be deleted") {
+                    beforeEach {
+                        fakeFileManager.shouldThrowDeleteFileError = true
+                        
+                        actualResult = subject.delete(filename: "garbage",
+                                                      directory: directory)
+                    }
+                    
+                    it("returns an error result") {
+                        if case .success = actualResult { failSpec() }
+                        
+                        let fullFilename = "garbage.json"
+                        let expectedDeletionURL = try! directory.url().appendingPathComponent(fullFilename)
+                        
+                        expect(fakeFileManager.capturedDeleteFileURL).to.equal(expectedDeletionURL)
+                    }
+                }
+                
+                describe("when the file can be deleted") {
+                    beforeEach {
+                        actualResult = subject.delete(filename: "garbage",
+                                                      directory: directory)
+                    }
+                    
+                    it("it returns a success result") {
+                        if case .failure = actualResult {
+                            failSpec()
+                        }
+                        
+                        let fullFilename = "garbage.json"
+                        let expectedDeletionURL = try! directory.url().appendingPathComponent(fullFilename)
+                        
+                        expect(fakeFileManager.capturedDeleteFileURL).to.equal(expectedDeletionURL)
                     }
                 }
             }

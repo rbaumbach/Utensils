@@ -434,6 +434,38 @@ final class DirectorySpec: QuickSpec {
                         }
                     }
                 }
+                
+                // Note: This is a bare minimum set of functionality to sanitize the additionalPath
+                // Additional functionality will be added on an "as needed" basis going foward
+                
+                describe("additional path sanitization") {
+                    it("is sanitized by making it all lowercase") {
+                        subject = Directory(.applicationSupport(additionalPath: "FiLez/"),
+                                            fileManager: fakeFileManager)
+                        
+                        url = try? subject.url()
+
+                        expect(url).to.equal(URL(string: "file:///fake-application-support-directory/filez/")!)
+                    }
+                    
+                    it("is sanitized by removing the beginning and ending whitespace") {
+                        subject = Directory(.applicationSupport(additionalPath: "  \t\n FiLez  \n\t"),
+                                            fileManager: fakeFileManager)
+                        
+                        url = try? subject.url()
+
+                        expect(url).to.equal(URL(string: "file:///fake-application-support-directory/filez/")!)
+                    }
+                    
+                    it("is sanitized by removing a prefixed forward slash '/'") {
+                        subject = Directory(.applicationSupport(additionalPath: "/filez/"),
+                                            fileManager: fakeFileManager)
+                        
+                        url = try? subject.url()
+
+                        expect(url).to.equal(URL(string: "file:///fake-application-support-directory/filez/")!)
+                    }
+                }
             }
             
             describe("<Equatable>") {
