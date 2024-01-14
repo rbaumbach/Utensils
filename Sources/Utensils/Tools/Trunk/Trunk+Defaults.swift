@@ -22,7 +22,7 @@
 
 import Foundation
 
-// Note: These defaults are untestable via unit tests as they use real Directory instances
+// Note: These defaults are untestable via unit tests as they use real dependencies
 
 public extension Trunk {
     @discardableResult

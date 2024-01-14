@@ -296,6 +296,16 @@ final class DirectoryIntegrationSpec: QuickSpec {
                         }
                     }
                 }
+                
+                describe("misc") {
+                    it("cant handle additional paths with spaces") {
+                        subject = Directory(.documents(additionalPath: "i haz spaces/"))
+                        
+                        url = try! subject.url()
+                        
+                        expect(url.absoluteString).to.contain("/i%20haz%20spaces/")
+                    }
+                }
             }
         }
     }
