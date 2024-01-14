@@ -16,32 +16,31 @@ final class URLRequestBuilderSpec: QuickSpec {
             }
             
             describe("#build(baseURL:headers:urlRequestInfo:completionHandler:") {
-                var urlRequest: URLRequest!
-                
                 describe("when baseURL is malformed") {
-                    beforeEach {
-                        
+                    it("returns an urlRequestError result") {
+                        // Note: I'm unable to figure out how to make URL(string:) return nil
                     }
                 }
                 
                 describe("when the url components url is malformed") {
-                    beforeEach {
-                        
+                    it("returns an urlRequestError result") {
+                        // Note: I'm unable to figure out how to make URLComponents.url return nil
                     }
                 }
                 
                 describe("when everything is good") {
+                    var urlRequest: URLRequest!
+
                     beforeEach {
-                        let urlRequestInfo = URLRequestInfo(httpMethod: .get,
+                        let urlRequestInfo = URLRequestInfo(baseURL: "https://cinemassacre.com",
+                                                            headers: ["version": "99.9"],
+                                                            httpMethod: .get,
                                                             endpoint: "/avgn",
                                                             parameters: ["episode":"1"],
                                                             body: ["console": "nintendo"])
                         
-                        subject.build(baseURL: "https://cinemassacre.com",
-                                      headers: ["version": "99.9"],
-                                      urlRequestInfo: urlRequestInfo) { result in
-                            urlRequest = try! result.get()
-                        }
+                        let result = subject.build(urlRequestInfo: urlRequestInfo)
+                        urlRequest = try! result.get()
                     }
                     
                     it("builds the URLRequest properly") {

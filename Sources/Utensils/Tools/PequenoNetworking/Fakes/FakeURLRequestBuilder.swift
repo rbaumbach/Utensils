@@ -21,12 +21,11 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
-public class FakeURLRequestBuilder: URLRequestBuilderProtocol {
+open class FakeURLRequestBuilder: Fake, URLRequestBuilderProtocol {
     // MARK: - Captured properties
     
-    public var capturedBuildBaseURL: String?
-    public var capturedBuildHeaders: [String: String]?
     public var capturedURLRequestInfo: URLRequestInfo?
     
     // MARK: - Stubbed properties
@@ -39,18 +38,13 @@ public class FakeURLRequestBuilder: URLRequestBuilderProtocol {
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <URLRequestBuilderProtocol>
     
-    public func build(baseURL: String,
-                      headers: [String: String]?,
-                      urlRequestInfo: URLRequestInfo,
-                      completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void) {
-        capturedBuildBaseURL = baseURL
-        capturedBuildHeaders = headers
+    public func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, PequenoNetworking.Error> {
         capturedURLRequestInfo = urlRequestInfo
         
-        completionHandler(stubbedResult)
+        return stubbedResult
     }
 }

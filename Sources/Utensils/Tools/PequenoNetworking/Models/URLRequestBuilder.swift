@@ -24,13 +24,10 @@ import Foundation
 import Capsule
 
 public protocol URLRequestBuilderProtocol {
-    func build(baseURL: String,
-               headers: [String: String]?,
-               urlRequestInfo: URLRequestInfo,
-               completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void)
+    func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, PequenoNetworking.Error>
 }
 
-public class URLRequestBuilder: URLRequestBuilderProtocol {
+open class URLRequestBuilder: URLRequestBuilderProtocol {
     // MARK: - Private properties
     
     private let jsonSerializationWrapper: JSONSerializationWrapperProtocol
@@ -43,14 +40,9 @@ public class URLRequestBuilder: URLRequestBuilderProtocol {
     
     // MARK: - Public methods
     
-    public func build(baseURL: String,
-                      headers: [String: String]?,
-                      urlRequestInfo: URLRequestInfo,
-                      completionHandler: (Result<URLRequest, PequenoNetworking.Error>) -> Void) {
-        guard var urlComponents = URLComponents(string: baseURL) else {
-            completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
-            
-            return
+    public func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, PequenoNetworking.Error> {
+        guard var urlComponents = URLComponents(string: urlRequestInfo.baseURL) else {
+            return .failure(.urlRequestError(info: urlRequestInfo))
         }
         
         urlComponents.path = urlRequestInfo.endpoint
@@ -60,28 +52,24 @@ public class URLRequestBuilder: URLRequestBuilderProtocol {
         }
         
         guard let urlComponentsURL = urlComponents.url else {
-            completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
-            
-            return
+            return .failure(.urlRequestError(info: urlRequestInfo))
         }
         
         var urlRequest = URLRequest(url: urlComponentsURL)
         urlRequest.httpMethod = urlRequestInfo.httpMethod.rawValue
         
-        headers?.forEach { key, value in
+        urlRequestInfo.headers?.forEach { key, value in
             urlRequest.addValue(value, forHTTPHeaderField: key)
         }
         
         if let body = urlRequestInfo.body {
             guard let body = try? jsonSerializationWrapper.data(withJSONObject: body) else {
-                completionHandler(.failure(.urlRequestError(info: urlRequestInfo)))
-                
-                return
+                return .failure(.urlRequestError(info: urlRequestInfo))
             }
             
             urlRequest.httpBody = body
         }
         
-        completionHandler(.success(urlRequest))
+        return .success(urlRequest)
     }
 }

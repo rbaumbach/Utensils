@@ -21,19 +21,28 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
-public class FakeDirectory: DirectoryProtocol {
+open class FakeDirectory: Fake, DirectoryProtocol {
     // MARK: - Stubbed properties
     
-    public var stubbedURL = URL(string: "file:///fake-directory/extra-fake-directory")!
+    public var stubbedURL = URL(string: "file:///fake-directory/extra-fake-directory/")!
+    
+    // MARK: - Public properties
+    
+    public var shouldThrowURLError = false
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <DirectoryProtocol>
     
-    public func url() -> URL {
+    public func url() throws -> URL {
+        if shouldThrowURLError {
+            throw FakeGenericError.whoCares
+        }
+        
         return stubbedURL
     }
 }

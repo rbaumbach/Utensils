@@ -24,12 +24,12 @@ import Foundation
 import Capsule
 
 public protocol DirectoryProtocol {
-    func url() -> URL
+    func url() throws -> URL
 }
 
-public struct Directory: Equatable, Hashable {
+public struct Directory: DirectoryProtocol, Equatable, Hashable {
     // MARK: - Public Enums
-    
+        
     public enum SystemDirectory: Equatable, Hashable {
         case documents(additionalPath: String? = nil)
         case temp(additionalPath: String? = nil)
@@ -41,38 +41,38 @@ public struct Directory: Equatable, Hashable {
     // MARK: - Private properties
     
     private let systemDirectory: SystemDirectory
-    private let fileManager: FileManagerProtocol
+    private let fileManager: FileManagerUtensilsProtocol
     
     // MARK: - Init methods
     
     public init(_ directoryEnum: SystemDirectory = .documents(),
-                fileManager: FileManagerProtocol = FileManager.default) {
+                fileManager: FileManagerUtensilsProtocol = FileManager.default) {
         self.systemDirectory = directoryEnum
         self.fileManager = fileManager
     }
     
     // MARK: - Public methods
     
-    public func url() -> URL {
+    public func url() throws -> URL {
         switch systemDirectory {
         case .documents(let additionalPath):
-            return generateSystemDirectoryPath(searchPathDirectory: .documentDirectory,
-                                               additionalPathString: additionalPath)
+            return try generateSystemDirectoryPath(searchPathDirectory: .documentDirectory,
+                                                   additionalPathString: additionalPath)
 
         case .temp(let additionalPath):
-            return generateTemporaryDirectoryPath(additionalPathString: additionalPath)
+            return try generateTemporaryDirectoryPath(additionalPathString: additionalPath)
             
         case .library(let additionalPath):
-            return generateSystemDirectoryPath(searchPathDirectory: .libraryDirectory,
-                                               additionalPathString: additionalPath)
-
+            return try generateSystemDirectoryPath(searchPathDirectory: .libraryDirectory,
+                                                   additionalPathString: additionalPath)
+            
         case .caches(let additionalPath):
-            return generateSystemDirectoryPath(searchPathDirectory: .cachesDirectory,
-                                               additionalPathString: additionalPath)
-
+            return try generateSystemDirectoryPath(searchPathDirectory: .cachesDirectory,
+                                                   additionalPathString: additionalPath)
+            
         case .applicationSupport(let additionalPath):
-            return generateSystemDirectoryPath(searchPathDirectory: .applicationSupportDirectory,
-                                               additionalPathString: additionalPath)
+            return try generateSystemDirectoryPath(searchPathDirectory: .applicationSupportDirectory,
+                                                   additionalPathString: additionalPath)
         }
     }
     
@@ -89,29 +89,35 @@ public struct Directory: Equatable, Hashable {
     }
     
     // MARK: - Private methods
-    
+        
     private func generateSystemDirectoryPath(searchPathDirectory: FileManager.SearchPathDirectory,
-                                             additionalPathString: String?) -> URL {
+                                             additionalPathString: String?) throws -> URL {
         var directoryPath: URL
         
         if let additionalPathString = additionalPathString {
-            directoryPath = systemDirectory(searchPathDirectory).appendingPathComponent(additionalPathString)
+            let sanitizedAdditionalPathString = sanitize(additionalPathString: additionalPathString)
+            
+            directoryPath = try systemDirectory(searchPathDirectory).appendingPathComponent(sanitizedAdditionalPathString,
+                                                                                            isDirectory: true)
+            
+            try createDirectoryIfNoneExists(directoryPath: directoryPath)
         } else {
-            directoryPath = systemDirectory(searchPathDirectory)
+            directoryPath = try systemDirectory(searchPathDirectory)
         }
-
-        createDirectoryIfNoneExists(directoryPath: directoryPath)
-        
+                
         return directoryPath
     }
     
-    private func generateTemporaryDirectoryPath(additionalPathString: String?) -> URL {
+    private func generateTemporaryDirectoryPath(additionalPathString: String?) throws -> URL {
         var directoryPath: URL
         
         if let additionalPathString = additionalPathString {
-            directoryPath = fileManager.temporaryDirectory.appendingPathComponent(additionalPathString)
+            let sanitizedAdditionalPathString = sanitize(additionalPathString: additionalPathString)
             
-            createDirectoryIfNoneExists(directoryPath: directoryPath)
+            directoryPath = fileManager.temporaryDirectory.appendingPathComponent(sanitizedAdditionalPathString,
+                                                                                  isDirectory: true)
+            
+            try createDirectoryIfNoneExists(directoryPath: directoryPath)
         } else {
             directoryPath = fileManager.temporaryDirectory
         }
@@ -119,23 +125,33 @@ public struct Directory: Equatable, Hashable {
         return directoryPath
     }
     
-    private func systemDirectory(_ directory: FileManager.SearchPathDirectory) -> URL {
-        guard let directoryURL = fileManager.urls(for: directory, in: .userDomainMask).first else {
-            preconditionFailure("Uh oh, unable to get system directory: \(directory)")
-        }
+    private func sanitize(additionalPathString: String) -> String {
+        let lowercasedString = additionalPathString.lowercased()
+        var adjustedString = lowercasedString.trimmingCharacters(in: .whitespacesAndNewlines)
 
+        if adjustedString.hasPrefix("/") {
+            adjustedString.removeFirst()
+        }
+        
+        return adjustedString
+    }
+    
+    private func systemDirectory(_ directory: FileManager.SearchPathDirectory) throws -> URL {
+        guard let directoryURL = fileManager.urls(for: directory,
+                                                  in: .userDomainMask).first else {
+            let message = "Unable to access system directory: \(directory.name)"
+            
+            throw Doom.error(message)
+        }
+        
         return directoryURL
     }
-        
-    private func createDirectoryIfNoneExists(directoryPath: URL) {
-        if !fileManager.fileExists(atPath: directoryPath.path) {
-            do {
-                try fileManager.createDirectory(at: directoryPath,
-                                                withIntermediateDirectories: true,
-                                                attributes: nil)
-            } catch {
-                preconditionFailure("Uh oh, unable to create directory: \(directoryPath)")
-            }
+    
+    private func createDirectoryIfNoneExists(directoryPath: URL) throws {
+        do {
+            try fileManager.createDirectory(url: directoryPath)
+        } catch {
+            throw Directory.Error.unableToCreateDirectory(url: directoryPath, wrappedError: error)
         }
     }
 }

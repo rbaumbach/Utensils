@@ -27,14 +27,31 @@ public protocol TrunkProtocol {
     var outputFormat: Trunk.OutputFormat { get set }
     var dateFormat: Trunk.DateFormat { get set }
     
-    func save<T: Codable>(data: T, directory: Directory, filename: String)
-    func save<T: Codable>(data: T, directory: Directory, filename: String, completionHandler: @escaping () -> Void)
+    @discardableResult
+    func save<T: Codable>(data: T,
+                          filename: String,
+                          directory: Directory) -> Result<Void, Error>
     
-    func load<T: Codable>(directory: Directory, filename: String) -> T?
-    func load<T: Codable>(directory: Directory, filename: String, completionHandler: @escaping (T?) -> Void)
+    func save<T: Codable>(data: T,
+                          filename: String,
+                          directory: Directory,
+                          completionHandler: @escaping (Result<Void, Error>) -> Void)
+    
+    @discardableResult
+    func load<T: Codable>(filename: String,
+                          directory: Directory) -> Result<T, Error>
+    
+    func load<T: Codable>(filename: String,
+                          directory: Directory,
+                          completionHandler: @escaping (Result<T, Error>) -> Void)
+    
+    func delete(directory: Directory) -> Result<Void, Error>
+    
+    func delete(filename: String,
+                directory: Directory) -> Result<Void, Error>
 }
 
-public class Trunk: TrunkProtocol {
+open class Trunk: TrunkProtocol {
     // MARK: - Public enums
     
     public enum OutputFormat {
@@ -55,6 +72,7 @@ public class Trunk: TrunkProtocol {
     
     private var jsonCodableWrapper: JSONCodableWrapperProtocol
     private let dataWrapper: DataWrapperProtocol
+    private let fileManager: FileManagerUtensilsProtocol
     private let dispatchQueueWrapper: DispatchQueueWrapperProtocol
     
     // MARK: - Public properties
@@ -83,73 +101,111 @@ public class Trunk: TrunkProtocol {
     
     public init(jsonCodableWrapper: JSONCodableWrapperProtocol = JSONCodableWrapper(),
                 dataWrapper: DataWrapperProtocol = DataWrapper(),
+                fileManager: FileManagerUtensilsProtocol = FileManager.default,
                 dispatchQueueWrapper: DispatchQueueWrapperProtocol = DispatchQueueWrapper()) {
         self.jsonCodableWrapper = jsonCodableWrapper
         self.dataWrapper = dataWrapper
         self.dispatchQueueWrapper = dispatchQueueWrapper
+        self.fileManager = fileManager
     }
     
     // MARK: - Public methods
+        
+    @discardableResult
+    public func save<T: Codable>(data: T,
+                                 filename: String,
+                                 directory: Directory) -> Result<Void, Error> {
+    do {
+        let encodedJSONData = try jsonCodableWrapper.encode(data)
+        let fullFileURL = try buildFullFileURL(filename: filename, directory: directory)
+        
+        try dataWrapper.write(data: encodedJSONData, toPath: fullFileURL)
+        
+        return Result<Void, Error>.success(())
+    } catch {
+        return Result<Void, Error>.failure(error)
+    }
+}
     
     public func save<T: Codable>(data: T,
-                                 directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
-                                 filename: String = "trunk") {
-        guard let encodedJSONData = try? jsonCodableWrapper.encode(data) else {
-            return
-        }
-
-        let fullFileURL = buildFullFileURL(directory: directory, filename: filename)
-
-        do {
-            try dataWrapper.write(data: encodedJSONData, toPath: fullFileURL)
-        } catch { }
-    }
-    
-    public func save<T: Codable>(data: T,
-                                 directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
-                                 filename: String = "trunk",
-                                 completionHandler: @escaping () -> Void) {
+                                 filename: String,
+                                 directory: Directory,
+                                 completionHandler: @escaping (Result<Void, Error>) -> Void) {
         dispatchQueueWrapper.globalAsync(qos: .background) { [weak self] in
-            self?.save(data: data, directory: directory, filename: filename)
-
-            self?.dispatchQueueWrapper.mainAsync {
-                completionHandler()
-            }
-        }
-    }
-    
-    public func load<T: Codable>(directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
-                                 filename: String = "trunk") -> T? {
-        let fullFileURL = buildFullFileURL(directory: directory, filename: filename)
-        
-        guard let jsonData = try? dataWrapper.loadData(contentsOfPath: fullFileURL) else {
-            return nil
-        }
-
-        guard let modelData = try? jsonCodableWrapper.decode(T.self, from: jsonData) else {
-            return nil
-        }
-        
-        return modelData
-    }
-    
-    public func load<T: Codable>(directory: Directory = Directory(.applicationSupport(additionalPath: "Trunk/")),
-                                 filename: String = "trunk",
-                                 completionHandler: @escaping (T?) -> Void) {
-        dispatchQueueWrapper.globalAsync(qos: .background) { [weak self] in
-            let modelData: T? = self?.load(directory: directory, filename: filename)
+            guard let self = self else { return }
             
-            self?.dispatchQueueWrapper.mainAsync {
-                completionHandler(modelData)
+            let result = self.save(data: data, filename: filename, directory: directory)
+            
+            self.dispatchQueueWrapper.mainAsync {
+                completionHandler(result)
             }
+        }
+    }
+    
+    @discardableResult
+    public func load<T: Codable>(filename: String,
+                                 directory: Directory) -> Result<T, Error> {
+    do {
+        let fullFileURL = try buildFullFileURL(filename: filename, directory: directory)
+        
+        let jsonData = try dataWrapper.loadData(contentsOfPath: fullFileURL)
+        
+        let modelData = try jsonCodableWrapper.decode(T.self, from: jsonData)
+        
+        return Result<T, Error>.success(modelData)
+    } catch {
+        return Result<T, Error>.failure(error)
+    }
+}
+    
+    public func load<T: Codable>(filename: String,
+                                 directory: Directory,
+                                 completionHandler: @escaping (Result<T, Error>) -> Void) {
+        dispatchQueueWrapper.globalAsync(qos: .background) { [weak self] in
+            guard let self = self else { return }
+            
+            let result: Result<T, Error> = self.load(filename: filename, directory: directory)
+            
+            self.dispatchQueueWrapper.mainAsync {
+                completionHandler(result)
+            }
+        }
+    }
+    
+    @discardableResult
+    public func delete(directory: Directory) -> Result<Void, Error> {
+        do {
+            let url = try directory.url()
+            
+            try fileManager.deleteDirectoryAndItsContents(url: url)
+            
+            return .success(())
+        } catch {
+            return .failure(error)
+        }
+    }
+    
+    @discardableResult
+    public func delete(filename: String,
+                       directory: Directory) -> Result<Void, Error> {
+        do {
+            let fullFilename = filename + fileExtension
+            
+            let fullFileLocationURL = try directory.url().appendingPathComponent(fullFilename)
+                        
+            try fileManager.deleteFile(url: fullFileLocationURL)
+            
+            return .success(())
+        } catch {
+            return .failure(error)
         }
     }
     
     // MARK: - Private methods
     
-    private func buildFullFileURL(directory: Directory, filename: String) -> URL {
+    private func buildFullFileURL(filename: String, directory: Directory) throws -> URL {
         let fullFilename = filename + fileExtension
         
-        return directory.url().appendingPathComponent(fullFilename)
+        return try directory.url().appendingPathComponent(fullFilename)
     }
 }

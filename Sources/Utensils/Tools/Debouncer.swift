@@ -27,7 +27,7 @@ public protocol DebouncerProtocol {
     func mainDebounce(seconds: Double, execute: @escaping () -> Void)
 }
 
-public class Debouncer: DebouncerProtocol {
+open class Debouncer: DebouncerProtocol {
     // MARK: - Private properties
     
     private let dispatchQueueWrapper: DispatchQueueWrapperProtocol

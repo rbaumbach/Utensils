@@ -21,30 +21,34 @@
 //SOFTWARE.
 
 import Foundation
-import Capsule
 
-open class FakeDebouncer: Fake, DebouncerProtocol {
-    // MARK: - Captured properties
+// Note: These defaults are untestable via unit tests as they use real dependencies
+
+public extension Trunk {
+    @discardableResult
+    func save<T: Codable>(data: T) -> Result<Void, Error> {
+        return save(data: data,
+                    filename: "trunk",
+                    directory: Directory(.applicationSupport(additionalPath: "trunk/")))
+    }
     
-    public var capturedDebounceSeconds: Double?
-    public var capturedDebounceExectution: (() -> Void)?
+    func save<T: Codable>(data: T,
+                          completionHandler: @escaping (Result<Void, Error>) -> Void) {
+        save(data: data,
+             filename: "trunk",
+             directory: Directory(.applicationSupport(additionalPath: "trunk/")),
+             completionHandler: completionHandler)
+    }
     
-    // MARK: - Public properties
+    @discardableResult
+    func load<T: Codable>() -> Result<T, Error> {
+        return load(filename: "trunk",
+                    directory: Directory(.applicationSupport(additionalPath: "trunk/")))
+    }
     
-    public var shouldExecuteImmediately = false
-    
-    // MARK: - Init methods
-    
-    public override init() { }
-    
-    // MARK: - <DebouncerProtocol>
-    
-    public func mainDebounce(seconds: Double, execute: @escaping () -> Void) {
-        capturedDebounceSeconds = seconds
-        capturedDebounceExectution = execute
-        
-        if shouldExecuteImmediately {
-            execute()
-        }
+    func load<T: Codable>(completionHandler: @escaping (Result<T, Error>) -> Void) {
+        load(filename: "trunk",
+             directory: Directory(.applicationSupport(additionalPath: "trunk/")),
+             completionHandler: completionHandler)
     }
 }

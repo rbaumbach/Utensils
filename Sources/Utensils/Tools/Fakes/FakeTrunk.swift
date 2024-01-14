@@ -21,8 +21,9 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
-public class FakeTrunk: TrunkProtocol {
+open class FakeTrunk: Fake, TrunkProtocol {
     // MARK: - Captured properties
     
     public var capturedOutputFormat: Trunk.OutputFormat?
@@ -30,30 +31,39 @@ public class FakeTrunk: TrunkProtocol {
     public var capturedDateFormat: Trunk.DateFormat?
     
     public var capturedSaveData: Any?
-    public var capturedSaveDirectory: Directory?
     public var capturedSaveFilename: String?
+    public var capturedSaveDirectory: Directory?
     
     public var capturedSaveDataAsync: Any?
-    public var capturedSaveDirectoryAsync: Directory?
     public var capturedSaveFilenameAsync: String?
-    public var capturedSaveCompletionHandler: (() -> Void)?
+    public var capturedSaveDirectoryAsync: Directory?
+    public var capturedSaveCompletionHandler: ((Result<Void, Error>) -> Void)?
     
-    public var capturedLoadDirectory: Directory?
     public var capturedLoadFilename: String?
+    public var capturedLoadDirectory: Directory?
     
-    public var capturedLoadDirectoryAsync: Directory?
     public var capturedLoadFilenameAsync: String?
-    public var capturedLoadCompletionHandler: ((Any?) -> Void)?
+    public var capturedLoadDirectoryAsync: Directory?
+    public var capturedLoadCompletionHandler: Any?
+    
+    public var capturedDeleteFileFilename: String?
+    public var capturedDeleteFileDirectory: Directory?
+    
+    public var capturedDeleteDirectoryDirectory: Directory?
     
     // MARK: - Stubbed properties
     
     public var stubbedOutputFormat = Trunk.OutputFormat.default
-    
     public var stubbedDateFormat = Trunk.DateFormat.default
     
-    public var stubbedLoadData: Any?
+    public var stubbedSaveResult: Result<Void, Error> = .success(())
+    public var stubbedSaveCompletionHandlerResult: Result<Void, Error> = .success(())
     
-    public var stubbedLoadDataForCompletionHandler: Any = "data"
+    public var stubbedLoadResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedLoadCompletionHandlerResult: Result<Any, Error> = .success("Éxito")
+    
+    public var stubbedDeleteFileResult: Result<Void, Error> = .success(())
+    public var stubbedDeleteDirectoryResult: Result<Void, Error> = .success(())
     
     // MARK: - Public properties
     
@@ -61,7 +71,7 @@ public class FakeTrunk: TrunkProtocol {
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <TrunkProtocol>
     
@@ -85,60 +95,79 @@ public class FakeTrunk: TrunkProtocol {
         }
     }
     
-    public func save<T: Codable>(data: T, 
-                                 directory: Directory,
-                                 filename: String) {
+    @discardableResult
+    public func save<T: Codable>(data: T,
+                                 filename: String,
+                                 directory: Directory) -> Result<Void, Error> {
         capturedSaveData = data
-        capturedSaveDirectory = directory
         capturedSaveFilename = filename
+        capturedSaveDirectory = directory
+        
+        return stubbedSaveResult
     }
     
-    public func save<T: Codable>(data: T, 
-                                 directory: Directory,
+    public func save<T: Codable>(data: T,
                                  filename: String,
-                                 completionHandler: @escaping () -> Void) {
+                                 directory: Directory,
+                                 completionHandler: @escaping (Result<Void, Error>) -> Void) {
         capturedSaveDataAsync = data
-        capturedSaveDirectoryAsync = directory
         capturedSaveFilenameAsync = filename
+        capturedSaveDirectoryAsync = directory
         capturedSaveCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            completionHandler()
+            completionHandler(stubbedSaveCompletionHandlerResult)
         }
     }
     
-    public func load<T: Codable>(directory: Directory, 
-                                 filename: String) -> T? {
-        capturedLoadDirectory = directory
+    @discardableResult
+    public func load<T: Codable>(filename: String,
+                                 directory: Directory) -> Result<T, Error> {
         capturedLoadFilename = filename
-        
-        guard let stubbedLoadData = stubbedLoadData else {
-            return nil
-        }
-                
-        return stubbedLoadData as? T
-    }
+        capturedLoadDirectory = directory
     
-    public func load<T: Codable>(directory: Directory, 
-                                 filename: String,
-                                 completionHandler: @escaping (T?) -> Void) {
-        capturedLoadDirectoryAsync = directory
-        capturedLoadFilenameAsync = filename
+    let typedResult = stubbedLoadResult.map { value in
+        guard let typedValue = value as? T else {
+            preconditionFailure("The stubbed load result value is not the correct type")
+        }
         
-        let anyCompletionHandler: (Any?) -> Void = { anyThing in
-            guard let anyThingAsT = anyThing as? T else {
-                completionHandler(nil)
+        return typedValue
+    }
+            
+    return typedResult
+}
+    
+    public func load<T: Codable>(filename: String,
+                                 directory: Directory,
+                                 completionHandler: @escaping (Result<T, Error>) -> Void) {
+        capturedLoadFilenameAsync = filename
+        capturedLoadDirectoryAsync = directory
+        capturedLoadCompletionHandler = completionHandler
+
+        if shouldExecuteCompletionHandlersImmediately {
+            let typedResult = stubbedLoadCompletionHandlerResult.map { value in
+                guard let typedValue = value as? T else {
+                    preconditionFailure("The stubbed load result value is not the correct type")
+                }
                 
-                return
+                return typedValue
             }
             
-            completionHandler(anyThingAsT)
+            completionHandler(typedResult)
         }
+    }
+    
+    public func delete(directory: Directory) -> Result<Void, Error> {
+        capturedDeleteDirectoryDirectory = directory
         
-        capturedLoadCompletionHandler = anyCompletionHandler
+        return stubbedDeleteDirectoryResult
+    }
+    
+    public func delete(filename: String,
+                       directory: Directory) -> Result<Void, Error> {
+        capturedDeleteFileFilename = filename
+        capturedDeleteFileDirectory = directory
         
-        if shouldExecuteCompletionHandlersImmediately {
-            completionHandler(stubbedLoadDataForCompletionHandler as? T)
-        }
+        return stubbedDeleteFileResult
     }
 }

@@ -30,7 +30,7 @@ final class DebouncerSpec: QuickSpec {
                 }
                 
                 it("cancels previous work item wrapper execution") {
-                    expect(previousDispatchWorkItemWrapper.didCancel).to.beTruthy()
+                    expect(previousDispatchWorkItemWrapper.didCallCancel).to.beTruthy()
                 }
                 
                 it("creates a new work item wrapper to execute") {

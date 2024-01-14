@@ -21,8 +21,9 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
-public class FakeClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
+open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
     // MARK: - Captured properties
     
     public var capturedGetBaseURL: String?
@@ -69,7 +70,7 @@ public class FakeClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <ClassicNetworkingEngineProtocol>
     

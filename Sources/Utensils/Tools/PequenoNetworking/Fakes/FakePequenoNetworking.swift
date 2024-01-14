@@ -21,11 +21,12 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
 // Note: Any? is used for the capturedCompletionHandlers due to warning messages about "shadowing" at the
 // class level. As a consumer you can cast to (Result<T, PequenoNetworking.Error>) -> Void).
 
-public class FakePequenoNetworking: PequenoNetworkingProtocol {
+open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     // MARK: - Captured properties
     
     // MARK: - JSONSerialization (ol' skoo)
@@ -72,6 +73,14 @@ public class FakePequenoNetworking: PequenoNetworkingProtocol {
     public var capturedCodablePatchBody: [String: Any]?
     public var capturedCodablePatchCompletionHandler: Any?
     
+    // MARK: - Downloading
+    
+    public var capturedDownloadEndpoint: String?
+    public var capturedDownloadParameters: [String: Any]?
+    public var capturedDownloadFilename: String?
+    public var capturedDownloadDirectory: DirectoryProtocol?
+    public var capturedDownloadCompletionHandler: ((Result<URL, PequenoNetworking.Error>) -> Void)?
+    
     // MARK: - Stubbed properties
     
     // MARK: - JSONSerialization (ol' skoo)
@@ -90,13 +99,21 @@ public class FakePequenoNetworking: PequenoNetworkingProtocol {
     public var stubbedCodablePutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     public var stubbedCodablePatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     
+    // MARK: - Downloading
+    
+    public var stubbedDownloadResult: Result<URL, PequenoNetworking.Error> = {
+        let url = URL(string: "http://99-downloads-loaderdowns.party")!
+        
+        return .success(url)
+    }()
+    
     // MARK: - Public properties
     
     public var shouldExecuteCompletionHandlersImmediately = false
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <PequenoNetworkingProtocol>
     
@@ -261,6 +278,22 @@ public class FakePequenoNetworking: PequenoNetworkingProtocol {
             }
             
             completionHandler(typedResult)
+        }
+    }
+    
+    public func downloadFile(endpoint: String,
+                             parameters: [String: String]?,
+                             filename: String,
+                             directory: DirectoryProtocol,
+                             completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
+        capturedDownloadEndpoint = endpoint
+        capturedDownloadParameters = parameters
+        capturedDownloadFilename = filename
+        capturedDownloadDirectory = directory
+        capturedDownloadCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedDownloadResult)
         }
     }
 }

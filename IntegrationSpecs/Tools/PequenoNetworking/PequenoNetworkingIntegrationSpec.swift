@@ -217,6 +217,33 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                 }
             }
             
+            describe("downloading") {
+                it("completes with url to downloaded image") {
+                    hangOn(for: .seconds(5)) { complete in
+                        subject.downloadFile(endpoint: "/image/jpeg",
+                                             parameters: nil,
+                                             filename: "animal.jpeg",
+                                             directory: Directory(.caches(additionalPath: "session-downloadz/"))) { result in
+                            if case let .success(url) = result {
+                                guard let imageData = try? Data(contentsOf: url) else {
+                                    failSpec()
+                                    
+                                    return
+                                }
+                                
+                                expect(imageData.count).to.beGreaterThan(0)
+                            } else {
+                                failSpec()
+                                
+                                return
+                            }
+                            
+                            complete()
+                        }
+                    }
+                }
+            }
+            
             describe("using convenience init w/ UserDefaults") {
                 beforeEach {
                     UserDefaults.standard.set("https://httpbin.org", forKey: PequenoNetworkingConstants.BaseURLKey)

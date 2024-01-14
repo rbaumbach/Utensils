@@ -34,13 +34,19 @@ public extension PequenoNetworking {
         case dataError
         case jsonDecodeError(wrappedError: Swift.Error)
         case jsonObjectDecodeError(wrappedError: Swift.Error)
+        case downloadError
+        case downloadTaskError(wrappedError: Swift.Error)
+        case downloadFileManagerError(wrappedError: Swift.Error)
         
         // MARK: - <CaseIterable>
         
         public static var allCases: [PequenoNetworking.Error] {
-            let emptyURLRequestInfo = URLRequestInfo(httpMethod: .get,
+            let emptyURLRequestInfo = URLRequestInfo(baseURL: String.empty,
+                                                     headers: nil,
+                                                     httpMethod: .get,
                                                      endpoint: String.empty,
-                                                     parameters: nil, body: nil)
+                                                     parameters: nil, 
+                                                     body: nil)
             
             return [.urlRequestError(info: emptyURLRequestInfo),
                     .dataTaskError(wrappedError: EmptyError.empty),
@@ -48,16 +54,20 @@ public extension PequenoNetworking {
                     .invalidStatusCodeError(statusCode: 0),
                     .dataError,
                     .jsonDecodeError(wrappedError: EmptyError.empty),
-                    .jsonObjectDecodeError(wrappedError: EmptyError.empty)]
+                    .jsonObjectDecodeError(wrappedError: EmptyError.empty),
+                    .downloadError,
+                    .downloadTaskError(wrappedError: EmptyError.empty)]
         }
         
         // MARK: - <Error>
         
         public var localizedDescription: String {
             switch self {
-            case .urlRequestError(let info):
+            case .urlRequestError(let info):                
                 return """
                 Unable to build URLRequest:
+                host:       \(info.baseURL)
+                headers:    \(info.headers?.description ?? "N/A")
                 http verb:  \(info.httpMethod.rawValue)
                 endpoint:   \(info.endpoint)
                 parameters: \(info.parameters?.description ?? "N/A")
@@ -75,6 +85,12 @@ public extension PequenoNetworking {
                 return "Unable to decode json. Wrapped Error: \(error.localizedDescription)"
             case .jsonObjectDecodeError(let error):
                 return "Unable to decode json object. Wrapped Error: \(error.localizedDescription)"
+            case .downloadError:
+                return "Download task does not contain url"
+            case .downloadTaskError(let error):
+                return "Unable to complete download task successfully.  Wrapped Error: \(error.localizedDescription)"
+            case .downloadFileManagerError(let error):
+                return "Unable to save file to disk. Wrapped Error: \(error.localizedDescription)"
             }
         }
         
@@ -104,6 +120,12 @@ public extension PequenoNetworking {
                 return "Verify that your Codable types match what is contained data from response"
             case .jsonObjectDecodeError:
                 return "Verify that your json data is can be deserialized to Foundation objects"
+            case .downloadError:
+                return "Verify your server is returning valid data"
+            case .downloadTaskError:
+                return "Verify that your download task was built appropriately"
+            case .downloadFileManagerError:
+                return "Verify you can modify files on disk"
             }
         }
         

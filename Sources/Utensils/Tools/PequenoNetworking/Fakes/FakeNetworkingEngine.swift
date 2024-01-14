@@ -21,11 +21,12 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
 // Note: Any? is used for the capturedCompletionHandlers due to warning messages about "shadowing" at the
 // class level. As a consumer you can cast to (Result<T, PequenoNetworking.Error>) -> Void).
 
-public class FakeNetworkingEngine: NetworkingEngineProtocol {
+open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
     // MARK: - Captured properties
     
     public var capturedGetBaseURL: String?
@@ -58,6 +59,14 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
     public var capturedPatchBody: [String: Any]?
     public var capturedPatchCompletionHandler: Any?
     
+    public var capturedDownloadBaseURL: String?
+    public var capturedDownloadHeaders: [String: String]?
+    public var capturedDownloadEndpoint: String?
+    public var capturedDownloadParameters: [String: String]?
+    public var capturedDownloadFilename: String?
+    public var capturedDownloadDirectory: DirectoryProtocol?
+    public var capturedDownloadCompletionHandler: ((Result<URL, PequenoNetworking.Error>) -> Void)?
+    
     // MARK: - Stubbed properties
     
     public var stubbedGetResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
@@ -65,6 +74,11 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
     public var stubbedPostResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     public var stubbedPutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     public var stubbedPatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedDownloadResult: Result<URL, PequenoNetworking.Error> = {
+       let url = URL(string: "https://99-stubby-99.party")!
+        
+        return .success(url)
+    }()
     
     // MARK: - Public properties
     
@@ -72,7 +86,7 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
     
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <NetworkingEngineProtocol>
     
@@ -90,7 +104,7 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedGetResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable get result success value is not the correct type")
+                    preconditionFailure("The stubbed codable get result value is not the correct type")
                 }
                 
                 return typedValue
@@ -114,7 +128,7 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedDeleteResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable delete result success value is not the correct type")
+                    preconditionFailure("The stubbed codable delete result value is not the correct type")
                 }
                 
                 return typedValue
@@ -138,7 +152,7 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedPostResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable post result success value is not the correct type")
+                    preconditionFailure("The stubbed codable post result value is not the correct type")
                 }
                 
                 return typedValue
@@ -162,7 +176,7 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedPutResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable put result success value is not the correct type")
+                    preconditionFailure("The stubbed codable put result value is not the correct type")
                 }
                 
                 return typedValue
@@ -186,13 +200,33 @@ public class FakeNetworkingEngine: NetworkingEngineProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedPatchResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable patch result success value is not the correct type")
+                    preconditionFailure("The stubbed codable patch result value is not the correct type")
                 }
                 
                 return typedValue
             }
             
             completionHandler(typedResult)
+        }
+    }
+    
+    public func downloadFile(baseURL: String,
+                             headers: [String: String]?,
+                             endpoint: String,
+                             parameters: [String: String]?,
+                             filename: String,
+                             directory: DirectoryProtocol,
+                             completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
+        capturedDownloadBaseURL = baseURL
+        capturedDownloadHeaders = headers
+        capturedDownloadEndpoint = endpoint
+        capturedDownloadParameters = parameters
+        capturedDownloadFilename = filename
+        capturedDownloadDirectory = directory
+        capturedDownloadCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedDownloadResult)
         }
     }
 }

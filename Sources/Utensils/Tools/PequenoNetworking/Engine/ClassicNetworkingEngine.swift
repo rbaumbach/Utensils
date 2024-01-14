@@ -55,7 +55,7 @@ public protocol ClassicNetworkingEngineProtocol {
                completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
 }
 
-public class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
+open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
     // MARK: - Private properties
     
     private let urlRequestBuilder: URLRequestBuilderProtocol
@@ -76,20 +76,22 @@ public class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
     }
     
     // MARK: - Public methods
-        
+    
     public func get(baseURL: String,
                     headers: [String: String]?,
                     endpoint: String,
                     parameters: [String: String]?,
                     completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        let urlRequestInfo = URLRequestInfo(httpMethod: .get,
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .get,
                                             endpoint: endpoint,
                                             parameters: parameters,
                                             body: nil)
         
-        executeRequest(baseURL: baseURL, 
-                              headers: headers,
-                              urlRequestInfo: urlRequestInfo) { [weak self] result in
+        executeRequest(baseURL: baseURL,
+                       headers: headers,
+                       urlRequestInfo: urlRequestInfo) { [weak self] result in
             self?.dispatchQueueWrapper.mainAsync {
                 completionHandler(result)
             }
@@ -101,30 +103,34 @@ public class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
                        endpoint: String,
                        parameters: [String: String]?,
                        completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        let urlRequestInfo = URLRequestInfo(httpMethod: .delete,
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .delete,
                                             endpoint: endpoint,
                                             parameters: parameters,
                                             body: nil)
         
         executeRequest(baseURL: baseURL,
-                              headers: headers,
-                              urlRequestInfo: urlRequestInfo,
-                              completionHandler: completionHandler)
+                       headers: headers,
+                       urlRequestInfo: urlRequestInfo,
+                       completionHandler: completionHandler)
     }
-        
+    
     public func post(baseURL: String,
                      headers: [String: String]?,
                      endpoint: String,
                      body: [String: Any]?,
                      completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        let urlRequestInfo = URLRequestInfo(httpMethod: .post,
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .post,
                                             endpoint: endpoint,
                                             parameters: nil,
                                             body: body)
         
         executeRequest(baseURL: baseURL,
-                              headers: headers,
-                              urlRequestInfo: urlRequestInfo) { [weak self] result in
+                       headers: headers,
+                       urlRequestInfo: urlRequestInfo) { [weak self] result in
             self?.dispatchQueueWrapper.mainAsync {
                 completionHandler(result)
             }
@@ -136,14 +142,16 @@ public class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
                     endpoint: String,
                     body: [String: Any]?,
                     completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        let urlRequestInfo = URLRequestInfo(httpMethod: .put,
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .put,
                                             endpoint: endpoint,
                                             parameters: nil,
                                             body: body)
         
         executeRequest(baseURL: baseURL,
-                              headers: headers,
-                              urlRequestInfo: urlRequestInfo) { [weak self] result in
+                       headers: headers,
+                       urlRequestInfo: urlRequestInfo) { [weak self] result in
             self?.dispatchQueueWrapper.mainAsync {
                 completionHandler(result)
             }
@@ -155,14 +163,16 @@ public class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
                       endpoint: String,
                       body: [String: Any]?,
                       completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        let urlRequestInfo = URLRequestInfo(httpMethod: .patch,
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .patch,
                                             endpoint: endpoint,
                                             parameters: nil,
                                             body: body)
         
         executeRequest(baseURL: baseURL,
-                              headers: headers,
-                              urlRequestInfo: urlRequestInfo) { [weak self] result in
+                       headers: headers,
+                       urlRequestInfo: urlRequestInfo) { [weak self] result in
             self?.dispatchQueueWrapper.mainAsync {
                 completionHandler(result)
             }
@@ -175,19 +185,17 @@ public class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
                                 headers: [String: String]?,
                                 urlRequestInfo: URLRequestInfo,
                                 completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        urlRequestBuilder.build(baseURL: baseURL,
-                                headers: headers,
-                                urlRequestInfo: urlRequestInfo) { result in
-            switch result {
-            case .success(let urlRequest):
-                urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] data, error in
-                    self?.handleResponse(data: data,
-                                         error: error,
-                                         completionHandler: completionHandler)
-                }
-            case .failure(let error):
-                completionHandler(.failure(error))
+        let result = urlRequestBuilder.build(urlRequestInfo: urlRequestInfo)
+        
+        switch result {
+        case .success(let urlRequest):
+            urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] data, error in
+                self?.handleResponse(data: data,
+                                     error: error,
+                                     completionHandler: completionHandler)
             }
+        case .failure(let error):
+            completionHandler(.failure(error))
         }
     }
     

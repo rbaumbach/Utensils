@@ -23,35 +23,60 @@
 import Foundation
 import Capsule
 
-open class FakeFileLoader: Fake, FileLoaderProtocol {
+open class FakeFileManagerUtensils: FakeFileManager, FileManagerUtensilsProtocol {
     // MARK: - Captured properties
     
-    public var capturedLoadJSONName: String?
-    public var capturedLoadJSONFileExtension: String?
+    public var capturedMigrateFileSRCURL: URL?
+    public var capturedMigrateFileDSTURL: URL?
     
-    // MARK: - Stubbed properties
-        
-    public var stubbedLoadJSON: Any?
+    public var capturedCreateDirectoryUtensilsURL: URL?
+    
+    public var capturedDeleteFileURL: URL?
+    
+    public var capturedDeleteDirectoryAndItsContentsURL: URL?
     
     // MARK: - Public properties
     
-    public var shouldThrowErrorLoadingJSON = false
+    public var shouldThrowMigrateFileError = false
+    public var shouldThrowDeleteFileError = false
+    public var shouldThrowDeleteDirectoryAndItsContents = false
     
     // MARK: - Init methods
     
     public override init() { }
     
-    // MARK: - FileLoaderProtocol
+    // MARK: - <FileManagerUtensilsProtocol>
     
-    public func loadJSON<T: Codable>(name: String,
-                                     fileExtension: String) throws -> T? {
-        capturedLoadJSONName = name
-        capturedLoadJSONFileExtension = fileExtension
+    public func migrateFile(at srcURL: URL, to dstURL: URL) throws {
+        capturedMigrateFileSRCURL = srcURL
+        capturedMigrateFileDSTURL = dstURL
         
-        if shouldThrowErrorLoadingJSON {
+        if shouldThrowMigrateFileError {
             throw FakeGenericError.whoCares
         }
+    }
+    
+    public func createDirectory(url: URL) throws {
+        capturedCreateDirectoryUtensilsURL = url
         
-        return stubbedLoadJSON as? T
+        if shouldThrowCreateDirectoryError {
+            throw FakeGenericError.whoCares
+        }
+    }
+    
+    public func deleteFile(url: URL) throws {
+        capturedDeleteFileURL = url
+        
+        if shouldThrowDeleteFileError {
+            throw FakeGenericError.whoCares
+        }
+    }
+    
+    public func deleteDirectoryAndItsContents(url: URL) throws {
+        capturedDeleteDirectoryAndItsContentsURL = url
+        
+        if shouldThrowDeleteDirectoryAndItsContents {
+            throw FakeGenericError.whoCares
+        }
     }
 }

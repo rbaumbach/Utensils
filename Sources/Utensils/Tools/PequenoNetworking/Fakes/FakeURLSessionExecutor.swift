@@ -21,22 +21,64 @@
 //SOFTWARE.
 
 import Foundation
+import Capsule
 
-public class FakeURLSessionExecutor: URLSessionExecutorProtocol {
+open class FakeURLSessionExecutor: Fake, URLSessionExecutorProtocol {
     // MARK: - Captured properties
     
     public var capturedExecuteURLRequest: URLRequest?
     public var capturedExecuteCompletionHandler: ((Data?, PequenoNetworking.Error?) -> Void)?
     
+    public var capturedExecuteDownloadURLRequest: URLRequest?
+    public var capturedExecuteDownloadCustomFilename: String?
+    public var capturedExecuteDownloadDirectory: DirectoryProtocol?
+    public var capturedExecuteDownloadCompletionHandler: ((URL?, PequenoNetworking.Error?) -> Void)?
+    
+    // MARK: - Stubbed properties
+    
+    public var stubbedExecuteTask: URLSessionTaskProtocol = FakeURLSessionTask()
+    public var stubbedExecuteData: Data? = "Lucky Day".data(using: .utf8)
+    public var stubbedExecuteError: PequenoNetworking.Error = .dataError
+    
+    public var stubbedExecuteDownloadTask: URLSessionTaskProtocol = FakeURLSessionTask()
+    public var stubbedExecuteDownloadURL: URL? = URL(string: "https://dusty-bottoms.3amigos-99.party")
+    public var stubbedExecuteDownloadError: PequenoNetworking.Error = .dataError
+    
+    // MARK: - Public properties
+    
+    public var shouldExecuteCompletionHandlersImmediately = false
+    
     // MARK: - Init methods
     
-    public init() { }
+    public override init() { }
     
     // MARK: - <URLSessionExecutorProtocol>
     
     public func execute(urlRequest: URLRequest, 
-                        completionHandler: @escaping (Data?, PequenoNetworking.Error?) -> Void) {
+                        completionHandler: @escaping (Data?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol {
         capturedExecuteURLRequest = urlRequest
         capturedExecuteCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedExecuteData, stubbedExecuteError)
+        }
+        
+        return stubbedExecuteTask
+    }
+    
+    public func executeDownload(urlRequest: URLRequest,
+                                customFilename: String?,
+                                directory: DirectoryProtocol,
+                                completionHandler: @escaping (URL?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol {
+        capturedExecuteDownloadURLRequest = urlRequest
+        capturedExecuteDownloadCustomFilename = customFilename
+        capturedExecuteDownloadDirectory = directory
+        capturedExecuteDownloadCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedExecuteDownloadURL, stubbedExecuteDownloadError)
+        }
+        
+        return stubbedExecuteDownloadTask
     }
 }
