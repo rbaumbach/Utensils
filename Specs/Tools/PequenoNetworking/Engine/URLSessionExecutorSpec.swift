@@ -26,13 +26,11 @@ final class URLSessionExecutorSpec: QuickSpec {
             }
             
             describe("#execute(urlRequest:completionHandler:)") {
-                var actualData: Data!
-                var actualError: PequenoNetworking.Error!
+                var actualResult: Result<Data, PequenoNetworking.Error>!
                 
                 beforeEach {
-                    lastExecutedURLSessionTask = subject.execute(urlRequest: urlRequest) { data, error in
-                        actualData = data
-                        actualError = error
+                    lastExecutedURLSessionTask = subject.execute(urlRequest: urlRequest) { result in
+                        actualResult = result
                     }
                 }
                 
@@ -49,9 +47,9 @@ final class URLSessionExecutorSpec: QuickSpec {
                     }
                     
                     it("completes with dataTaskError") {
-                        expect(actualData).to.beNil()
-                        
-                        expect(actualError).to.equal(.dataTaskError(wrappedError: FakeGenericError.whoCares))
+                        if case .failure(let error) = actualResult {
+                            expect(error).to.equal(.dataTaskError(wrappedError: FakeGenericError.whoCares))
+                        } else { failSpec() }
                     }
                 }
                 
@@ -61,7 +59,9 @@ final class URLSessionExecutorSpec: QuickSpec {
                     }
                     
                     it("completes with malformedResponseError") {
-                        expect(actualError).to.equal(.malformedResponseError)
+                        if case .failure(let error) = actualResult {
+                            expect(error).to.equal(.malformedResponseError)
+                        } else { failSpec() }
                     }
                 }
                 
@@ -79,7 +79,9 @@ final class URLSessionExecutorSpec: QuickSpec {
                         }
                         
                         it("completes with invalidStatusCodeError") {
-                            expect(actualError).to.equal(.invalidStatusCodeError(statusCode: 1))
+                            if case .failure(let error) = actualResult {
+                                expect(error).to.equal(.invalidStatusCodeError(statusCode: 1))
+                            } else { failSpec() }
                         }
                     }
                     
@@ -96,25 +98,24 @@ final class URLSessionExecutorSpec: QuickSpec {
                         }
                         
                         it("finally completes without error") {
-                            expect(actualError).to.beNil()
-                            expect(actualData).to.equal("doesn't-matter".data(using: .utf8))
+                            if case .success(let data) = actualResult {
+                                expect(data).to.equal("doesn't-matter".data(using: .utf8))
+                            } else { failSpec() }
                         }
                     }
                 }
             }
             
             describe("#executeDownload(urlRequest:customFilename:directory:completionHandler:)") {
-                var actualURL: URL!
-                var actualError: PequenoNetworking.Error!
+                var actualResult: Result<URL, PequenoNetworking.Error>!
                 
                 beforeEach {
                     urlRequest = URLRequest(url: URL(string: "http://junkity-99.com")!)
                     
                     lastExecutedURLSessionTask = subject.executeDownload(urlRequest: urlRequest,
                                                                          customFilename: "hi.txt",
-                                                                         directory: directory) { url, error in
-                        actualURL = url
-                        actualError = error
+                                                                         directory: directory) { result in
+                        actualResult = result
                     }
                 }
                 
@@ -131,9 +132,9 @@ final class URLSessionExecutorSpec: QuickSpec {
                     }
                     
                     it("completes with dataTaskError") {
-                        expect(actualURL).to.beNil()
-                        
-                        expect(actualError).to.equal(.downloadTaskError(wrappedError: FakeGenericError.whoCares))
+                        if case .failure(let error) = actualResult {
+                            expect(error).to.equal(.downloadTaskError(wrappedError: FakeGenericError.whoCares))
+                        } else { failSpec() }
                     }
                 }
                 
@@ -143,7 +144,9 @@ final class URLSessionExecutorSpec: QuickSpec {
                     }
                     
                     it("completes with malformedResponseError") {
-                        expect(actualError).to.equal(.malformedResponseError)
+                        if case .failure(let error) = actualResult {
+                            expect(error).to.equal(.malformedResponseError)
+                        } else { failSpec() }
                     }
                 }
                 
@@ -161,7 +164,9 @@ final class URLSessionExecutorSpec: QuickSpec {
                         }
                         
                         it("completes with invalidStatusCodeError") {
-                            expect(actualError).to.equal(.invalidStatusCodeError(statusCode: 1))
+                            if case .failure(let error) = actualResult {
+                                expect(error).to.equal(.invalidStatusCodeError(statusCode: 1))
+                            } else { failSpec() }
                         }
                     }
                     
@@ -179,9 +184,9 @@ final class URLSessionExecutorSpec: QuickSpec {
                             }
                             
                             it("completes with downloadError") {
-                                expect(actualURL).to.beNil()
-                                
-                                expect(actualError).to.equal(.downloadError)
+                                if case .failure(let error) = actualResult {
+                                    expect(error).to.equal(.downloadError)
+                                } else { failSpec() }
                             }
                         }
                         
@@ -200,8 +205,9 @@ final class URLSessionExecutorSpec: QuickSpec {
                                 }
                                 
                                 it("completes with downloadFileManagerError") {
-                                    expect(actualURL).to.beNil()
-                                    expect(actualError).to.equal(.downloadFileManagerError(wrappedError: FakeGenericError.whoCares))
+                                    if case .failure(let error) = actualResult {
+                                        expect(error).to.equal(.downloadFileManagerError(wrappedError: FakeGenericError.whoCares))
+                                    } else { failSpec() }
                                                                         
                                     expect(fakeFileManager.capturedMigrateFileSRCURL).to.equal(url)
                                     expect(fakeFileManager.capturedMigrateFileDSTURL).to.equal(URL(string: "file:///fake-documents-directory/hi.txt"))
@@ -214,9 +220,9 @@ final class URLSessionExecutorSpec: QuickSpec {
                                 }
                                 
                                 it("finally completes without error") {
-                                    expect(actualError).to.beNil()
-                                    
-                                    expect(actualURL).to.equal(URL(string: "file:///fake-documents-directory/hi.txt"))
+                                    if case .success(let url) = actualResult {
+                                        expect(url).to.equal(URL(string: "file:///fake-documents-directory/hi.txt"))
+                                    } else { failSpec() }
                                     
                                     expect(fakeFileManager.capturedMigrateFileSRCURL).to.equal(url)
                                     expect(fakeFileManager.capturedMigrateFileDSTURL).to.equal(URL(string: "file:///fake-documents-directory/hi.txt"))

@@ -30,20 +30,16 @@ final class URLSessionExecutorIntegrationSpec: QuickSpec {
                     hangOn(for: .seconds(5)) { complete in
                         subject.executeDownload(urlRequest: urlRequest,
                                                 customFilename: "animal.jpeg",
-                                                directory: Directory(.caches(additionalPath: "session-downloadz/"))) { url, error in
-                            guard let url = url else {
-                                failSpec()
+                                                directory: Directory(.caches(additionalPath: "session-downloadz/"))) { result in
+                            if case .success(let url) = result {
+                                guard let data = try? Data(contentsOf: url) else {
+                                    failSpec()
+                                    
+                                    return
+                                }
                                 
-                                return
-                            }
-                            
-                            guard let imageData = try? Data(contentsOf: url) else {
-                                failSpec()
-                                
-                                return
-                            }
-                            
-                            expect(imageData.count).to.beGreaterThan(0)
+                                expect(data.count).to.beGreaterThan(0)
+                            } else { failSpec() }
                             
                             complete()
                         }

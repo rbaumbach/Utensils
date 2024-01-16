@@ -23,16 +23,20 @@
 import Foundation
 import Capsule
 
+// TODO: Update to use Result
+// TODO: Add Bool to let user decide if we should .resume() right away
+// TODO: Rename this class to something like URLSessionBuilder
+
 public protocol URLSessionExecutorProtocol {
     @discardableResult
     func execute(urlRequest: URLRequest,
-                 completionHandler: @escaping (Data?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol
+                 completionHandler: @escaping (Result<Data, PequenoNetworking.Error>) -> Void) -> URLSessionTaskProtocol
     
     @discardableResult
     func executeDownload(urlRequest: URLRequest,
                          customFilename: String?,
                          directory: Directory,
-                         completionHandler: @escaping (URL?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol
+                         completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) -> URLSessionTaskProtocol
 }
 
 open class URLSessionExecutor: URLSessionExecutorProtocol {
@@ -57,27 +61,33 @@ open class URLSessionExecutor: URLSessionExecutorProtocol {
     
     @discardableResult
     public func execute(urlRequest: URLRequest,
-                        completionHandler: @escaping (Data?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol {
+                        completionHandler: @escaping (Result<Data, PequenoNetworking.Error>) -> Void) -> URLSessionTaskProtocol {
         let dataTask = urlSession.dataTask(urlRequest: urlRequest) { data, response, error in
             if let error = error {
-                completionHandler(nil, .dataTaskError(wrappedError: error))
+                completionHandler(.failure(.dataTaskError(wrappedError: error)))
                 
                 return
             }
             
             guard let response = response as? HTTPURLResponse else {
-                completionHandler(nil, .malformedResponseError)
+                completionHandler(.failure(.malformedResponseError))
                 
                 return
             }
             
             guard (200...299).contains(response.statusCode) else {
-                completionHandler(nil, .invalidStatusCodeError(statusCode: response.statusCode))
+                completionHandler(.failure(.invalidStatusCodeError(statusCode: response.statusCode)))
                 
                 return
             }
             
-            completionHandler(data, nil)
+            guard let data = data else {
+                completionHandler(.failure(.dataError))
+                
+                return
+            }
+            
+            completionHandler(.success(data))
         }
         
         dataTask.resume()
@@ -86,35 +96,35 @@ open class URLSessionExecutor: URLSessionExecutorProtocol {
         
         return dataTask
     }
-    
+
     @discardableResult
     public func executeDownload(urlRequest: URLRequest,
                                 customFilename: String?,
                                 directory: Directory,
-                                completionHandler: @escaping (URL?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol {
+                                completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) -> URLSessionTaskProtocol {
         let downloadTask = urlSession.downloadTask(urlRequest: urlRequest) { [weak self] tempURL, response, error in
             guard let self = self else { return }
             
             if let error = error {
-                completionHandler(nil, .downloadTaskError(wrappedError: error))
+                completionHandler(.failure(.downloadTaskError(wrappedError: error)))
                 
                 return
             }
             
             guard let response = response as? HTTPURLResponse else {
-                completionHandler(nil, .malformedResponseError)
+                completionHandler(.failure(.malformedResponseError))
                 
                 return
             }
             
             guard (200...299).contains(response.statusCode) else {
-                completionHandler(nil, .invalidStatusCodeError(statusCode: response.statusCode))
+                completionHandler(.failure(.invalidStatusCodeError(statusCode: response.statusCode)))
                 
                 return
             }
             
             guard let tempURL = tempURL else {
-                completionHandler(nil, .downloadError)
+                completionHandler(.failure(.downloadError))
                 
                 return
             }
@@ -124,9 +134,9 @@ open class URLSessionExecutor: URLSessionExecutorProtocol {
                                                            directory: directory,
                                                            tempURL: tempURL)
                 
-                completionHandler(migratedFileURL, nil)
+                completionHandler(.success(migratedFileURL))
             } catch {
-                completionHandler(nil, .downloadFileManagerError(wrappedError: error))
+                completionHandler(.failure(.downloadFileManagerError(wrappedError: error)))
             }
         }
         

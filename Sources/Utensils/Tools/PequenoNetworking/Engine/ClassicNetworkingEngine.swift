@@ -189,9 +189,8 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         
         switch result {
         case .success(let urlRequest):
-            urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] data, error in
-                self?.handleResponse(data: data,
-                                     error: error,
+            urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] result in
+                self?.handleResponse(result: result,
                                      completionHandler: completionHandler)
             }
         case .failure(let error):
@@ -199,30 +198,17 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         }
     }
     
-    private func handleResponse(data: Data?,
-                                error: PequenoNetworking.Error?,
+    private func handleResponse(result: Result<Data, PequenoNetworking.Error>,
                                 completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        if let error = error {
-            completionHandler(.failure(error))
-            
-            return
-        }
-        
-        guard let data = data else {
-            completionHandler(.failure(.dataError))
-            
-            return
-        }
-        
-        let result: Result<Any, PequenoNetworking.Error>
-        
-        do {
-            let jsonResponse = try self.jsonSerializationWrapper.jsonObject(with: data,
-                                                                            options: .mutableContainers)
-            
-            result = .success(jsonResponse)
-        } catch {
-            result = .failure(.jsonObjectDecodeError(wrappedError: error))
+        let result = result.flatMap { data in
+            do {
+                let jsonResponse = try self.jsonSerializationWrapper.jsonObject(with: data,
+                                                                                options: .mutableContainers)
+                
+                return .success(jsonResponse)
+            } catch {
+                return .failure(.jsonObjectDecodeError(wrappedError: error))
+            }
         }
         
         completionHandler(result)

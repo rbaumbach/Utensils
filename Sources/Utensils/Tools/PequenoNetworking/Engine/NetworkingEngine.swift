@@ -207,11 +207,11 @@ open class NetworkingEngine: NetworkingEngineProtocol {
     private func executeRequest<T: Codable>(urlRequestInfo: URLRequestInfo,
                                             completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
         let result = urlRequestBuilder.build(urlRequestInfo: urlRequestInfo)
+        
         switch result {
         case .success(let urlRequest):
-            urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] data, error in
-                self?.handleResponse(data: data,
-                                     error: error,
+            urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] result in
+                self?.handleResponse(result: result,
                                      completionHandler: completionHandler)
             }
         case .failure(let error):
@@ -224,64 +224,31 @@ open class NetworkingEngine: NetworkingEngineProtocol {
                                         directory: Directory,
                                         completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
         let result = urlRequestBuilder.build(urlRequestInfo: urlRequestInfo)
-        
+
         switch result {
         case .success(let urlRequest):
             urlSessionExecutor.executeDownload(urlRequest: urlRequest,
                                                customFilename: filename,
-                                               directory: directory) { [weak self] url, error in
-                self?.handleDownloadResponse(url: url,
-                                             error: error,
-                                             completionHandler: completionHandler)
-            }
+                                               directory: directory,
+                                               completionHandler: completionHandler)
         case .failure(let error):
             completionHandler(.failure(error))
         }
         
     }
     
-    private func handleResponse<T: Codable>(data: Data?,
-                                            error: PequenoNetworking.Error?,
+    private func handleResponse<T: Codable>(result: Result<Data, PequenoNetworking.Error>,
                                             completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
-        if let error = error {
-            completionHandler(.failure(error))
-            
-            return
-        }
-        
-        guard let data = data else {
-            completionHandler(.failure(.dataError))
-            
-            return
-        }
-        
-        let result: Result<T, PequenoNetworking.Error>
-        
-        do {
-            let jsonResponse = try self.jsonDecoder.decode(T.self, from: data)
-            result = .success(jsonResponse)
-        } catch {
-            result = .failure(.jsonObjectDecodeError(wrappedError: error))
+        let result = result.flatMap { data in
+            do {
+                let jsonResponse = try self.jsonDecoder.decode(T.self, from: data)
+                
+                return .success(jsonResponse)
+            } catch {
+                return .failure(.jsonObjectDecodeError(wrappedError: error))
+            }
         }
         
         completionHandler(result)
-    }
-    
-    private func handleDownloadResponse(url: URL?,
-                                        error: PequenoNetworking.Error?,
-                                        completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
-        if let error = error {
-            completionHandler(.failure(error))
-            
-            return
-        }
-        
-        guard let url = url else {
-            completionHandler(.failure(.downloadError))
-            
-            return
-        }
-        
-        completionHandler(.success(url))
     }
 }

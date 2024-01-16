@@ -65,7 +65,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(nil, .dataError)
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(.failure(.dataError))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -79,27 +79,13 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                         }
                     }
                     
-                    describe("when url session completes with nil data") {
-                        beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(nil, nil)
-                            
-                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-                        }
-                        
-                        it("completes with data error") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
-                        }
-                    }
-                    
                     describe("when the data CANNOT be deserialized") {
                         beforeEach {
                             fakeJSONSerializationWrapper.shouldThrowJSONObjectException = true
                             
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(String.empty.data(using: .utf8), nil)
+                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -118,7 +104,9 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                     
                     describe("when the data can be deserialized") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(String.empty.data(using: .utf8), nil)
+                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -183,7 +171,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(nil, .dataError)
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(.failure(.dataError))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -197,27 +185,13 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                         }
                     }
                     
-                    describe("when url session completes with nil data") {
-                        beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(nil, nil)
-                            
-                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-                        }
-                        
-                        it("completes with data error") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
-                        }
-                    }
-                    
                     describe("when the data CANNOT be deserialized") {
                         beforeEach {
                             fakeJSONSerializationWrapper.shouldThrowJSONObjectException = true
                             
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(String.empty.data(using: .utf8), nil)
+                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -236,7 +210,9 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                     
                     describe("when the data can be deserialized") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(String.empty.data(using: .utf8), nil)
+                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -301,7 +277,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(nil, .dataError)
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(.failure(.dataError))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -315,27 +291,13 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                         }
                     }
                     
-                    describe("when url session completes with nil data") {
-                        beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(nil, nil)
-                            
-                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-                        }
-                        
-                        it("completes with data error") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
-                        }
-                    }
-                    
                     describe("when the data CANNOT be deserialized") {
                         beforeEach {
                             fakeJSONSerializationWrapper.shouldThrowJSONObjectException = true
                             
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(String.empty.data(using: .utf8), nil)
+                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -354,7 +316,9 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                     
                     describe("when the data can be deserialized") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(String.empty.data(using: .utf8), nil)
+                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -419,7 +383,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(nil, .dataError)
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(.failure(.dataError))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -433,27 +397,13 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                         }
                     }
                     
-                    describe("when url session completes with nil data") {
-                        beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(nil, nil)
-                            
-                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-                        }
-                        
-                        it("completes with data error") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
-                        }
-                    }
-                    
                     describe("when the data CANNOT be deserialized") {
                         beforeEach {
                             fakeJSONSerializationWrapper.shouldThrowJSONObjectException = true
                             
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(String.empty.data(using: .utf8), nil)
+                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -472,7 +422,9 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                     
                     describe("when the data can be deserialized") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(String.empty.data(using: .utf8), nil)
+                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -537,7 +489,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(nil, .dataError)
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(.failure(.dataError))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -551,27 +503,13 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                         }
                     }
                     
-                    describe("when url session completes with nil data") {
-                        beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(nil, nil)
-                            
-                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
-                        }
-                        
-                        it("completes with data error") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
-                        }
-                    }
-                    
                     describe("when the data CANNOT be deserialized") {
                         beforeEach {
                             fakeJSONSerializationWrapper.shouldThrowJSONObjectException = true
                             
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(String.empty.data(using: .utf8), nil)
+                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -590,7 +528,9 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                     
                     describe("when the data can be deserialized") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(String.empty.data(using: .utf8), nil)
+                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            
+                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
