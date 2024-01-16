@@ -26,9 +26,9 @@
 		940F9DFF239B146D0028937B /* Trunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DFC239B146D0028937B /* Trunk.swift */; };
 		940F9E01239B146D0028937B /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DFE239B146D0028937B /* Debouncer.swift */; };
 		942B4E782B3A1E290086D749 /* URLRequestInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B4E772B3A1E290086D749 /* URLRequestInfo.swift */; };
-		942B4E7A2B3A92150086D749 /* PequenoNetworkingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B4E792B3A92150086D749 /* PequenoNetworkingConstants.swift */; };
+		942B4E7A2B3A92150086D749 /* PequenoNetworking+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B4E792B3A92150086D749 /* PequenoNetworking+Constants.swift */; };
 		942B4E7C2B3B1D900086D749 /* URLRequestInfoSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B4E7B2B3B1D900086D749 /* URLRequestInfoSpec.swift */; };
-		942B4E7E2B3B206E0086D749 /* PequenoNetworkingConstantsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B4E7D2B3B206E0086D749 /* PequenoNetworkingConstantsSpec.swift */; };
+		942B4E7E2B3B206E0086D749 /* PequenoNetworking+ConstantsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B4E7D2B3B206E0086D749 /* PequenoNetworking+ConstantsSpec.swift */; };
 		94341AFE238CCECF00BC8355 /* Utensils.h in Headers */ = {isa = PBXBuildFile; fileRef = 94341AFC238CCECF00BC8355 /* Utensils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		944A011E238D7CBD00957702 /* Utensils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94341AF9238CCECF00BC8355 /* Utensils.framework */; };
 		94569E152B274845008494E1 /* FileLoaderSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94569E142B274845008494E1 /* FileLoaderSpec.swift */; };
@@ -129,9 +129,9 @@
 		940F9DFC239B146D0028937B /* Trunk.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trunk.swift; sourceTree = "<group>"; };
 		940F9DFE239B146D0028937B /* Debouncer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
 		942B4E772B3A1E290086D749 /* URLRequestInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestInfo.swift; sourceTree = "<group>"; };
-		942B4E792B3A92150086D749 /* PequenoNetworkingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingConstants.swift; sourceTree = "<group>"; };
+		942B4E792B3A92150086D749 /* PequenoNetworking+Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PequenoNetworking+Constants.swift"; sourceTree = "<group>"; };
 		942B4E7B2B3B1D900086D749 /* URLRequestInfoSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestInfoSpec.swift; sourceTree = "<group>"; };
-		942B4E7D2B3B206E0086D749 /* PequenoNetworkingConstantsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingConstantsSpec.swift; sourceTree = "<group>"; };
+		942B4E7D2B3B206E0086D749 /* PequenoNetworking+ConstantsSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PequenoNetworking+ConstantsSpec.swift"; sourceTree = "<group>"; };
 		942B4E7F2B3B22420086D749 /* ClassicNetworkingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassicNetworkingEngine.swift; sourceTree = "<group>"; };
 		94341AF9238CCECF00BC8355 /* Utensils.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Utensils.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94341AFC238CCECF00BC8355 /* Utensils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utensils.h; sourceTree = "<group>"; };
@@ -427,8 +427,8 @@
 				942B4E812B3B224C0086D749 /* Engine */,
 				94FD50562B3B24590090455F /* Models */,
 				94569E5C2B36498F008494E1 /* PequenoNetworking.swift */,
+				942B4E792B3A92150086D749 /* PequenoNetworking+Constants.swift */,
 				94569E452B2F35BE008494E1 /* PequenoNetworking+Error.swift */,
-				942B4E792B3A92150086D749 /* PequenoNetworkingConstants.swift */,
 			);
 			path = PequenoNetworking;
 			sourceTree = "<group>";
@@ -438,8 +438,8 @@
 			children = (
 				9404C5632B431448001626C8 /* Engine */,
 				94FD50592B3B25D40090455F /* Models */,
+				942B4E7D2B3B206E0086D749 /* PequenoNetworking+ConstantsSpec.swift */,
 				94569E522B2FDEA7008494E1 /* PequenoNetworking+ErrorSpec.swift */,
-				942B4E7D2B3B206E0086D749 /* PequenoNetworkingConstantsSpec.swift */,
 				94569E542B2FE491008494E1 /* PequenoNetworkingSpec.swift */,
 			);
 			path = PequenoNetworking;
@@ -910,7 +910,7 @@
 				942B4E782B3A1E290086D749 /* URLRequestInfo.swift in Sources */,
 				94872AF92915D20700D3528B /* Bundle+Utensils.swift in Sources */,
 				940F9E01239B146D0028937B /* Debouncer.swift in Sources */,
-				942B4E7A2B3A92150086D749 /* PequenoNetworkingConstants.swift in Sources */,
+				942B4E7A2B3A92150086D749 /* PequenoNetworking+Constants.swift in Sources */,
 				940F9DFF239B146D0028937B /* Trunk.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -936,7 +936,7 @@
 				94569E512B2FDCAC008494E1 /* HTTPMethodSpec.swift in Sources */,
 				9404C5742B4332F9001626C8 /* NetworkingEngineSpec.swift in Sources */,
 				94569E172B28E279008494E1 /* SomeTestFunctions.swift in Sources */,
-				942B4E7E2B3B206E0086D749 /* PequenoNetworkingConstantsSpec.swift in Sources */,
+				942B4E7E2B3B206E0086D749 /* PequenoNetworking+ConstantsSpec.swift in Sources */,
 				94DB4641239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift in Sources */,
 				9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */,
 			);

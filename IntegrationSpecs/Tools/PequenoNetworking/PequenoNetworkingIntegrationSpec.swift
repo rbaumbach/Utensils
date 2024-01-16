@@ -246,13 +246,13 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
             
             describe("using convenience init w/ UserDefaults") {
                 beforeEach {
-                    UserDefaults.standard.set("https://httpbin.org", forKey: PequenoNetworkingConstants.BaseURLKey)
+                    UserDefaults.standard.set("https://httpbin.org", forKey: PequenoNetworking.Constants.BaseURLKey)
                     
                     subject = PequenoNetworking()
                 }
                 
                 afterEach {
-                    UserDefaults.standard.removeObject(forKey: PequenoNetworkingConstants.BaseURLKey)
+                    UserDefaults.standard.removeObject(forKey: PequenoNetworking.Constants.BaseURLKey)
                 }
                 
                 it("works") {

@@ -23,7 +23,6 @@
 import Foundation
 import Capsule
 
-// TODO: Update to use Result
 // TODO: Add Bool to let user decide if we should .resume() right away
 // TODO: Rename this class to something like URLSessionBuilder
 
@@ -146,6 +145,8 @@ open class URLSessionExecutor: URLSessionExecutorProtocol {
         
         return downloadTask
     }
+    
+    // TODO: Add uploader
     
     // MARK: - Private methods
         

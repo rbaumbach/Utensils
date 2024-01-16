@@ -101,11 +101,11 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     }
     
     public convenience init(userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
-        guard let baseURL = userDefaults.string(forKey: PequenoNetworkingConstants.BaseURLKey) else {
+        guard let baseURL = userDefaults.string(forKey: PequenoNetworking.Constants.BaseURLKey) else {
             preconditionFailure("BaseURL must exist in UserDefaults")
         }
         
-        let headers = userDefaults.object(forKey: PequenoNetworkingConstants.HeadersKey) as? [String: String]
+        let headers = userDefaults.object(forKey: PequenoNetworking.Constants.HeadersKey) as? [String: String]
         
         self.init(baseURL: baseURL, headers: headers)
     }
