@@ -12,7 +12,9 @@ final class NetworkingEngineSpec: QuickSpec {
             var fakeURLSessionExecutor: FakeURLSessionExecutor!
             var fakeJSONDecoder: FakeJSONDecoder!
             var fakeDispatchQueueWrapper: FakeDispatchQueueWrapper!
-            var fakeDirectory: FakeDirectory!
+            
+            var fakeFileManager: FakeFileManagerUtensils!
+            var directory: Directory!
             
             var actualResult: Result<String, PequenoNetworking.Error>!
             
@@ -21,7 +23,9 @@ final class NetworkingEngineSpec: QuickSpec {
                 fakeURLSessionExecutor = FakeURLSessionExecutor()
                 fakeJSONDecoder = FakeJSONDecoder()
                 fakeDispatchQueueWrapper = FakeDispatchQueueWrapper()
-                fakeDirectory = FakeDirectory()
+                
+                fakeFileManager = FakeFileManagerUtensils()
+                directory = Directory(fileManager: fakeFileManager)
                 
                 subject = NetworkingEngine(urlRequestBuilder: fakeURLRequestBuilder,
                                            urlSessionExecutor: fakeURLSessionExecutor,
@@ -621,7 +625,7 @@ final class NetworkingEngineSpec: QuickSpec {
                                              endpoint: String.empty,
                                              parameters: nil,
                                              filename: "hi.txt",
-                                             directory: fakeDirectory) { result in
+                                             directory: directory) { result in
                             actualDownloadResult = result
                         }
                         
@@ -644,7 +648,7 @@ final class NetworkingEngineSpec: QuickSpec {
                                              endpoint: String.empty,
                                              parameters: nil,
                                              filename: "hi.txt",
-                                             directory: fakeDirectory) { result in
+                                             directory: directory) { result in
                             actualDownloadResult = result
                         }
                         

@@ -11,8 +11,9 @@ final class PequenoNetworkingSpec: QuickSpec {
             var fakeClassicNetworkingEngine: FakeClassicNetworkingEngine!
             var fakeNetworkingEngine: FakeNetworkingEngine!
             
+            var fakeFileManager: FakeFileManagerUtensils!
             var fakeUserDefaults: FakeUserDefaults!
-            var fakeDirectory: FakeDirectory!
+            var directory: Directory!
             
             beforeEach {
                 fakeClassicNetworkingEngine = FakeClassicNetworkingEngine()
@@ -22,7 +23,8 @@ final class PequenoNetworkingSpec: QuickSpec {
                 fakeUserDefaults.stubbedString = "https://ghost.busters"
                 fakeUserDefaults.stubbedObject = ["city": "new-york"]
                 
-                fakeDirectory = FakeDirectory()
+                fakeFileManager = FakeFileManagerUtensils()
+                directory = Directory(fileManager: fakeFileManager)
             }
             
             it("has a convience init method that uses user defaults for baseURL and headers") {
@@ -319,7 +321,7 @@ final class PequenoNetworkingSpec: QuickSpec {
                     subject.downloadFile(endpoint: "/download",
                                          parameters: ["ghost": "scoleri-brothers"],
                                          filename: "scoleri-brothers",
-                                         directory: fakeDirectory) { result in
+                                         directory: directory) { result in
                         actualResult = result
                     }
                     
@@ -340,7 +342,7 @@ final class PequenoNetworkingSpec: QuickSpec {
                     let actualDirectoryURL = try! fakeNetworkingEngine.capturedDownloadDirectory!.url()
                     let actualDirectoryURLString = actualDirectoryURL.absoluteString
                     
-                    expect(actualDirectoryURLString).to.equal("file:///fake-directory/extra-fake-directory/")
+                    expect(actualDirectoryURLString).to.equal("file:///fake-documents-directory/")
                 }
             }
         }

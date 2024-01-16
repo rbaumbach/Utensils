@@ -31,7 +31,7 @@ open class FakeURLSessionExecutor: Fake, URLSessionExecutorProtocol {
     
     public var capturedExecuteDownloadURLRequest: URLRequest?
     public var capturedExecuteDownloadCustomFilename: String?
-    public var capturedExecuteDownloadDirectory: DirectoryProtocol?
+    public var capturedExecuteDownloadDirectory: Directory?
     public var capturedExecuteDownloadCompletionHandler: ((URL?, PequenoNetworking.Error?) -> Void)?
     
     // MARK: - Stubbed properties
@@ -68,7 +68,7 @@ open class FakeURLSessionExecutor: Fake, URLSessionExecutorProtocol {
     
     public func executeDownload(urlRequest: URLRequest,
                                 customFilename: String?,
-                                directory: DirectoryProtocol,
+                                directory: Directory,
                                 completionHandler: @escaping (URL?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol {
         capturedExecuteDownloadURLRequest = urlRequest
         capturedExecuteDownloadCustomFilename = customFilename

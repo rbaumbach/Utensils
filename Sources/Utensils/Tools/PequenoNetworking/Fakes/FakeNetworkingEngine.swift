@@ -215,7 +215,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
                              endpoint: String,
                              parameters: [String: String]?,
                              filename: String,
-                             directory: DirectoryProtocol,
+                             directory: Directory,
                              completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
         capturedDownloadBaseURL = baseURL
         capturedDownloadHeaders = headers

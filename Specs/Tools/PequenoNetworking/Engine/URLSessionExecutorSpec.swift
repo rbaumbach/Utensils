@@ -9,7 +9,7 @@ final class URLSessionExecutorSpec: QuickSpec {
             var subject: URLSessionExecutor!
             var fakeURLSession: FakeURLSession!
             var fakeFileManager: FakeFileManagerUtensils!
-            var fakeDirectory: FakeDirectory!
+            var directory: Directory!
             
             var urlRequest: URLRequest!
             var lastExecutedURLSessionTask: URLSessionTaskProtocol!
@@ -17,7 +17,7 @@ final class URLSessionExecutorSpec: QuickSpec {
             beforeEach {
                 fakeURLSession = FakeURLSession()
                 fakeFileManager = FakeFileManagerUtensils()
-                fakeDirectory = FakeDirectory()
+                directory = Directory(fileManager: fakeFileManager)
                 
                 subject = URLSessionExecutor(urlSession: fakeURLSession,
                                              fileManager: fakeFileManager)
@@ -112,7 +112,7 @@ final class URLSessionExecutorSpec: QuickSpec {
                     
                     lastExecutedURLSessionTask = subject.executeDownload(urlRequest: urlRequest,
                                                                          customFilename: "hi.txt",
-                                                                         directory: fakeDirectory) { url, error in
+                                                                         directory: directory) { url, error in
                         actualURL = url
                         actualError = error
                     }
@@ -202,11 +202,9 @@ final class URLSessionExecutorSpec: QuickSpec {
                                 it("completes with downloadFileManagerError") {
                                     expect(actualURL).to.beNil()
                                     expect(actualError).to.equal(.downloadFileManagerError(wrappedError: FakeGenericError.whoCares))
-                                    
-                                    let expectedDSTURL = fakeDirectory.stubbedURL.appendingPathComponent("hi.txt")
-                                    
+                                                                        
                                     expect(fakeFileManager.capturedMigrateFileSRCURL).to.equal(url)
-                                    expect(fakeFileManager.capturedMigrateFileDSTURL).to.equal(expectedDSTURL)
+                                    expect(fakeFileManager.capturedMigrateFileDSTURL).to.equal(URL(string: "file:///fake-documents-directory/hi.txt"))
                                 }
                             }
                             
@@ -218,14 +216,11 @@ final class URLSessionExecutorSpec: QuickSpec {
                                 it("finally completes without error") {
                                     expect(actualError).to.beNil()
                                     
-                                    let expectedURL = fakeDirectory.stubbedURL.appendingPathComponent("hi.txt")
-
-                                    expect(actualURL).to.equal(expectedURL)
-                                    
-                                    let expectedDSTURL = fakeDirectory.stubbedURL.appendingPathComponent("hi.txt")
+                                    expect(actualURL).to.equal(URL(string: "file:///fake-documents-directory/hi.txt"))
                                     
                                     expect(fakeFileManager.capturedMigrateFileSRCURL).to.equal(url)
-                                    expect(fakeFileManager.capturedMigrateFileDSTURL).to.equal(expectedDSTURL)
+                                    expect(fakeFileManager.capturedMigrateFileDSTURL).to.equal(URL(string: "file:///fake-documents-directory/hi.txt"))
+
                                 }
                             }
                         }

@@ -61,7 +61,7 @@ public protocol NetworkingEngineProtocol {
                       endpoint: String,
                       parameters: [String: String]?,
                       filename: String,
-                      directory: DirectoryProtocol,
+                      directory: Directory,
                       completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void)
 }
 
@@ -184,7 +184,7 @@ open class NetworkingEngine: NetworkingEngineProtocol {
                              endpoint: String,
                              parameters: [String: String]?,
                              filename: String,
-                             directory: DirectoryProtocol,
+                             directory: Directory,
                              completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
         let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
                                             headers: headers,
@@ -221,7 +221,7 @@ open class NetworkingEngine: NetworkingEngineProtocol {
     
     private func executeDownloadRequest(urlRequestInfo: URLRequestInfo,
                                         filename: String,
-                                        directory: DirectoryProtocol,
+                                        directory: Directory,
                                         completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
         let result = urlRequestBuilder.build(urlRequestInfo: urlRequestInfo)
         

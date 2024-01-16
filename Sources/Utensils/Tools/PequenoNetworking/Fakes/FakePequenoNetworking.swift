@@ -284,7 +284,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     public func downloadFile(endpoint: String,
                              parameters: [String: String]?,
                              filename: String,
-                             directory: DirectoryProtocol,
+                             directory: Directory,
                              completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
         capturedDownloadEndpoint = endpoint
         capturedDownloadParameters = parameters

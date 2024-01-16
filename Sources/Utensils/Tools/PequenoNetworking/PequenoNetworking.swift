@@ -73,7 +73,7 @@ public protocol PequenoNetworkingProtocol {
     func downloadFile(endpoint: String,
                       parameters: [String: String]?,
                       filename: String,
-                      directory: DirectoryProtocol,
+                      directory: Directory,
                       completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void)
 }
 
@@ -211,11 +211,11 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
                                body: body,
                                completionHandler: completionHandler)
     }
-    
+        
     public func downloadFile(endpoint: String,
                              parameters: [String: String]?,
                              filename: String,
-                             directory: DirectoryProtocol,
+                             directory: Directory,
                              completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
         networkingEngine.downloadFile(baseURL: baseURL,
                                       headers: headers,

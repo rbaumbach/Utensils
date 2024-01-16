@@ -31,7 +31,7 @@ public protocol URLSessionExecutorProtocol {
     @discardableResult
     func executeDownload(urlRequest: URLRequest,
                          customFilename: String?,
-                         directory: DirectoryProtocol,
+                         directory: Directory,
                          completionHandler: @escaping (URL?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol
 }
 
@@ -90,7 +90,7 @@ open class URLSessionExecutor: URLSessionExecutorProtocol {
     @discardableResult
     public func executeDownload(urlRequest: URLRequest,
                                 customFilename: String?,
-                                directory: DirectoryProtocol,
+                                directory: Directory,
                                 completionHandler: @escaping (URL?, PequenoNetworking.Error?) -> Void) -> URLSessionTaskProtocol {
         let downloadTask = urlSession.downloadTask(urlRequest: urlRequest) { [weak self] tempURL, response, error in
             guard let self = self else { return }
