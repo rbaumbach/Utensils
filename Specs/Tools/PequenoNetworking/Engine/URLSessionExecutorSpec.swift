@@ -333,6 +333,33 @@ final class URLSessionExecutorSpec: QuickSpec {
                     }
                 }
             }
+            
+            describe("when shouldExecuteTasksImmediately is set to false") {
+                beforeEach {
+                    urlRequest = URLRequest(url: URL(string: "http://junkity-99.com")!)
+                    
+                    subject = URLSessionExecutor(shouldExecuteTasksImmediately: false,
+                                                 urlSession: fakeURLSession,
+                                                 fileManager: fakeFileManager)
+                }
+                
+                it("doesn't automatically resume() the tasks") {
+                    let dataTask = subject.execute(urlRequest: urlRequest, completionHandler: { _ in })
+                    
+                    let downloadTask = subject.executeDownload(urlRequest: urlRequest,
+                                                               customFilename: "download.txt",
+                                                               directory: directory,
+                                                               completionHandler: { _ in })
+                    
+                    let uploadTask = subject.executeUpload(urlRequest: urlRequest,
+                                                           data: "upload".data(using: .utf8)!,
+                                                           completionHandler: { _ in })
+                    
+                    expect((dataTask as? FakeURLSessionTask)?.didCallResume).to.beFalsy()
+                    expect((downloadTask as? FakeURLSessionTask)?.didCallResume).to.beFalsy()
+                    expect((uploadTask as? FakeURLSessionTask)?.didCallResume).to.beFalsy()
+                }
+            }
         }
     }
 }
