@@ -23,20 +23,18 @@
 import Foundation
 import Capsule
 
-// TODO: Refactor error and get rid of dupes
-
 public extension PequenoNetworking {
     // MARK: - Enums
     
     enum Error: CaseIterable, LocalizedError, Equatable {
         case urlRequestError(info: URLRequestInfo)
         case dataTaskError(wrappedError: Swift.Error)
-        case malformedResponseError
+        case malformedResponseError // used
         case invalidStatusCodeError(statusCode: Int)
         case dataError
         case jsonDecodeError(wrappedError: Swift.Error)
         case jsonObjectDecodeError(wrappedError: Swift.Error)
-        case downloadError  // rename
+        case downloadError
         case downloadTaskError(wrappedError: Swift.Error)
         case downloadFileManagerError(wrappedError: Swift.Error)
         case uploadTaskError(wrappedError: Swift.Error)

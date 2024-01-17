@@ -23,8 +23,6 @@
 import Foundation
 import Capsule
 
-// TODO: Rename this class to something like URLSessionBuilder
-
 public protocol URLSessionExecutorProtocol {
     @discardableResult
     func execute(urlRequest: URLRequest,

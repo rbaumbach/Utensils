@@ -74,7 +74,7 @@ final class URLSessionExecutorIntegrationSpec: QuickSpec {
             }
             
             describe("executing upload tasks") {
-                var body: Data!
+                var multipartFormData: Data!
                 
                 beforeEach {
                     var urlComponents = URLComponents(string: "https://httpbin.org")!
@@ -83,31 +83,25 @@ final class URLSessionExecutorIntegrationSpec: QuickSpec {
                     urlRequest = URLRequest(url: urlComponents.url!)
                     urlRequest.httpMethod = HTTPMethod.post.rawValue
                     
-                    let boundary = "Boundary-\(UUID().uuidString)"
-                    
-                    urlRequest.setValue("multipart/form-data; boundary=\(boundary)",
-                                        forHTTPHeaderField: "Content-Type")
-                    
-                    
-                    let fileURL = testBundle.url(forResource: "file", 
+                    let fileURL = testBundle.url(forResource: "file",
                                                  withExtension: "json")!
-                    
-                    body = Data()
-                    
                     let fileData = try! Data(contentsOf: fileURL)
                     
-                    body.append("--\(boundary)\r\n".data(using: .utf8)!)
-                    body.append("Content-Disposition: form-data; name=\"file\"; filename=\"text.txt\"\r\n".data(using: .utf8)!)
-                    body.append("Content-Type: application/octet-stream\r\n\r\n".data(using: .utf8)!)
-                    body.append(fileData)
-                    body.append("\r\n".data(using: .utf8)!)
-                    body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+                    let boundaryUUID = UUID().uuidString
+                    
+                    multipartFormData = MultipartFormDataBuilder().buildMultipartFormData(data: fileData,
+                                                                                          filename: "file.json",
+                                                                                          boundaryUUID: boundaryUUID,
+                                                                                          contentType: .octetStream)
+                    
+                    urlRequest.setValue("multipart/form-data; boundary=Boundary-\(boundaryUUID)",
+                                        forHTTPHeaderField: "Content-Type")
                 }
                 
                 it("completes successfully") {
                     hangOn(for: .seconds(5)) { complete in
-                        subject.executeUpload(urlRequest: urlRequest, 
-                                              data: body) { result in
+                        subject.executeUpload(urlRequest: urlRequest,
+                                              data: multipartFormData) { result in
                             if case .success(let responseData) = result {
                                 let deserializedResponse = try! JSONDecoder().decode(HTTPBin.self,
                                                                                      from: responseData)
