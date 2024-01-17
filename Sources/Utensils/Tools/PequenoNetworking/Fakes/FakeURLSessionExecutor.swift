@@ -34,6 +34,10 @@ open class FakeURLSessionExecutor: Fake, URLSessionExecutorProtocol {
     public var capturedExecuteDownloadDirectory: Directory?
     public var capturedExecuteDownloadCompletionHandler: ((Result<URL, PequenoNetworking.Error>) -> Void)?
     
+    public var capturedExecuteUploadURLRequest: URLRequest?
+    public var capturedExecuteUploadData: Data?
+    public var capturedExecuteUploadCompletionHandler: ((Result<Data, PequenoNetworking.Error>) -> Void)?
+    
     // MARK: - Stubbed properties
     
     public var stubbedExecuteTask: URLSessionTaskProtocol = FakeURLSessionTask()
@@ -45,6 +49,9 @@ open class FakeURLSessionExecutor: Fake, URLSessionExecutorProtocol {
         
         return .success(url)
     }()
+    
+    public var stubbedExecuteUploadTask: URLSessionTaskProtocol = FakeURLSessionTask()
+    public var stubbedExecuteUploadResult: Result<Data, PequenoNetworking.Error> = .success("Ned Nederlander".data(using: .utf8)!)
 
     // MARK: - Public properties
     
@@ -82,5 +89,20 @@ open class FakeURLSessionExecutor: Fake, URLSessionExecutorProtocol {
         }
         
         return stubbedExecuteDownloadTask
+    }
+    
+    @discardableResult
+    public func executeUpload(urlRequest: URLRequest,
+                              data: Data,
+                              completionHandler: @escaping (Result<Data, PequenoNetworking.Error>) -> Void) -> URLSessionTaskProtocol {
+        capturedExecuteUploadURLRequest = urlRequest
+        capturedExecuteUploadData = data
+        capturedExecuteUploadCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedExecuteUploadResult)
+        }
+        
+        return stubbedExecuteUploadTask
     }
 }

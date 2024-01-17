@@ -23,7 +23,6 @@
 import Foundation
 import Capsule
 
-// TODO: Add Bool to let user decide if we should .resume() right away
 // TODO: Rename this class to something like URLSessionBuilder
 
 public protocol URLSessionExecutorProtocol {
@@ -36,11 +35,17 @@ public protocol URLSessionExecutorProtocol {
                          customFilename: String?,
                          directory: Directory,
                          completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) -> URLSessionTaskProtocol
+    
+    @discardableResult
+    func executeUpload(urlRequest: URLRequest,
+                       data: Data,
+                       completionHandler: @escaping (Result<Data, PequenoNetworking.Error>) -> Void) -> URLSessionTaskProtocol
 }
 
 open class URLSessionExecutor: URLSessionExecutorProtocol {
     // MARK: - Private properties
-        
+    
+    private let shouldExecuteTasksImmediately: Bool
     private let urlSession: URLSessionProtocol
     private let fileManager: FileManagerUtensilsProtocol
     
@@ -50,8 +55,10 @@ open class URLSessionExecutor: URLSessionExecutorProtocol {
     
     // MARK: - Init methods
     
-    public init(urlSession: URLSessionProtocol = URLSession.shared,
+    public init(shouldExecuteTasksImmediately: Bool = true,
+                urlSession: URLSessionProtocol = URLSession.shared,
                 fileManager: FileManagerUtensilsProtocol = FileManager.default) {
+        self.shouldExecuteTasksImmediately = shouldExecuteTasksImmediately
         self.urlSession = urlSession
         self.fileManager = fileManager
     }
@@ -79,7 +86,7 @@ open class URLSessionExecutor: URLSessionExecutorProtocol {
                 
                 return
             }
-            
+
             guard let data = data else {
                 completionHandler(.failure(.dataError))
                 
@@ -89,7 +96,9 @@ open class URLSessionExecutor: URLSessionExecutorProtocol {
             completionHandler(.success(data))
         }
         
-        dataTask.resume()
+        if shouldExecuteTasksImmediately {
+            dataTask.resume()
+        }
         
         lastExecutedURLSessionTask = dataTask
         
@@ -115,7 +124,7 @@ open class URLSessionExecutor: URLSessionExecutorProtocol {
                 
                 return
             }
-            
+                        
             guard (200...299).contains(response.statusCode) else {
                 completionHandler(.failure(.invalidStatusCodeError(statusCode: response.statusCode)))
                 
@@ -139,15 +148,57 @@ open class URLSessionExecutor: URLSessionExecutorProtocol {
             }
         }
         
-        downloadTask.resume()
+        if shouldExecuteTasksImmediately {
+            downloadTask.resume()
+        }
         
         lastExecutedURLSessionTask = downloadTask
         
         return downloadTask
     }
     
-    // TODO: Add uploader
-    
+    @discardableResult
+    public func executeUpload(urlRequest: URLRequest,
+                              data: Data,
+                              completionHandler: @escaping (Result<Data, PequenoNetworking.Error>) -> Void) -> URLSessionTaskProtocol {
+        let uploadTask = urlSession.uploadTask(urlRequest: urlRequest,
+                                               from: data) { data, response, error in
+            if let error = error {
+                completionHandler(.failure(.uploadTaskError(wrappedError: error)))
+                
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse else {
+                completionHandler(.failure(.malformedResponseError))
+                
+                return
+            }
+            
+            guard (200...299).contains(response.statusCode) else {
+                completionHandler(.failure(.invalidStatusCodeError(statusCode: response.statusCode)))
+                
+                return
+            }
+            
+            guard let data = data else {
+                completionHandler(.failure(.dataError))
+                
+                return
+            }
+            
+            completionHandler(.success(data))
+        }
+        
+        if shouldExecuteTasksImmediately {
+            uploadTask.resume()
+        }
+        
+        lastExecutedURLSessionTask = uploadTask
+        
+        return uploadTask
+    }
+        
     // MARK: - Private methods
         
     private func migrateFile(customFilename: String?,

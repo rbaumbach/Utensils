@@ -27,7 +27,9 @@ final class PequenoNetworking_ErrorSpec: QuickSpec {
                                                                     .jsonDecodeError(wrappedError: EmptyError.empty),
                                                                     .jsonObjectDecodeError(wrappedError: EmptyError.empty),
                                                                     .downloadError,
-                                                                    .downloadTaskError(wrappedError: EmptyError.empty)]
+                                                                    .downloadTaskError(wrappedError: EmptyError.empty),
+                                                                    .downloadFileManagerError(wrappedError: EmptyError.empty),
+                                                                    .uploadTaskError(wrappedError: EmptyError.empty)]
                     
                     expect(PequenoNetworking.Error.allCases).to.equal(expectedCases)
                 }
@@ -112,6 +114,11 @@ final class PequenoNetworking_ErrorSpec: QuickSpec {
                             let expectedDownloadTaskError = "Unable to complete download task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
                             
                             expect(downloadTaskError.localizedDescription).to.equal(expectedDownloadTaskError)
+                            
+                            let uploadTaskError = PequenoNetworking.Error.uploadTaskError(wrappedError: EmptyError.empty)
+                            let expectedUploadTaskError = "Unable to complete upload task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                            
+                            expect(uploadTaskError.localizedDescription).to.equal(expectedUploadTaskError)
                         }
                     }
                 }
@@ -160,6 +167,11 @@ final class PequenoNetworking_ErrorSpec: QuickSpec {
                         let expectedDownloadTaskError = "Unable to complete download task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
                         
                         expect(downloadTaskError.errorDescription).to.equal(expectedDownloadTaskError)
+                        
+                        let uploadTaskError = PequenoNetworking.Error.uploadTaskError(wrappedError: EmptyError.empty)
+                        let expectedUploadTaskError = "Unable to complete upload task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                        
+                        expect(uploadTaskError.localizedDescription).to.equal(expectedUploadTaskError)
                     }
                 }
                 
@@ -205,6 +217,11 @@ final class PequenoNetworking_ErrorSpec: QuickSpec {
                         let expectedDownloadTaskError = "Unable to complete download task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
                         
                         expect(downloadTaskError.failureReason).to.equal(expectedDownloadTaskError)
+                        
+                        let uploadTaskError = PequenoNetworking.Error.uploadTaskError(wrappedError: EmptyError.empty)
+                        let expectedUploadTaskError = "Unable to complete upload task successfully.  Wrapped Error: \(EmptyError.empty.localizedDescription)"
+                        
+                        expect(uploadTaskError.localizedDescription).to.equal(expectedUploadTaskError)
                     }
                 }
                 
@@ -249,6 +266,11 @@ final class PequenoNetworking_ErrorSpec: QuickSpec {
                         let expectedDownloadTaskError = "Verify that your download task was built appropriately"
                         
                         expect(downloadTaskError.recoverySuggestion).to.equal(expectedDownloadTaskError)
+                        
+                        let uploadTaskError = PequenoNetworking.Error.uploadTaskError(wrappedError: EmptyError.empty)
+                        let expectedUploadTaskError = "Verify that your upload task was built appropriately"
+                        
+                        expect(uploadTaskError.recoverySuggestion).to.equal(expectedUploadTaskError)
                     }
                 }
             }
