@@ -23,6 +23,8 @@
 import Foundation
 import Capsule
 
+// TODO: Consolidate errors
+
 public extension PequenoNetworking {
     // MARK: - Enums
     
@@ -38,6 +40,7 @@ public extension PequenoNetworking {
         case downloadTaskError(wrappedError: Swift.Error)
         case downloadFileManagerError(wrappedError: Swift.Error)
         case uploadTaskError(wrappedError: Swift.Error)
+        case uploadFileLoadError(wrappedError: Swift.Error)
         
         // MARK: - <CaseIterable>
         
@@ -59,7 +62,8 @@ public extension PequenoNetworking {
                     .downloadError,
                     .downloadTaskError(wrappedError: EmptyError.empty),
                     .downloadFileManagerError(wrappedError: EmptyError.empty),
-                    .uploadTaskError(wrappedError: EmptyError.empty)]
+                    .uploadTaskError(wrappedError: EmptyError.empty),
+                    .uploadFileLoadError(wrappedError: EmptyError.empty)]
         }
         
         // MARK: - <Error>
@@ -96,6 +100,8 @@ public extension PequenoNetworking {
                 return "Unable to save file to disk. Wrapped Error: \(error.localizedDescription)"
             case .uploadTaskError(wrappedError: let error):
                 return "Unable to complete upload task successfully.  Wrapped Error: \(error.localizedDescription)"
+            case .uploadFileLoadError(wrappedError: let error):
+                return "Unable to load file successfully.  Wrapped Error: \(error.localizedDescription)"
             }
         }
         
@@ -133,6 +139,8 @@ public extension PequenoNetworking {
                 return "Verify you can modify files on disk"
             case .uploadTaskError:
                 return "Verify that your upload task was built appropriately"
+            case .uploadFileLoadError:
+                return "Verify that your file exists on disk, is not malformed and/or can be accessed appropriately"
             }
         }
         

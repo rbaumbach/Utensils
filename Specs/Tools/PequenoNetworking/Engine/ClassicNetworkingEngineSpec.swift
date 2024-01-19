@@ -556,6 +556,91 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                     }
                 }
             }
+            
+            describe("#uploadFile(baseURL:headers:endpoint:parameters:data:completionHandler:") {
+                describe("when url request cannot be built") {
+                    beforeEach {
+                        fakeURLRequestBuilder.stubbedResult = .failure(.dataError)
+                        
+                        subject.uploadFile(baseURL: String.empty,
+                                           headers: nil,
+                                           endpoint: String.empty,
+                                           parameters: nil,
+                                           data: "data".data(using: .utf8)!) { result in
+                            actualResult = result
+                        }
+                        
+                        fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
+                    }
+                    
+                    it("completes with url request builder error") {
+                        if case let .failure(error) = actualResult {
+                            expect(error).to.equal(.dataError)
+                        } else {
+                            failSpec()
+                        }
+                    }
+                }
+                
+                describe("when url request can be built") {
+                    beforeEach {
+                        subject.uploadFile(baseURL: String.empty,
+                                           headers: nil,
+                                           endpoint: String.empty,
+                                           parameters: nil,
+                                           data: "data".data(using: .utf8)!) { result in
+                            actualResult = result
+                        }
+                    }
+                    
+                    describe("when url session download executor completes with error") {
+                        beforeEach {
+                            fakeURLSessionExecutor.capturedExecuteUploadCompletionHandler?(.failure(.dataError))
+                            
+                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
+                        }
+                        
+                        it("completes with url session executor error") {
+                            if case .failure(let error) = actualResult {
+                                expect(error).to.equal(.dataError)
+                            } else {
+                                failSpec()
+                            }
+                        }
+                    }
+                    
+                    describe("whem url session download executor completes with response") {
+                        var data: Data!
+                        
+                        beforeEach {
+                            data = "jason-voorhees".data(using: .utf8)!
+                            
+                            fakeURLSessionExecutor.capturedExecuteUploadCompletionHandler?(.success(data))
+                            
+                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
+                        }
+                        
+                        it("finally completes with url result") {
+                            if case .success(let anyJSON) = actualResult {
+                                let expectedURLRequest = try! fakeURLRequestBuilder.stubbedResult.get()
+                                
+                                expect(fakeURLSessionExecutor.capturedExecuteUploadURLRequest).to.equal(expectedURLRequest)
+                                
+                                expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(data)
+                                expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                                
+                                let expectedResult = fakeJSONSerializationWrapper.stubbedJSONObject as! String
+                                
+                                let actualSuccessfulResult = anyJSON as! String
+                                
+                                expect(actualSuccessfulResult).to.equal(expectedResult)
+                            } else {
+                                failSpec()
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

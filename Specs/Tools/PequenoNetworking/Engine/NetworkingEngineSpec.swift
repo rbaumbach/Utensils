@@ -65,8 +65,6 @@ final class NetworkingEngineSpec: QuickSpec {
                                     parameters: nil) { result in
                             actualResult = result
                         }
-                        
-                        fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                     }
                     
                     describe("when url session executor completes with error") {
@@ -169,8 +167,6 @@ final class NetworkingEngineSpec: QuickSpec {
                                        parameters: nil) { result in
                             actualResult = result
                         }
-                        
-                        fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                     }
                     
                     describe("when url session executor completes with error") {
@@ -273,8 +269,6 @@ final class NetworkingEngineSpec: QuickSpec {
                                      body: nil) { result in
                             actualResult = result
                         }
-                        
-                        fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                     }
                     
                     describe("when url session executor completes with error") {
@@ -377,8 +371,6 @@ final class NetworkingEngineSpec: QuickSpec {
                                     body: nil) { result in
                             actualResult = result
                         }
-                        
-                        fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                     }
                     
                     describe("when url session executor completes with error") {
@@ -481,8 +473,6 @@ final class NetworkingEngineSpec: QuickSpec {
                                       body: nil) { result in
                             actualResult = result
                         }
-                        
-                        fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                     }
                     
                     describe("when url session executor completes with error") {
@@ -553,7 +543,7 @@ final class NetworkingEngineSpec: QuickSpec {
                 }
             }
             
-            describe("#download(baseURL:headers:endpoint:parameters:filename:directory:completionHandler:)") {
+            describe("#downloadFile(baseURL:headers:endpoint:parameters:filename:directory:completionHandler:)") {
                 var actualDownloadResult: Result<URL, PequenoNetworking.Error>!
                 
                 describe("when url request cannot be built") {
@@ -591,8 +581,6 @@ final class NetworkingEngineSpec: QuickSpec {
                                              directory: directory) { result in
                             actualDownloadResult = result
                         }
-                        
-                        fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                     }
                     
                     describe("when url session download executor completes with error") {
@@ -629,6 +617,91 @@ final class NetworkingEngineSpec: QuickSpec {
                                 expect(fakeURLSessionExecutor.capturedExecuteDownloadURLRequest).to.equal(expectedURLRequest)
 
                                 expect(actualURL).to.equal(url)
+                            } else {
+                                failSpec()
+                            }
+                        }
+                    }
+                }
+            }
+            
+            describe("#uploadFile(baseURL:headers:endpoint:parameters:data:completionHandler:)") {
+                var actualUploadResult: Result<String, PequenoNetworking.Error>!
+                
+                describe("when url request cannot be built") {
+                    beforeEach {
+                        fakeURLRequestBuilder.stubbedResult = .failure(.dataError)
+                        
+                        subject.uploadFile(baseURL: String.empty,
+                                           headers: nil,
+                                           endpoint: String.empty,
+                                           parameters: nil,
+                                           data: "data".data(using: .utf8)!) { result in
+                            actualUploadResult = result
+                        }
+                        
+                        fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
+                    }
+                    
+                    it("completes with url request builder error") {
+                        if case let .failure(error) = actualUploadResult {
+                            expect(error).to.equal(.dataError)
+                        } else {
+                            failSpec()
+                        }
+                    }
+                }
+                
+                describe("when url request can be built") {
+                    beforeEach {
+                        subject.uploadFile(baseURL: String.empty,
+                                           headers: nil,
+                                           endpoint: String.empty,
+                                           parameters: nil,
+                                           data: "data".data(using: .utf8)!) { result in
+                            actualUploadResult = result
+                        }
+                    }
+                    
+                    describe("when url session download executor completes with error") {
+                        beforeEach {
+                            fakeURLSessionExecutor.capturedExecuteUploadCompletionHandler?(.failure(.dataError))
+                            
+                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
+                        }
+                        
+                        it("completes with url session executor error") {
+                            if case .failure(let error) = actualUploadResult {
+                                expect(error).to.equal(.dataError)
+                            } else {
+                                failSpec()
+                            }
+                        }
+                    }
+                    
+                    describe("whem url session download executor completes with response") {
+                        var data: Data!
+                        
+                        beforeEach {
+                            fakeJSONDecoder.stubbedDecodedJSON = "String is Codable"
+                            
+                            data = "jason-voorhees".data(using: .utf8)!
+                            
+                            fakeURLSessionExecutor.capturedExecuteUploadCompletionHandler?(.success(data))
+                            
+                            fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
+                        }
+                        
+                        it("finally completes with url result") {
+                            if case .success(let actualResponse) = actualUploadResult {
+                                let expectedURLRequest = try! fakeURLRequestBuilder.stubbedResult.get()
+                                
+                                expect(fakeURLSessionExecutor.capturedExecuteUploadURLRequest).to.equal(expectedURLRequest)
+                                
+                                expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
+                                expect(fakeJSONDecoder.capturedDecodeData).to.equal(data)
+
+                                expect(actualResponse).to.equal("String is Codable")
                             } else {
                                 failSpec()
                             }

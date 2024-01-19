@@ -56,6 +56,13 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
     public var capturedPatchBody: [String: Any]?
     public var capturedPatchCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
     
+    public var capturedUploadFileBaseURL: String?
+    public var capturedUploadFileHeaders: [String: String]?
+    public var capturedUploadFileEndpoint: String?
+    public var capturedUploadFileParameters: [String: String]?
+    public var capturedUploadFileData: Data?
+    public var capturedUploadFileCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    
     // MARK: - Stubbed properties
         
     public var stubbedGetResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
@@ -63,6 +70,7 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
     public var stubbedPostResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     public var stubbedPutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     public var stubbedPatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedUploadFileResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     
     // MARK: - Public properties
     
@@ -151,6 +159,24 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
         
         if shouldExecuteCompletionHandlersImmediately {
             completionHandler(stubbedPatchResult)
+        }
+    }
+    
+    public func uploadFile(baseURL: String,
+                           headers: [String: String]?,
+                           endpoint: String,
+                           parameters: [String: String]?,
+                           data: Data,
+                           completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        capturedUploadFileBaseURL = baseURL
+        capturedUploadFileHeaders = headers
+        capturedUploadFileEndpoint = endpoint
+        capturedUploadFileParameters = parameters
+        capturedUploadFileData = data
+        capturedUploadFileCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedUploadFileResult)
         }
     }
 }

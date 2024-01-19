@@ -180,7 +180,7 @@ final class PequenoNetworkingSpec: QuickSpec {
                 }
             }
             
-            describe("codable networking") {
+            describe("Codable networking") {
                 var stubbedResult: Result<String, PequenoNetworking.Error>!
                 var actualResult: Result<String, PequenoNetworking.Error>!
                 
@@ -308,41 +308,119 @@ final class PequenoNetworkingSpec: QuickSpec {
                 }
             }
             
-            describe("downloading") {
-                var stubbedResult: Result<URL, PequenoNetworking.Error>!
-                var actualResult: Result<URL, PequenoNetworking.Error>!
-                
-                beforeEach {
-                    subject = PequenoNetworking(baseURL: "https://ghost.busters",
-                                                headers: ["city": "new-york"],
-                                                classicNetworkingEngine: fakeClassicNetworkingEngine,
-                                                networkingEngine: fakeNetworkingEngine)
+            describe("file transfers ") {
+                describe("downloading") {
+                    var stubbedResult: Result<URL, PequenoNetworking.Error>!
+                    var actualResult: Result<URL, PequenoNetworking.Error>!
                     
-                    subject.downloadFile(endpoint: "/download",
-                                         parameters: ["ghost": "scoleri-brothers"],
-                                         filename: "scoleri-brothers",
-                                         directory: directory) { result in
-                        actualResult = result
+                    beforeEach {
+                        subject = PequenoNetworking(baseURL: "https://ghost.busters",
+                                                    headers: ["city": "new-york"],
+                                                    classicNetworkingEngine: fakeClassicNetworkingEngine,
+                                                    networkingEngine: fakeNetworkingEngine)
+                        
+                        subject.downloadFile(endpoint: "/download",
+                                             parameters: ["ghost": "scoleri-brothers"],
+                                             filename: "scoleri-brothers",
+                                             directory: directory) { result in
+                            actualResult = result
+                        }
+                        
+                        stubbedResult = fakeNetworkingEngine.stubbedDownloadFileResult
+                        
+                        fakeNetworkingEngine.capturedDownloadFileCompletionHandler?(stubbedResult)
                     }
                     
-                    stubbedResult = fakeNetworkingEngine.stubbedDownloadResult
-                    
-                    fakeNetworkingEngine.capturedDownloadCompletionHandler?(stubbedResult)
+                    it("returns proper result") {
+                        expect(actualResult).to.equal(stubbedResult)
+                        
+                        expect(fakeNetworkingEngine.capturedDownloadFileBaseURL).to.equal( "https://ghost.busters")
+                        expect(fakeNetworkingEngine.capturedDownloadFileHeaders).to.equal(["city": "new-york"])
+                        expect(fakeNetworkingEngine.capturedDownloadFileEndpoint).to.equal("/download")
+                        expect(fakeNetworkingEngine.capturedDownloadFileParameters).to.equal(["ghost": "scoleri-brothers"])
+                        expect(fakeNetworkingEngine.capturedDownloadFileFilename).to.equal("scoleri-brothers")
+                        
+                        let actualDirectoryURL = try! fakeNetworkingEngine.capturedDownloadFileDirectory!.url()
+                        let actualDirectoryURLString = actualDirectoryURL.absoluteString
+                        
+                        expect(actualDirectoryURLString).to.equal("file:///fake-documents-directory/")
+                    }
                 }
                 
-                it("returns proper result") {
-                    expect(actualResult).to.equal(stubbedResult)
+                describe("uploading") {
+                    var data: Data!
                     
-                    expect(fakeNetworkingEngine.capturedDownloadBaseURL).to.equal( "https://ghost.busters")
-                    expect(fakeNetworkingEngine.capturedDownloadHeaders).to.equal(["city": "new-york"])
-                    expect(fakeNetworkingEngine.capturedDownloadEndpoint).to.equal("/download")
-                    expect(fakeNetworkingEngine.capturedDownloadParameters).to.equal(["ghost": "scoleri-brothers"])
-                    expect(fakeNetworkingEngine.capturedDownloadFilename).to.equal("scoleri-brothers")
+                    beforeEach {
+                        data = "glad I don't have to do multipart form stuff here".data(using: .utf8)!
+                    }
                     
-                    let actualDirectoryURL = try! fakeNetworkingEngine.capturedDownloadDirectory!.url()
-                    let actualDirectoryURLString = actualDirectoryURL.absoluteString
+                    describe("JSONSerialization (ol' skoo)") {
+                        var stubbedResult: Result<Any, PequenoNetworking.Error>!
+                        var actualResult: Result<Any, PequenoNetworking.Error>!
+                        
+                        beforeEach {
+                            subject = PequenoNetworking(baseURL: "https://ghost.busters",
+                                                        headers: ["city": "new-york"],
+                                                        classicNetworkingEngine: fakeClassicNetworkingEngine,
+                                                        networkingEngine: fakeNetworkingEngine)
+                            
+                            subject.uploadFile(endpoint: "/upload",
+                                               parameters: ["ghost": "scoleri-brothers"],
+                                               data: data) { result in
+                                actualResult = result
+                            }
+                            
+                            stubbedResult = fakeClassicNetworkingEngine.stubbedUploadFileResult
+                            
+                            fakeClassicNetworkingEngine.capturedUploadFileCompletionHandler?(stubbedResult)
+                        }
+                        
+                        it("returns proper result") {
+                            let typedResult = try! actualResult.get() as! String
+                            
+                            expect(typedResult).to.equal("Éxito")
+                            
+                            expect(fakeClassicNetworkingEngine.capturedUploadFileBaseURL).to.equal("https://ghost.busters")
+                            expect(fakeClassicNetworkingEngine.capturedUploadFileHeaders).to.equal(["city": "new-york"])
+                            expect(fakeClassicNetworkingEngine.capturedUploadFileEndpoint).to.equal("/upload")
+                            expect(fakeClassicNetworkingEngine.capturedUploadFileParameters).to.equal(["ghost": "scoleri-brothers"])
+                            expect(fakeClassicNetworkingEngine.capturedUploadFileData).to.equal(data)
+                        }
+                    }
                     
-                    expect(actualDirectoryURLString).to.equal("file:///fake-documents-directory/")
+                    describe("Codable") {
+                        var stubbedResult: Result<String, PequenoNetworking.Error>!
+                        var actualResult: Result<String, PequenoNetworking.Error>!
+                        
+                        beforeEach {
+                            subject = PequenoNetworking(baseURL: "https://ghost.busters",
+                                                        headers: ["city": "new-york"],
+                                                        classicNetworkingEngine: fakeClassicNetworkingEngine,
+                                                        networkingEngine: fakeNetworkingEngine)
+                            
+                            subject.uploadFile(endpoint: "/upload",
+                                               parameters: ["ghost": "scoleri-brothers"],
+                                               data: data) { result in
+                                actualResult = result
+                            }
+                            
+                            stubbedResult = .success("Back off man! I'm a scientist!")
+
+                            let typedCompletionHandler = fakeNetworkingEngine.capturedUploadFileCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                            
+                            typedCompletionHandler?(stubbedResult)
+                        }
+                        
+                        it("returns proper result") {
+                            expect(actualResult).to.equal(stubbedResult)
+                            
+                            expect(fakeNetworkingEngine.capturedUploadFileBaseURL).to.equal("https://ghost.busters")
+                            expect(fakeNetworkingEngine.capturedUploadFileHeaders).to.equal(["city": "new-york"])
+                            expect(fakeNetworkingEngine.capturedUploadFileEndpoint).to.equal("/upload")
+                            expect(fakeNetworkingEngine.capturedUploadFileParameters).to.equal(["ghost": "scoleri-brothers"])
+                            expect(fakeNetworkingEngine.capturedUploadFileData).to.equal(data)
+                        }
+                    }
                 }
             }
         }

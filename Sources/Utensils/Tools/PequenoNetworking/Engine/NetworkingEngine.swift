@@ -63,6 +63,13 @@ public protocol NetworkingEngineProtocol {
                       filename: String,
                       directory: Directory,
                       completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void)
+    
+    func uploadFile<T: Codable>(baseURL: String,
+                                headers: [String: String]?,
+                                endpoint: String,
+                                parameters: [String: String]?,
+                                data: Data,
+                                completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
 }
 
 open class NetworkingEngine: NetworkingEngineProtocol {
@@ -71,6 +78,7 @@ open class NetworkingEngine: NetworkingEngineProtocol {
     private let urlRequestBuilder: URLRequestBuilderProtocol
     private let urlSessionExecutor: URLSessionExecutorProtocol
     private let jsonDecoder: JSONDecoderProtocol
+    private let dataWrapper: DataWrapperProtocol
     private let dispatchQueueWrapper: DispatchQueueWrapperProtocol
     
     // MARK: - Init methods
@@ -78,10 +86,12 @@ open class NetworkingEngine: NetworkingEngineProtocol {
     public init(urlRequestBuilder: URLRequestBuilderProtocol = URLRequestBuilder(),
                 urlSessionExecutor: URLSessionExecutorProtocol = URLSessionExecutor(),
                 jsonDecoder: JSONDecoderProtocol = JSONDecoder(),
+                dataWrapper: DataWrapperProtocol = DataWrapper(),
                 dispatchQueueWraper: DispatchQueueWrapperProtocol = DispatchQueueWrapper()) {
         self.urlRequestBuilder = urlRequestBuilder
         self.urlSessionExecutor = urlSessionExecutor
         self.jsonDecoder = jsonDecoder
+        self.dataWrapper = dataWrapper
         self.dispatchQueueWrapper = dispatchQueueWraper
     }
     
@@ -202,6 +212,27 @@ open class NetworkingEngine: NetworkingEngineProtocol {
         }
     }
     
+    public func uploadFile<T: Codable>(baseURL: String,
+                                       headers: [String: String]?,
+                                       endpoint: String,
+                                       parameters: [String: String]?,
+                                       data: Data,
+                                       completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .post,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
+        
+        executeUploadRequest(urlRequestInfo: urlRequestInfo,
+                             data: data) { [weak self] result in
+            self?.dispatchQueueWrapper.mainAsync {
+                completionHandler(result)
+            }
+        }
+    }
+    
     // MARK: - Private methods
     
     private func executeRequest<T: Codable>(urlRequestInfo: URLRequestInfo,
@@ -235,6 +266,23 @@ open class NetworkingEngine: NetworkingEngineProtocol {
             completionHandler(.failure(error))
         }
         
+    }
+    
+    private func executeUploadRequest<T: Codable>(urlRequestInfo: URLRequestInfo,
+                                                  data: Data,
+                                                  completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        let result = urlRequestBuilder.build(urlRequestInfo: urlRequestInfo)
+        
+        switch result {
+        case .success(let urlRequest):
+            urlSessionExecutor.executeUpload(urlRequest: urlRequest,
+                                             data: data) { [weak self] result in
+                self?.handleResponse(result: result,
+                                     completionHandler: completionHandler)
+            }
+        case .failure(let error):
+            completionHandler(.failure(error))
+        }
     }
     
     private func handleResponse<T: Codable>(result: Result<Data, PequenoNetworking.Error>,

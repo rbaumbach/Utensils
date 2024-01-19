@@ -68,13 +68,23 @@ public protocol PequenoNetworkingProtocol {
                            body: [String: Any]?,
                            completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
     
-    // MARK: - Downloading
+    // MARK: - File transfers
     
     func downloadFile(endpoint: String,
                       parameters: [String: String]?,
                       filename: String,
                       directory: Directory,
                       completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void)
+    
+    func uploadFile(endpoint: String,
+                    parameters: [String: String]?,
+                    data: Data,
+                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    func uploadFile<T: Codable>(endpoint: String,
+                                parameters: [String: String]?,
+                                data: Data,
+                                completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
 }
 
 open class PequenoNetworking: PequenoNetworkingProtocol {
@@ -224,5 +234,29 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
                                       filename: filename,
                                       directory: directory,
                                       completionHandler: completionHandler)
+    }
+    
+    public func uploadFile(endpoint: String,
+                           parameters: [String: String]?,
+                           data: Data,
+                           completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        classicNetworkingEngine.uploadFile(baseURL: baseURL,
+                                           headers: headers,
+                                           endpoint: endpoint,
+                                           parameters: parameters,
+                                           data: data,
+                                           completionHandler: completionHandler)
+    }
+    
+    public func uploadFile<T: Codable>(endpoint: String,
+                                       parameters: [String: String]?,
+                                       data: Data,
+                                       completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        networkingEngine.uploadFile(baseURL: baseURL,
+                                    headers: headers,
+                                    endpoint: endpoint,
+                                    parameters: parameters,
+                                    data: data,
+                                    completionHandler: completionHandler)
     }
 }

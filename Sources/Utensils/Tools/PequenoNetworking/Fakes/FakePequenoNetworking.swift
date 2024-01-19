@@ -73,13 +73,23 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     public var capturedCodablePatchBody: [String: Any]?
     public var capturedCodablePatchCompletionHandler: Any?
     
-    // MARK: - Downloading
+    // MARK: - File transfers
     
-    public var capturedDownloadEndpoint: String?
-    public var capturedDownloadParameters: [String: Any]?
-    public var capturedDownloadFilename: String?
-    public var capturedDownloadDirectory: DirectoryProtocol?
-    public var capturedDownloadCompletionHandler: ((Result<URL, PequenoNetworking.Error>) -> Void)?
+    public var capturedDownloadFileEndpoint: String?
+    public var capturedDownloadFileParameters: [String: Any]?
+    public var capturedDownloadFileFilename: String?
+    public var capturedDownloadFileDirectory: DirectoryProtocol?
+    public var capturedDownloadFileCompletionHandler: ((Result<URL, PequenoNetworking.Error>) -> Void)?
+    
+    public var capturedUploadFileEndpoint: String?
+    public var capturedUploadFileParameters: [String: Any]?
+    public var capturedUploadFileData: Data?
+    public var capturedUploadFileCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    
+    public var capturedCodableUploadFileEndpoint: String?
+    public var capturedCodableUploadFileParameters: [String: Any]?
+    public var capturedCodableUploadFileData: Data?
+    public var capturedCodableUploadFileCompletionHandler: Any?
     
     // MARK: - Stubbed properties
     
@@ -99,13 +109,15 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     public var stubbedCodablePutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     public var stubbedCodablePatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     
-    // MARK: - Downloading
+    // MARK: - File transfers
     
-    public var stubbedDownloadResult: Result<URL, PequenoNetworking.Error> = {
+    public var stubbedDownloadFileResult: Result<URL, PequenoNetworking.Error> = {
         let url = URL(string: "http://99-downloads-loaderdowns.party")!
         
         return .success(url)
     }()
+    public var stubbedUploadFileResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedCodableUploadFileResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
     
     // MARK: - Public properties
     
@@ -191,7 +203,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedGetResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable get result success value is not the correct type")
+                    preconditionFailure("The stubbed codable get result is not the correct type")
                 }
                 
                 return typedValue
@@ -211,7 +223,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedDeleteResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable delete result success value is not the correct type")
+                    preconditionFailure("The stubbed codable delete result is not the correct type")
                 }
                 
                 return typedValue
@@ -231,7 +243,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedPostResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable post result success value is not the correct type")
+                    preconditionFailure("The stubbed codable post result is not the correct type")
                 }
                 
                 return typedValue
@@ -251,7 +263,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedPutResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable put result success value is not the correct type")
+                    preconditionFailure("The stubbed codable put result is not the correct type")
                 }
                 
                 return typedValue
@@ -271,7 +283,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
         if shouldExecuteCompletionHandlersImmediately {
             let typedResult = stubbedPatchResult.map { value in
                 guard let typedValue = value as? T else {
-                    preconditionFailure("The stubbed codable patch result success value is not the correct type")
+                    preconditionFailure("The stubbed codable patch result is not the correct type")
                 }
                 
                 return typedValue
@@ -281,19 +293,57 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
         }
     }
     
+    // MARK: - File transfers
+    
     public func downloadFile(endpoint: String,
                              parameters: [String: String]?,
                              filename: String,
                              directory: Directory,
                              completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
-        capturedDownloadEndpoint = endpoint
-        capturedDownloadParameters = parameters
-        capturedDownloadFilename = filename
-        capturedDownloadDirectory = directory
-        capturedDownloadCompletionHandler = completionHandler
+        capturedDownloadFileEndpoint = endpoint
+        capturedDownloadFileParameters = parameters
+        capturedDownloadFileFilename = filename
+        capturedDownloadFileDirectory = directory
+        capturedDownloadFileCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            completionHandler(stubbedDownloadResult)
+            completionHandler(stubbedDownloadFileResult)
+        }
+    }
+    
+    public func uploadFile(endpoint: String, 
+                           parameters: [String: String]?,
+                           data: Data,
+                           completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        capturedUploadFileEndpoint = endpoint
+        capturedUploadFileParameters = parameters
+        capturedUploadFileData = data
+        capturedUploadFileCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedUploadFileResult)
+        }
+    }
+    
+    public func uploadFile<T: Codable>(endpoint: String,
+                                       parameters: [String: String]?,
+                                       data: Data,
+                                       completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+        capturedCodableUploadFileEndpoint = endpoint
+        capturedCodableUploadFileParameters = parameters
+        capturedCodableUploadFileData = data
+        capturedCodableUploadFileCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            let typedResult = stubbedCodableUploadFileResult.map { value in
+                guard let typedValue = value as? T else {
+                    preconditionFailure("The stubbed codable upload result is not the correct type")
+                }
+                
+                return typedValue
+            }
+            
+            completionHandler(typedResult)
         }
     }
 }

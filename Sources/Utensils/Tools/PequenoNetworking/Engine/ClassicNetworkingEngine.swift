@@ -53,6 +53,13 @@ public protocol ClassicNetworkingEngineProtocol {
                endpoint: String,
                body: [String: Any]?,
                completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+    
+    func uploadFile(baseURL: String,
+                    headers: [String: String]?,
+                    endpoint: String,
+                    parameters: [String: String]?,
+                    data: Data,
+                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
 }
 
 open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
@@ -179,6 +186,27 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         }
     }
     
+    public func uploadFile(baseURL: String,
+                           headers: [String: String]?,
+                           endpoint: String,
+                           parameters: [String: String]?,
+                           data: Data,
+                           completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .post,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
+        
+        executeUploadRequest(urlRequestInfo: urlRequestInfo,
+                             data: data) { [weak self] result in
+            self?.dispatchQueueWrapper.mainAsync {
+                completionHandler(result)
+            }
+        }
+    }
+    
     // MARK: - Private methods
     
     private func executeRequest(baseURL: String,
@@ -190,6 +218,23 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         switch result {
         case .success(let urlRequest):
             urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] result in
+                self?.handleResponse(result: result,
+                                     completionHandler: completionHandler)
+            }
+        case .failure(let error):
+            completionHandler(.failure(error))
+        }
+    }
+    
+    private func executeUploadRequest(urlRequestInfo: URLRequestInfo,
+                                      data: Data,
+                                      completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+        let result = urlRequestBuilder.build(urlRequestInfo: urlRequestInfo)
+        
+        switch result {
+        case .success(let urlRequest):
+            urlSessionExecutor.executeUpload(urlRequest: urlRequest,
+                                             data: data) { [weak self] result in
                 self?.handleResponse(result: result,
                                      completionHandler: completionHandler)
             }
