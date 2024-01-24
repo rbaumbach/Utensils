@@ -53,8 +53,8 @@ final class PequenoNetworkingSpec: QuickSpec {
             }
             
             describe("JSONSerialization (ol' skoo)") {
-                var stubbedResult: Result<Any, PequenoNetworking.Error>!
-                var actualResult: Result<Any, PequenoNetworking.Error>!
+                var stubbedResult: Result<Any, Error>!
+                var actualResult: Result<Any, Error>!
                 
                 beforeEach {
                     subject = PequenoNetworking(baseURL: "https://ghost.busters",
@@ -181,8 +181,8 @@ final class PequenoNetworkingSpec: QuickSpec {
             }
             
             describe("Codable networking") {
-                var stubbedResult: Result<String, PequenoNetworking.Error>!
-                var actualResult: Result<String, PequenoNetworking.Error>!
+                var stubbedResult: Result<String, Error>!
+                var actualResult: Result<String, Error>!
                 
                 beforeEach {
                     subject = PequenoNetworking(baseURL: "https://ghost.busters",
@@ -200,13 +200,15 @@ final class PequenoNetworkingSpec: QuickSpec {
                             actualResult = result
                         }
                         
-                        let typedCompletionHandler = fakeNetworkingEngine.capturedGetCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                        let typedCompletionHandler = fakeNetworkingEngine.capturedGetCompletionHandler as? (Result<String, Error>) -> Void
                                                 
                         typedCompletionHandler?(stubbedResult)
                     }
                     
                     it("returns the proper result") {
-                        expect(actualResult).to.equal(stubbedResult)
+                        let resultValue = try! actualResult.get()
+                        
+                        expect(resultValue).to.equal("Back off man! I'm a scientist!")
                         
                         expect(fakeNetworkingEngine.capturedGetBaseURL).to.equal("https://ghost.busters")
                         expect(fakeNetworkingEngine.capturedGetHeaders).to.equal(["city": "new-york"])
@@ -221,13 +223,15 @@ final class PequenoNetworkingSpec: QuickSpec {
                             actualResult = result
                         }
                         
-                        let typedCompletionHandler = fakeNetworkingEngine.capturedDeleteCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                        let typedCompletionHandler = fakeNetworkingEngine.capturedDeleteCompletionHandler as? (Result<String, Error>) -> Void
                         
                         typedCompletionHandler?(stubbedResult)
                     }
                     
                     it("returns the proper result") {
-                        expect(actualResult).to.equal(stubbedResult)
+                        let resultValue = try! actualResult.get()
+                        
+                        expect(resultValue).to.equal("Back off man! I'm a scientist!")
                         
                         expect(fakeNetworkingEngine.capturedDeleteBaseURL).to.equal("https://ghost.busters")
                         expect(fakeNetworkingEngine.capturedDeleteHeaders).to.equal(["city": "new-york"])
@@ -242,13 +246,15 @@ final class PequenoNetworkingSpec: QuickSpec {
                             actualResult = result
                         }
                         
-                        let typedCompletionHandler = fakeNetworkingEngine.capturedPostCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                        let typedCompletionHandler = fakeNetworkingEngine.capturedPostCompletionHandler as? (Result<String, Error>) -> Void
                         
                         typedCompletionHandler?(stubbedResult)
                     }
                     
                     it("returns the proper result") {
-                        expect(actualResult).to.equal(stubbedResult)
+                        let resultValue = try! actualResult.get()
+                        
+                        expect(resultValue).to.equal("Back off man! I'm a scientist!")
                         
                         expect(fakeNetworkingEngine.capturedPostBaseURL).to.equal("https://ghost.busters")
                         expect(fakeNetworkingEngine.capturedPostHeaders).to.equal(["city": "new-york"])
@@ -266,13 +272,15 @@ final class PequenoNetworkingSpec: QuickSpec {
                             actualResult = result
                         }
                         
-                        let typedCompletionHandler = fakeNetworkingEngine.capturedPutCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                        let typedCompletionHandler = fakeNetworkingEngine.capturedPutCompletionHandler as? (Result<String, Error>) -> Void
                         
                         typedCompletionHandler?(stubbedResult)
                     }
                     
                     it("returns the proper result") {
-                        expect(actualResult).to.equal(stubbedResult)
+                        let resultValue = try! actualResult.get()
+                        
+                        expect(resultValue).to.equal("Back off man! I'm a scientist!")
                         
                         expect(fakeNetworkingEngine.capturedPutBaseURL).to.equal("https://ghost.busters")
                         expect(fakeNetworkingEngine.capturedPutHeaders).to.equal(["city": "new-york"])
@@ -290,13 +298,15 @@ final class PequenoNetworkingSpec: QuickSpec {
                             actualResult = result
                         }
                         
-                        let typedCompletionHandler = fakeNetworkingEngine.capturedPatchCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                        let typedCompletionHandler = fakeNetworkingEngine.capturedPatchCompletionHandler as? (Result<String, Error>) -> Void
                         
                         typedCompletionHandler?(stubbedResult)
                     }
                     
                     it("returns the proper result") {
-                        expect(actualResult).to.equal(stubbedResult)
+                        let resultValue = try! actualResult.get()
+                        
+                        expect(resultValue).to.equal("Back off man! I'm a scientist!")
                         
                         expect(fakeNetworkingEngine.capturedPatchBaseURL).to.equal("https://ghost.busters")
                         expect(fakeNetworkingEngine.capturedPatchHeaders).to.equal(["city": "new-york"])
@@ -310,8 +320,8 @@ final class PequenoNetworkingSpec: QuickSpec {
             
             describe("file transfers ") {
                 describe("downloading") {
-                    var stubbedResult: Result<URL, PequenoNetworking.Error>!
-                    var actualResult: Result<URL, PequenoNetworking.Error>!
+                    var stubbedResult: Result<URL, Error>!
+                    var actualResult: Result<URL, Error>!
                     
                     beforeEach {
                         subject = PequenoNetworking(baseURL: "https://ghost.busters",
@@ -332,7 +342,9 @@ final class PequenoNetworkingSpec: QuickSpec {
                     }
                     
                     it("returns proper result") {
-                        expect(actualResult).to.equal(stubbedResult)
+                        let resultValue = try! actualResult.get()
+                        
+                        expect(resultValue).to.equal(URL(string: "https://99-stubby-99.party"))
                         
                         expect(fakeNetworkingEngine.capturedDownloadFileBaseURL).to.equal( "https://ghost.busters")
                         expect(fakeNetworkingEngine.capturedDownloadFileHeaders).to.equal(["city": "new-york"])
@@ -355,8 +367,8 @@ final class PequenoNetworkingSpec: QuickSpec {
                     }
                     
                     describe("JSONSerialization (ol' skoo)") {
-                        var stubbedResult: Result<Any, PequenoNetworking.Error>!
-                        var actualResult: Result<Any, PequenoNetworking.Error>!
+                        var stubbedResult: Result<Any, Error>!
+                        var actualResult: Result<Any, Error>!
                         
                         beforeEach {
                             subject = PequenoNetworking(baseURL: "https://ghost.busters",
@@ -389,8 +401,8 @@ final class PequenoNetworkingSpec: QuickSpec {
                     }
                     
                     describe("Codable") {
-                        var stubbedResult: Result<String, PequenoNetworking.Error>!
-                        var actualResult: Result<String, PequenoNetworking.Error>!
+                        var stubbedResult: Result<String, Error>!
+                        var actualResult: Result<String, Error>!
                         
                         beforeEach {
                             subject = PequenoNetworking(baseURL: "https://ghost.busters",
@@ -406,13 +418,15 @@ final class PequenoNetworkingSpec: QuickSpec {
                             
                             stubbedResult = .success("Back off man! I'm a scientist!")
 
-                            let typedCompletionHandler = fakeNetworkingEngine.capturedUploadFileCompletionHandler as? (Result<String, PequenoNetworking.Error>) -> Void
+                            let typedCompletionHandler = fakeNetworkingEngine.capturedUploadFileCompletionHandler as? (Result<String, Error>) -> Void
                             
                             typedCompletionHandler?(stubbedResult)
                         }
                         
                         it("returns proper result") {
-                            expect(actualResult).to.equal(stubbedResult)
+                            let resultValue = try! actualResult.get()
+                            
+                            expect(resultValue).to.equal("Back off man! I'm a scientist!")
                             
                             expect(fakeNetworkingEngine.capturedUploadFileBaseURL).to.equal("https://ghost.busters")
                             expect(fakeNetworkingEngine.capturedUploadFileHeaders).to.equal(["city": "new-york"])

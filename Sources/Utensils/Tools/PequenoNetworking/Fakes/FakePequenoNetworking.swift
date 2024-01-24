@@ -24,7 +24,7 @@ import Foundation
 import Capsule
 
 // Note: Any? is used for the capturedCompletionHandlers due to warning messages about "shadowing" at the
-// class level. As a consumer you can cast to (Result<T, PequenoNetworking.Error>) -> Void).
+// class level. As a consumer you can cast to (Result<T, Error>) -> Void).
 
 open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     // MARK: - Captured properties
@@ -33,23 +33,23 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public var capturedGetEndpoint: String?
     public var capturedGetParameters: [String: String]?
-    public var capturedGetCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    public var capturedGetCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     public var capturedDeleteEndpoint: String?
     public var capturedDeleteParameters: [String: String]?
-    public var capturedDeleteCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    public var capturedDeleteCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     public var capturedPostEndpoint: String?
     public var capturedPostBody: [String: Any]?
-    public var capturedPostCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    public var capturedPostCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     public var capturedPutEndpoint: String?
     public var capturedPutBody: [String: Any]?
-    public var capturedPutCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    public var capturedPutCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     public var capturedPatchEndpoint: String?
     public var capturedPatchBody: [String: Any]?
-    public var capturedPatchCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    public var capturedPatchCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     // MARK: - Codable
     
@@ -79,12 +79,12 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     public var capturedDownloadFileParameters: [String: Any]?
     public var capturedDownloadFileFilename: String?
     public var capturedDownloadFileDirectory: DirectoryProtocol?
-    public var capturedDownloadFileCompletionHandler: ((Result<URL, PequenoNetworking.Error>) -> Void)?
+    public var capturedDownloadFileCompletionHandler: ((Result<URL, Error>) -> Void)?
     
     public var capturedUploadFileEndpoint: String?
     public var capturedUploadFileParameters: [String: Any]?
     public var capturedUploadFileData: Data?
-    public var capturedUploadFileCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    public var capturedUploadFileCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     public var capturedCodableUploadFileEndpoint: String?
     public var capturedCodableUploadFileParameters: [String: Any]?
@@ -95,29 +95,29 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     // MARK: - JSONSerialization (ol' skoo)
     
-    public var stubbedGetResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedDeleteResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedPostResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedPutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedPatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedGetResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedDeleteResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedPostResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedPutResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedPatchResult: Result<Any, Error> = .success("Éxito")
     
     // MARK: - Codable
     
-    public var stubbedCodableGetResult: Any = Result<Any, PequenoNetworking.Error>.success("Éxito")
-    public var stubbedCodableDeleteResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedCodablePostResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedCodablePutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedCodablePatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedCodableGetResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedCodableDeleteResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedCodablePostResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedCodablePutResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedCodablePatchResult: Result<Any, Error> = .success("Éxito")
     
     // MARK: - File transfers
     
-    public var stubbedDownloadFileResult: Result<URL, PequenoNetworking.Error> = {
+    public var stubbedDownloadFileResult: Result<URL, Error> = {
         let url = URL(string: "http://99-downloads-loaderdowns.party")!
         
         return .success(url)
     }()
-    public var stubbedUploadFileResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedCodableUploadFileResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedUploadFileResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedCodableUploadFileResult: Result<Any, Error> = .success("Éxito")
     
     // MARK: - Public properties
     
@@ -133,7 +133,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public func get(endpoint: String,
                     parameters: [String: String]?,
-                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                    completionHandler: @escaping (Result<Any, Error>) -> Void) {
         capturedGetEndpoint = endpoint
         capturedGetParameters = parameters
         capturedGetCompletionHandler = completionHandler
@@ -145,7 +145,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public func delete(endpoint: String,
                        parameters: [String: String]?,
-                       completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                       completionHandler: @escaping (Result<Any, Error>) -> Void) {
         capturedDeleteEndpoint = endpoint
         capturedDeleteParameters = parameters
         capturedDeleteCompletionHandler = completionHandler
@@ -157,7 +157,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public func post(endpoint: String,
                      body: [String: Any]?,
-                     completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                     completionHandler: @escaping (Result<Any, Error>) -> Void) {
         capturedPostEndpoint = endpoint
         capturedPostBody = body
         capturedPostCompletionHandler = completionHandler
@@ -169,7 +169,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public func put(endpoint: String,
                     body: [String: Any]?,
-                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                    completionHandler: @escaping (Result<Any, Error>) -> Void) {
         capturedPutEndpoint = endpoint
         capturedPutBody = body
         capturedPutCompletionHandler = completionHandler
@@ -181,7 +181,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public func patch(endpoint: String,
                       body: [String: Any]?,
-                      completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                      completionHandler: @escaping (Result<Any, Error>) -> Void) {
         capturedPatchEndpoint = endpoint
         capturedPatchBody = body
         capturedPatchCompletionHandler = completionHandler
@@ -195,13 +195,13 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public func get<T: Codable>(endpoint: String,
                                 parameters: [String: String]?,
-                                completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                completionHandler: @escaping (Result<T, Error>) -> Void) {
         capturedCodableGetEndpoint = endpoint
         capturedCodableGetParameters = parameters
         capturedCodableGetCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            let typedResult = stubbedGetResult.map { value in
+            let typedResult = stubbedCodableGetResult.map { value in
                 guard let typedValue = value as? T else {
                     preconditionFailure("The stubbed codable get result is not the correct type")
                 }
@@ -215,13 +215,13 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public func delete<T: Codable>(endpoint: String,
                                    parameters: [String: String]?,
-                                   completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                   completionHandler: @escaping (Result<T, Error>) -> Void) {
         capturedCodableDeleteEndpoint = endpoint
         capturedCodableDeleteParameters = parameters
         capturedCodableDeleteCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            let typedResult = stubbedDeleteResult.map { value in
+            let typedResult = stubbedCodableDeleteResult.map { value in
                 guard let typedValue = value as? T else {
                     preconditionFailure("The stubbed codable delete result is not the correct type")
                 }
@@ -235,13 +235,13 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public func post<T: Codable>(endpoint: String,
                                  body: [String: Any]?,
-                                 completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                 completionHandler: @escaping (Result<T, Error>) -> Void) {
         capturedCodablePostEndpoint = endpoint
         capturedCodablePostBody = body
         capturedCodablePostCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            let typedResult = stubbedPostResult.map { value in
+            let typedResult = stubbedCodablePostResult.map { value in
                 guard let typedValue = value as? T else {
                     preconditionFailure("The stubbed codable post result is not the correct type")
                 }
@@ -255,13 +255,13 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public func put<T: Codable>(endpoint: String,
                                 body: [String: Any]?,
-                                completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                completionHandler: @escaping (Result<T, Error>) -> Void) {
         capturedCodablePutEndpoint = endpoint
         capturedCodablePutBody = body
         capturedCodablePutCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            let typedResult = stubbedPutResult.map { value in
+            let typedResult = stubbedCodablePutResult.map { value in
                 guard let typedValue = value as? T else {
                     preconditionFailure("The stubbed codable put result is not the correct type")
                 }
@@ -275,13 +275,13 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public func patch<T: Codable>(endpoint: String,
                                   body: [String: Any]?,
-                                  completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                  completionHandler: @escaping (Result<T, Error>) -> Void) {
         capturedCodablePatchEndpoint = endpoint
         capturedCodablePatchBody = body
         capturedCodablePatchCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            let typedResult = stubbedPatchResult.map { value in
+            let typedResult = stubbedCodablePatchResult.map { value in
                 guard let typedValue = value as? T else {
                     preconditionFailure("The stubbed codable patch result is not the correct type")
                 }
@@ -299,7 +299,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
                              parameters: [String: String]?,
                              filename: String,
                              directory: Directory,
-                             completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
+                             completionHandler: @escaping (Result<URL, Error>) -> Void) {
         capturedDownloadFileEndpoint = endpoint
         capturedDownloadFileParameters = parameters
         capturedDownloadFileFilename = filename
@@ -314,7 +314,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     public func uploadFile(endpoint: String, 
                            parameters: [String: String]?,
                            data: Data,
-                           completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                           completionHandler: @escaping (Result<Any, Error>) -> Void) {
         capturedUploadFileEndpoint = endpoint
         capturedUploadFileParameters = parameters
         capturedUploadFileData = data
@@ -328,7 +328,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     public func uploadFile<T: Codable>(endpoint: String,
                                        parameters: [String: String]?,
                                        data: Data,
-                                       completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                       completionHandler: @escaping (Result<T, Error>) -> Void) {
         capturedCodableUploadFileEndpoint = endpoint
         capturedCodableUploadFileParameters = parameters
         capturedCodableUploadFileData = data

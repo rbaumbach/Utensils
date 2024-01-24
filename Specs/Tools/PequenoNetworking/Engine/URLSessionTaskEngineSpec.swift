@@ -3,33 +3,28 @@ import Moocher
 import Capsule
 @testable import Utensils
 
-final class URLSessionExecutorSpec: QuickSpec {
+final class URLSessionTaskEngineSpec: QuickSpec {
     override class func spec() {
-        describe("URLSessionExecutor") {
-            var subject: URLSessionExecutor!
+        describe("URLSessionTaskEngine") {
+            var subject: URLSessionTaskEngine!
             var fakeURLSession: FakeURLSession!
-            var fakeFileManager: FakeFileManagerUtensils!
-            var directory: Directory!
             
             var urlRequest: URLRequest!
             var lastExecutedURLSessionTask: URLSessionTaskProtocol!
             
             beforeEach {
                 fakeURLSession = FakeURLSession()
-                fakeFileManager = FakeFileManagerUtensils()
-                directory = Directory(fileManager: fakeFileManager)
             }
             
-            describe("#execute(urlRequest:completionHandler:)") {
-                var actualResult: Result<Data, PequenoNetworking.Error>!
+            describe("#dataTask(urlRequest:completionHandler:)") {
+                var actualResult: Result<Data, Error>!
                 
                 beforeEach {
-                    subject = URLSessionExecutor(urlSession: fakeURLSession,
-                                                 fileManager: fakeFileManager)
+                    subject = URLSessionTaskEngine(urlSession: fakeURLSession)
                     
                     urlRequest = URLRequest(url: URL(string: "http://junkity-99.com")!)
                     
-                    lastExecutedURLSessionTask = subject.execute(urlRequest: urlRequest) { result in
+                    lastExecutedURLSessionTask = subject.dataTask(urlRequest: urlRequest) { result in
                         actualResult = result
                     }
                 }
@@ -46,10 +41,10 @@ final class URLSessionExecutorSpec: QuickSpec {
                         fakeURLSession.capturedExtendedDataTaskURLRequestCompletionHandler?(nil, nil, FakeGenericError.whoCares)
                     }
                     
-                    it("completes with dataTaskError") {
-                        if case .failure(let error) = actualResult {
-                            expect(error).to.equal(.dataTaskError(wrappedError: FakeGenericError.whoCares))
-                        } else { failSpec() }
+                    it("completes with url session error") {
+                        let error = actualResult.getError() as? FakeGenericError
+                        
+                        expect(error).to.equal(FakeGenericError.whoCares)
                     }
                 }
                 
@@ -58,10 +53,10 @@ final class URLSessionExecutorSpec: QuickSpec {
                         fakeURLSession.capturedExtendedDataTaskURLRequestCompletionHandler?(nil, nil, nil)
                     }
                     
-                    it("completes with malformedResponseError") {
-                        if case .failure(let error) = actualResult {
-                            expect(error).to.equal(.malformedResponseError)
-                        } else { failSpec() }
+                    it("completes with invalidSessionResponse") {
+                        let error = actualResult.getError() as? URLSessionTaskEngine.Error<Data>
+                        
+                        expect(error).to.equal(.invalidSessionResponse)
                     }
                 }
                 
@@ -78,48 +73,65 @@ final class URLSessionExecutorSpec: QuickSpec {
                             fakeURLSession.capturedExtendedDataTaskURLRequestCompletionHandler?(nil, response, nil)
                         }
                         
-                        it("completes with invalidStatusCodeError") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.invalidStatusCodeError(statusCode: 1))
-                            } else { failSpec() }
+                        it("completes with invalidStatusCode") {
+                            let error = actualResult.getError() as? URLSessionTaskEngine.Error<Data>
+                            
+                            expect(error).to.equal(.invalidStatusCode(statusCode: 1))
                         }
                     }
                     
                     describe("when url session completes with valid status code") {
+                        // TODO: Missing scenario where we aren't testing invalidSessionItem
+                        
                         beforeEach {
                             response = HTTPURLResponse(url: URL(string: "http://junkity-99.com")!,
                                                        statusCode: 200,
                                                        httpVersion: String.empty,
                                                        headerFields: nil)
-                            
-                            let data = "doesn't-matter".data(using: .utf8)
-                            
-                            fakeURLSession.capturedExtendedDataTaskURLRequestCompletionHandler?(data, response, nil)
                         }
                         
-                        it("finally completes without error") {
-                            if case .success(let data) = actualResult {
-                                expect(data).to.equal("doesn't-matter".data(using: .utf8))
-                            } else { failSpec() }
+                        describe("when url session completes without response data") {
+                            beforeEach {
+                                fakeURLSession.capturedExtendedDataTaskURLRequestCompletionHandler?(nil, response, nil)
+                            }
                             
-                            expect(fakeURLSession.capturedExtendedDataTaskURLRequest).to.equal(urlRequest)
+                            it("completes with invalidSessionItem") {
+                                let error = actualResult.getError() as? URLSessionTaskEngine.Error<Data>
+                                
+                                expect(error).to.equal(.invalidSessionItem(type: Data.self))
+                            }
+                        }
+                        
+                        describe("when url session completes with response data") {
+                            var data: Data!
+                            
+                            beforeEach {
+                                data = "doesn't-matter".data(using: .utf8)
+                                
+                                fakeURLSession.capturedExtendedDataTaskURLRequestCompletionHandler?(data, response, nil)
+                            }
+                            
+                            it("finally completes without error") {
+                                let data = try? actualResult.get()
+                                
+                                expect(data).to.equal("doesn't-matter".data(using: .utf8))
+                                
+                                expect(fakeURLSession.capturedExtendedDataTaskURLRequest).to.equal(urlRequest)
+                            }
                         }
                     }
                 }
             }
             
-            describe("#executeDownload(urlRequest:customFilename:directory:completionHandler:)") {
-                var actualResult: Result<URL, PequenoNetworking.Error>!
+            describe("#downloadTask(urlRequest:completionHandler:)") {
+                var actualResult: Result<URL, Error>!
                 
                 beforeEach {
-                    subject = URLSessionExecutor(urlSession: fakeURLSession,
-                                                 fileManager: fakeFileManager)
-                                        
+                    subject = URLSessionTaskEngine(urlSession: fakeURLSession)
+                    
                     urlRequest = URLRequest(url: URL(string: "http://junkity-99.com")!)
                     
-                    lastExecutedURLSessionTask = subject.executeDownload(urlRequest: urlRequest,
-                                                                         customFilename: "hi.txt",
-                                                                         directory: directory) { result in
+                    lastExecutedURLSessionTask = subject.downloadTask(urlRequest: urlRequest) { result in
                         actualResult = result
                     }
                 }
@@ -136,10 +148,10 @@ final class URLSessionExecutorSpec: QuickSpec {
                         fakeURLSession.capturedExtendedDownloadTaskURLRequestCompletionHandler?(nil, nil, FakeGenericError.whoCares)
                     }
                     
-                    it("completes with dataTaskError") {
-                        if case .failure(let error) = actualResult {
-                            expect(error).to.equal(.downloadTaskError(wrappedError: FakeGenericError.whoCares))
-                        } else { failSpec() }
+                    it("completes with url session error") {
+                        let error = actualResult.getError() as? FakeGenericError
+                        
+                        expect(error).to.equal(FakeGenericError.whoCares)
                     }
                 }
                 
@@ -148,10 +160,10 @@ final class URLSessionExecutorSpec: QuickSpec {
                         fakeURLSession.capturedExtendedDownloadTaskURLRequestCompletionHandler?(nil, nil, nil)
                     }
                     
-                    it("completes with malformedResponseError") {
-                        if case .failure(let error) = actualResult {
-                            expect(error).to.equal(.malformedResponseError)
-                        } else { failSpec() }
+                    it("completes with invalidSessionResponse") {
+                        let error = actualResult.getError() as? URLSessionTaskEngine.Error<URL>
+                        
+                        expect(error).to.equal(.invalidSessionResponse)
                     }
                 }
                 
@@ -168,10 +180,10 @@ final class URLSessionExecutorSpec: QuickSpec {
                             fakeURLSession.capturedExtendedDownloadTaskURLRequestCompletionHandler?(nil, response, nil)
                         }
                         
-                        it("completes with invalidStatusCodeError") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.invalidStatusCodeError(statusCode: 1))
-                            } else { failSpec() }
+                        it("completes with invalidStatusCode") {
+                            let error = actualResult.getError() as? URLSessionTaskEngine.Error<URL>
+                            
+                            expect(error).to.equal(.invalidStatusCode(statusCode: 1))
                         }
                     }
                     
@@ -188,10 +200,10 @@ final class URLSessionExecutorSpec: QuickSpec {
                                 fakeURLSession.capturedExtendedDownloadTaskURLRequestCompletionHandler?(nil, response, nil)
                             }
                             
-                            it("completes with downloadError") {
-                                if case .failure(let error) = actualResult {
-                                    expect(error).to.equal(.downloadError)
-                                } else { failSpec() }
+                            it("completes with invalidSessionItem") {
+                                let error = actualResult.getError() as? URLSessionTaskEngine.Error<URL>
+                                
+                                expect(error).to.equal(.invalidSessionItem(type: URL.self))
                             }
                         }
                         
@@ -200,60 +212,34 @@ final class URLSessionExecutorSpec: QuickSpec {
                             
                             beforeEach {
                                 url = URL(string: "file:///tmp.data")
+                                
+                                fakeURLSession.capturedExtendedDownloadTaskURLRequestCompletionHandler?(url, response, nil)
                             }
                             
-                            describe("when the downloaded file CANNOT be migrated to user specified location") {
-                                beforeEach {
-                                    fakeFileManager.shouldThrowMigrateFileError = true
-                                                                        
-                                    fakeURLSession.capturedExtendedDownloadTaskURLRequestCompletionHandler?(url, response, nil)
-                                }
+                            it("finally completes without error") {
+                                let actualURL = try? actualResult.get()
                                 
-                                it("completes with downloadFileManagerError") {
-                                    if case .failure(let error) = actualResult {
-                                        expect(error).to.equal(.downloadFileManagerError(wrappedError: FakeGenericError.whoCares))
-                                    } else { failSpec() }
-                                                                        
-                                    expect(fakeFileManager.capturedMigrateFileSRCURL).to.equal(url)
-                                    expect(fakeFileManager.capturedMigrateFileDSTURL).to.equal(URL(string: "file:///fake-documents-directory/hi.txt"))
-                                }
-                            }
-                            
-                            describe("when the downloaded file can be migrated to user specified location") {
-                                beforeEach {
-                                    fakeURLSession.capturedExtendedDownloadTaskURLRequestCompletionHandler?(url, response, nil)
-                                }
+                                expect(actualURL).to.equal(url)
                                 
-                                it("finally completes without error") {
-                                    if case .success(let url) = actualResult {
-                                        expect(url).to.equal(URL(string: "file:///fake-documents-directory/hi.txt"))
-                                    } else { failSpec() }
-                                    
-                                    expect(fakeURLSession.capturedExtendedDownloadTaskURLRequest).to.equal(urlRequest)
-                                    
-                                    expect(fakeFileManager.capturedMigrateFileSRCURL).to.equal(url)
-                                    expect(fakeFileManager.capturedMigrateFileDSTURL).to.equal(URL(string: "file:///fake-documents-directory/hi.txt"))
-
-                                }
+                                expect(fakeURLSession.capturedExtendedDownloadTaskURLRequest).to.equal(urlRequest)
                             }
                         }
                     }
                 }
             }
             
-            describe("#executeUpload(urlRequest:data:completionHandler:)") {
-                var actualResult: Result<Data, PequenoNetworking.Error>!
+            describe("#uploadTask(urlRequest:data:completionHandler:)") {
+                var actualResult: Result<Data, Error>!
                 
                 beforeEach {
-                    subject = URLSessionExecutor(urlSession: fakeURLSession,
-                                                 fileManager: fakeFileManager)
+                    subject = URLSessionTaskEngine(urlSession: fakeURLSession)
                     
                     urlRequest = URLRequest(url: URL(string: "http://junkity-99.com")!)
                     
                     let data = "cloud".data(using: .utf8)!
                     
-                    lastExecutedURLSessionTask = subject.executeUpload(urlRequest: urlRequest,
-                                                                       data: data) { result in
+                    lastExecutedURLSessionTask = subject.uploadTask(urlRequest: urlRequest,
+                                                                    data: data) { result in
                         actualResult = result
                     }
                 }
@@ -270,10 +256,10 @@ final class URLSessionExecutorSpec: QuickSpec {
                         fakeURLSession.capturedExtendedUploadTaskURLRequestCompletionHandler?(nil, nil, FakeGenericError.whoCares)
                     }
                     
-                    it("completes with uploadTaskError") {
-                        if case .failure(let error) = actualResult {
-                            expect(error).to.equal(.uploadTaskError(wrappedError: FakeGenericError.whoCares))
-                        } else { failSpec() }
+                    it("completes with url session error") {
+                        let error = actualResult.getError() as? FakeGenericError
+                        
+                        expect(error).to.equal(FakeGenericError.whoCares)
                     }
                 }
                 
@@ -282,10 +268,10 @@ final class URLSessionExecutorSpec: QuickSpec {
                         fakeURLSession.capturedExtendedUploadTaskURLRequestCompletionHandler?(nil, nil, nil)
                     }
                     
-                    it("completes with malformedResponseError") {
-                        if case .failure(let error) = actualResult {
-                            expect(error).to.equal(.malformedResponseError)
-                        } else { failSpec() }
+                    it("completes with invalidSessionResponse") {
+                        let error = actualResult.getError() as? URLSessionTaskEngine.Error<Data>
+                        
+                        expect(error).to.equal(.invalidSessionResponse)
                     }
                 }
                 
@@ -302,10 +288,10 @@ final class URLSessionExecutorSpec: QuickSpec {
                             fakeURLSession.capturedExtendedUploadTaskURLRequestCompletionHandler?(nil, response, nil)
                         }
                         
-                        it("completes with invalidStatusCodeError") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.invalidStatusCodeError(statusCode: 1))
-                            } else { failSpec() }
+                        it("completes with invalidStatusCode") {
+                            let error = actualResult.getError() as? URLSessionTaskEngine.Error<Data>
+                            
+                            expect(error).to.equal(.invalidStatusCode(statusCode: 1))
                         }
                     }
                     
@@ -315,20 +301,36 @@ final class URLSessionExecutorSpec: QuickSpec {
                                                        statusCode: 200,
                                                        httpVersion: String.empty,
                                                        headerFields: nil)
-                            
-                            let data = "doesn't-matter".data(using: .utf8)
-                            
-                            fakeURLSession.capturedExtendedUploadTaskURLRequestCompletionHandler?(data, response, nil)
                         }
                         
-                        it("finally completes without error") {
-                            if case .success(let data) = actualResult {
-                                expect(data).to.equal("doesn't-matter".data(using: .utf8))
-                            } else { failSpec() }
+                        describe("when url session completes without response data") {
+                            beforeEach {
+                                fakeURLSession.capturedExtendedUploadTaskURLRequestCompletionHandler?(nil, response, nil)
+                            }
                             
+                            it("completes with invalidSessionItem") {
+                                let error = actualResult.getError() as? URLSessionTaskEngine.Error<Data>
+                                
+                                expect(error).to.equal(.invalidSessionItem(type: Data.self))
+                            }
+                        }
+                        
+                        describe("when url session completes with response data") {
+                            var data: Data!
                             
-                            expect(fakeURLSession.capturedExtendedUploadTaskURLRequest).to.equal(urlRequest)
-                            expect(fakeURLSession.capturedExtendedUploadTaskURLRequestBodyData).to.equal("cloud".data(using: .utf8)!)
+                            beforeEach {
+                                data = "doesn't-matter".data(using: .utf8)
+                                
+                                fakeURLSession.capturedExtendedUploadTaskURLRequestCompletionHandler?(data, response, nil)
+                            }
+                            
+                            it("finally completes without error") {
+                                let actualData = try? actualResult.get()
+                                
+                                expect(actualData).to.equal(data)
+                                
+                                expect(fakeURLSession.capturedExtendedUploadTaskURLRequest).to.equal(urlRequest)
+                            }
                         }
                     }
                 }
@@ -338,22 +340,19 @@ final class URLSessionExecutorSpec: QuickSpec {
                 beforeEach {
                     urlRequest = URLRequest(url: URL(string: "http://junkity-99.com")!)
                     
-                    subject = URLSessionExecutor(shouldExecuteTasksImmediately: false,
-                                                 urlSession: fakeURLSession,
-                                                 fileManager: fakeFileManager)
+                    subject = URLSessionTaskEngine(shouldExecuteTasksImmediately: false,
+                                                   urlSession: fakeURLSession)
                 }
                 
                 it("doesn't automatically resume() the tasks") {
-                    let dataTask = subject.execute(urlRequest: urlRequest, completionHandler: { _ in })
+                    let dataTask = subject.dataTask(urlRequest: urlRequest, completionHandler: { _ in })
                     
-                    let downloadTask = subject.executeDownload(urlRequest: urlRequest,
-                                                               customFilename: "download.txt",
-                                                               directory: directory,
-                                                               completionHandler: { _ in })
+                    let downloadTask = subject.downloadTask(urlRequest: urlRequest,
+                                                            completionHandler: { _ in })
                     
-                    let uploadTask = subject.executeUpload(urlRequest: urlRequest,
-                                                           data: "upload".data(using: .utf8)!,
-                                                           completionHandler: { _ in })
+                    let uploadTask = subject.uploadTask(urlRequest: urlRequest,
+                                                        data: "upload".data(using: .utf8)!,
+                                                        completionHandler: { _ in })
                     
                     expect((dataTask as? FakeURLSessionTask)?.didCallResume).to.beFalsy()
                     expect((downloadTask as? FakeURLSessionTask)?.didCallResume).to.beFalsy()

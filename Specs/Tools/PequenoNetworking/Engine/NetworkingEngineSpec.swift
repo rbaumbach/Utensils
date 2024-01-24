@@ -9,18 +9,18 @@ final class NetworkingEngineSpec: QuickSpec {
             var subject: NetworkingEngine!
             
             var fakeURLRequestBuilder: FakeURLRequestBuilder!
-            var fakeURLSessionExecutor: FakeURLSessionExecutor!
+            var fakeURLSessionTaskEngine: FakeURLSessionTaskEngine!
             var fakeJSONDecoder: FakeJSONDecoder!
             var fakeDispatchQueueWrapper: FakeDispatchQueueWrapper!
             
             var fakeFileManager: FakeFileManagerUtensils!
             var directory: Directory!
             
-            var actualResult: Result<String, PequenoNetworking.Error>!
+            var actualResult: Result<String, Error>!
             
             beforeEach {
                 fakeURLRequestBuilder = FakeURLRequestBuilder()
-                fakeURLSessionExecutor = FakeURLSessionExecutor()
+                fakeURLSessionTaskEngine = FakeURLSessionTaskEngine()
                 fakeJSONDecoder = FakeJSONDecoder()
                 fakeDispatchQueueWrapper = FakeDispatchQueueWrapper()
                 
@@ -28,7 +28,7 @@ final class NetworkingEngineSpec: QuickSpec {
                 directory = Directory(fileManager: fakeFileManager)
                 
                 subject = NetworkingEngine(urlRequestBuilder: fakeURLRequestBuilder,
-                                           urlSessionExecutor: fakeURLSessionExecutor,
+                                           urlSessionTaskEngine: fakeURLSessionTaskEngine,
                                            jsonDecoder: fakeJSONDecoder,
                                            dispatchQueueWraper: fakeDispatchQueueWrapper)
             }
@@ -36,7 +36,7 @@ final class NetworkingEngineSpec: QuickSpec {
             describe("#get(baseURL:headers:endpoint:parameters:completionHandler:)") {
                 describe("when url request cannot be built") {
                     beforeEach {
-                        fakeURLRequestBuilder.stubbedResult = .failure(.dataError)
+                        fakeURLRequestBuilder.stubbedResult = .failure(FakeGenericError.whoCares)
                         
                         subject.get(baseURL: String.empty,
                                     headers: nil,
@@ -49,11 +49,9 @@ final class NetworkingEngineSpec: QuickSpec {
                     }
                     
                     it("completes with url request builder error") {
-                        if case let .failure(error) = actualResult {
-                            expect(error).to.equal(.dataError)
-                        } else {
-                            failSpec()
-                        }
+                        let error = actualResult.getError() as? FakeGenericError
+                        
+                        expect(error).to.equal(FakeGenericError.whoCares)
                     }
                 }
                 
@@ -69,17 +67,15 @@ final class NetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(.failure(.dataError))
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(.failure(FakeGenericError.whoCares))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with url session executor error") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualResult.getError() as? FakeGenericError
+                            
+                            expect(error).to.equal(FakeGenericError.whoCares)
                         }
                     }
                     
@@ -87,22 +83,20 @@ final class NetworkingEngineSpec: QuickSpec {
                         beforeEach {
                             fakeJSONDecoder.shouldThrowDecodeException = true
                             
-                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            let result: Result<Data, Error> = .success(String.empty.data(using: .utf8)!)
                             
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with json object decode error") {
-                            if case .failure(let error) = actualResult {
-                                expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
-                                expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
-                                
-                                expect(error).to.equal(.jsonObjectDecodeError(wrappedError: FakeGenericError.whoCares))
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualResult.getError() as? FakeGenericError
+                            
+                            expect(error).to.equal(FakeGenericError.whoCares)
+                            
+                            expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
+                            expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
                         }
                     }
 
@@ -110,9 +104,9 @@ final class NetworkingEngineSpec: QuickSpec {
                         beforeEach {
                             fakeJSONDecoder.stubbedDecodedJSON = "String is Codable"
                             
-                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            let result: Result<Data, Error> = .success(String.empty.data(using: .utf8)!)
 
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(result)
                                                         
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -121,7 +115,7 @@ final class NetworkingEngineSpec: QuickSpec {
                             if case .success(let decodedJSON) = actualResult {
                                 let expectedURLRequest = try! fakeURLRequestBuilder.stubbedResult.get()
                                 
-                                expect(fakeURLSessionExecutor.capturedExecuteURLRequest).to.equal(expectedURLRequest)
+                                expect(fakeURLSessionTaskEngine.capturedDataTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
                                 expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
@@ -138,7 +132,7 @@ final class NetworkingEngineSpec: QuickSpec {
             describe("#delete(baseURL:headers:endpoint:parameters:completionHandler:)") {
                 describe("when url request cannot be built") {
                     beforeEach {
-                        fakeURLRequestBuilder.stubbedResult = .failure(.dataError)
+                        fakeURLRequestBuilder.stubbedResult = .failure(FakeGenericError.whoCares)
                         
                         subject.delete(baseURL: String.empty,
                                        headers: nil,
@@ -151,11 +145,9 @@ final class NetworkingEngineSpec: QuickSpec {
                     }
                     
                     it("completes with url request builder error") {
-                        if case let .failure(error) = actualResult {
-                            expect(error).to.equal(.dataError)
-                        } else {
-                            failSpec()
-                        }
+                        let error = actualResult.getError() as? FakeGenericError
+                        
+                        expect(error).to.equal(FakeGenericError.whoCares)
                     }
                 }
                 
@@ -171,17 +163,15 @@ final class NetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(.failure(.dataError))
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(.failure(FakeGenericError.whoCares))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with url session executor error") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualResult.getError() as? FakeGenericError
+                            
+                            expect(error).to.equal(FakeGenericError.whoCares)
                         }
                     }
                     
@@ -189,22 +179,20 @@ final class NetworkingEngineSpec: QuickSpec {
                         beforeEach {
                             fakeJSONDecoder.shouldThrowDecodeException = true
                             
-                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            let result: Result<Data, Error> = .success(String.empty.data(using: .utf8)!)
                             
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with json object decode error") {
-                            if case .failure(let error) = actualResult {
-                                expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
-                                expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
-                                
-                                expect(error).to.equal(.jsonObjectDecodeError(wrappedError: FakeGenericError.whoCares))
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualResult.getError() as? FakeGenericError
+                            
+                            expect(error).to.equal(FakeGenericError.whoCares)
+                            
+                            expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
+                            expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
                         }
                     }
 
@@ -212,9 +200,9 @@ final class NetworkingEngineSpec: QuickSpec {
                         beforeEach {
                             fakeJSONDecoder.stubbedDecodedJSON = "String is Codable"
                             
-                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            let result: Result<Data, Error> = .success(String.empty.data(using: .utf8)!)
 
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(result)
                                                         
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -223,7 +211,7 @@ final class NetworkingEngineSpec: QuickSpec {
                             if case .success(let decodedJSON) = actualResult {
                                 let expectedURLRequest = try! fakeURLRequestBuilder.stubbedResult.get()
                                 
-                                expect(fakeURLSessionExecutor.capturedExecuteURLRequest).to.equal(expectedURLRequest)
+                                expect(fakeURLSessionTaskEngine.capturedDataTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
                                 expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
@@ -240,7 +228,7 @@ final class NetworkingEngineSpec: QuickSpec {
             describe("#post(baseURL:headers:endpoint:parameters:completionHandler:)") {
                 describe("when url request cannot be built") {
                     beforeEach {
-                        fakeURLRequestBuilder.stubbedResult = .failure(.dataError)
+                        fakeURLRequestBuilder.stubbedResult = .failure(FakeGenericError.whoCares)
                         
                         subject.post(baseURL: String.empty,
                                      headers: nil,
@@ -253,11 +241,9 @@ final class NetworkingEngineSpec: QuickSpec {
                     }
                     
                     it("completes with url request builder error") {
-                        if case let .failure(error) = actualResult {
-                            expect(error).to.equal(.dataError)
-                        } else {
-                            failSpec()
-                        }
+                        let error = actualResult.getError() as? FakeGenericError
+                                                
+                        expect(error).to.equal(FakeGenericError.whoCares)
                     }
                 }
                 
@@ -273,17 +259,15 @@ final class NetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(.failure(.dataError))
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(.failure(FakeGenericError.whoCares))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with url session executor error") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualResult.getError() as? FakeGenericError
+                                                    
+                            expect(error).to.equal(FakeGenericError.whoCares)
                         }
                     }
                     
@@ -291,22 +275,20 @@ final class NetworkingEngineSpec: QuickSpec {
                         beforeEach {
                             fakeJSONDecoder.shouldThrowDecodeException = true
                             
-                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            let result: Result<Data, Error> = .success(String.empty.data(using: .utf8)!)
                             
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with json object decode error") {
-                            if case .failure(let error) = actualResult {
-                                expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
-                                expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
-                                
-                                expect(error).to.equal(.jsonObjectDecodeError(wrappedError: FakeGenericError.whoCares))
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualResult.getError() as? FakeGenericError
+                                                    
+                            expect(error).to.equal(FakeGenericError.whoCares)
+                            
+                            expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
+                            expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
                         }
                     }
 
@@ -314,9 +296,9 @@ final class NetworkingEngineSpec: QuickSpec {
                         beforeEach {
                             fakeJSONDecoder.stubbedDecodedJSON = "String is Codable"
                             
-                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            let result: Result<Data, Error> = .success(String.empty.data(using: .utf8)!)
 
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(result)
                                                         
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -325,7 +307,7 @@ final class NetworkingEngineSpec: QuickSpec {
                             if case .success(let decodedJSON) = actualResult {
                                 let expectedURLRequest = try! fakeURLRequestBuilder.stubbedResult.get()
                                 
-                                expect(fakeURLSessionExecutor.capturedExecuteURLRequest).to.equal(expectedURLRequest)
+                                expect(fakeURLSessionTaskEngine.capturedDataTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
                                 expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
@@ -342,7 +324,7 @@ final class NetworkingEngineSpec: QuickSpec {
             describe("#put(baseURL:headers:endpoint:parameters:completionHandler:)") {
                 describe("when url request cannot be built") {
                     beforeEach {
-                        fakeURLRequestBuilder.stubbedResult = .failure(.dataError)
+                        fakeURLRequestBuilder.stubbedResult = .failure(FakeGenericError.whoCares)
                         
                         subject.put(baseURL: String.empty,
                                     headers: nil,
@@ -355,11 +337,9 @@ final class NetworkingEngineSpec: QuickSpec {
                     }
                     
                     it("completes with url request builder error") {
-                        if case let .failure(error) = actualResult {
-                            expect(error).to.equal(.dataError)
-                        } else {
-                            failSpec()
-                        }
+                        let error = actualResult.getError() as? FakeGenericError
+                                                
+                        expect(error).to.equal(FakeGenericError.whoCares)
                     }
                 }
                 
@@ -375,17 +355,15 @@ final class NetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(.failure(.dataError))
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(.failure(FakeGenericError.whoCares))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with url session executor error") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualResult.getError() as? FakeGenericError
+                                                    
+                            expect(error).to.equal(FakeGenericError.whoCares)
                         }
                     }
                     
@@ -393,22 +371,20 @@ final class NetworkingEngineSpec: QuickSpec {
                         beforeEach {
                             fakeJSONDecoder.shouldThrowDecodeException = true
                             
-                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            let result: Result<Data, Error> = .success(String.empty.data(using: .utf8)!)
                             
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with json object decode error") {
-                            if case .failure(let error) = actualResult {
-                                expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
-                                expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
-                                
-                                expect(error).to.equal(.jsonObjectDecodeError(wrappedError: FakeGenericError.whoCares))
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualResult.getError() as? FakeGenericError
+                                                                                
+                            expect(error).to.equal(FakeGenericError.whoCares)
+                            
+                            expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
+                            expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
                         }
                     }
 
@@ -416,9 +392,9 @@ final class NetworkingEngineSpec: QuickSpec {
                         beforeEach {
                             fakeJSONDecoder.stubbedDecodedJSON = "String is Codable"
                             
-                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            let result: Result<Data, Error> = .success(String.empty.data(using: .utf8)!)
 
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(result)
                                                         
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -427,7 +403,7 @@ final class NetworkingEngineSpec: QuickSpec {
                             if case .success(let decodedJSON) = actualResult {
                                 let expectedURLRequest = try! fakeURLRequestBuilder.stubbedResult.get()
                                 
-                                expect(fakeURLSessionExecutor.capturedExecuteURLRequest).to.equal(expectedURLRequest)
+                                expect(fakeURLSessionTaskEngine.capturedDataTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
                                 expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
@@ -444,7 +420,7 @@ final class NetworkingEngineSpec: QuickSpec {
             describe("#patch(baseURL:headers:endpoint:parameters:completionHandler:)") {
                 describe("when url request cannot be built") {
                     beforeEach {
-                        fakeURLRequestBuilder.stubbedResult = .failure(.dataError)
+                        fakeURLRequestBuilder.stubbedResult = .failure(FakeGenericError.whoCares)
                         
                         subject.patch(baseURL: String.empty,
                                       headers: nil,
@@ -457,11 +433,9 @@ final class NetworkingEngineSpec: QuickSpec {
                     }
                     
                     it("completes with url request builder error") {
-                        if case let .failure(error) = actualResult {
-                            expect(error).to.equal(.dataError)
-                        } else {
-                            failSpec()
-                        }
+                        let error = actualResult.getError() as? FakeGenericError
+                                                
+                        expect(error).to.equal(FakeGenericError.whoCares)
                     }
                 }
                 
@@ -477,17 +451,15 @@ final class NetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(.failure(.dataError))
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(.failure(FakeGenericError.whoCares))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with url session executor error") {
-                            if case .failure(let error) = actualResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualResult.getError() as? FakeGenericError
+                                                    
+                            expect(error).to.equal(FakeGenericError.whoCares)
                         }
                     }
                     
@@ -495,22 +467,20 @@ final class NetworkingEngineSpec: QuickSpec {
                         beforeEach {
                             fakeJSONDecoder.shouldThrowDecodeException = true
                             
-                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            let result: Result<Data, Error> = .success(String.empty.data(using: .utf8)!)
                             
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(result)
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with json object decode error") {
-                            if case .failure(let error) = actualResult {
-                                expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
-                                expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
-                                
-                                expect(error).to.equal(.jsonObjectDecodeError(wrappedError: FakeGenericError.whoCares))
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualResult.getError() as? FakeGenericError
+                                                    
+                            expect(error).to.equal(FakeGenericError.whoCares)
+                            
+                            expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
+                            expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
                         }
                     }
 
@@ -518,9 +488,9 @@ final class NetworkingEngineSpec: QuickSpec {
                         beforeEach {
                             fakeJSONDecoder.stubbedDecodedJSON = "String is Codable"
                             
-                            let result: Result<Data, PequenoNetworking.Error> = .success(String.empty.data(using: .utf8)!)
+                            let result: Result<Data, Error> = .success(String.empty.data(using: .utf8)!)
 
-                            fakeURLSessionExecutor.capturedExecuteCompletionHandler?(result)
+                            fakeURLSessionTaskEngine.capturedDataTaskCompletionHandler?(result)
                                                         
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -529,7 +499,7 @@ final class NetworkingEngineSpec: QuickSpec {
                             if case .success(let decodedJSON) = actualResult {
                                 let expectedURLRequest = try! fakeURLRequestBuilder.stubbedResult.get()
                                 
-                                expect(fakeURLSessionExecutor.capturedExecuteURLRequest).to.equal(expectedURLRequest)
+                                expect(fakeURLSessionTaskEngine.capturedDataTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
                                 expect(fakeJSONDecoder.capturedDecodeData).to.equal(String.empty.data(using: .utf8))
@@ -544,11 +514,11 @@ final class NetworkingEngineSpec: QuickSpec {
             }
             
             describe("#downloadFile(baseURL:headers:endpoint:parameters:filename:directory:completionHandler:)") {
-                var actualDownloadResult: Result<URL, PequenoNetworking.Error>!
+                var actualDownloadResult: Result<URL, Error>!
                 
                 describe("when url request cannot be built") {
                     beforeEach {
-                        fakeURLRequestBuilder.stubbedResult = .failure(.dataError)
+                        fakeURLRequestBuilder.stubbedResult = .failure(FakeGenericError.whoCares)
                         
                         subject.downloadFile(baseURL: String.empty,
                                              headers: nil,
@@ -563,11 +533,9 @@ final class NetworkingEngineSpec: QuickSpec {
                     }
                     
                     it("completes with url request builder error") {
-                        if case let .failure(error) = actualDownloadResult {
-                            expect(error).to.equal(.dataError)
-                        } else {
-                            failSpec()
-                        }
+                        let error = actualDownloadResult.getError() as? FakeGenericError
+                                                
+                        expect(error).to.equal(FakeGenericError.whoCares)
                     }
                 }
                 
@@ -585,17 +553,15 @@ final class NetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session download executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteDownloadCompletionHandler?(.failure(.dataError))
+                            fakeURLSessionTaskEngine.capturedDownloadTaskCompletionHandler?(.failure(FakeGenericError.whoCares))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with url session executor error") {
-                            if case .failure(let error) = actualDownloadResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualDownloadResult.getError() as? FakeGenericError
+                                                    
+                            expect(error).to.equal(FakeGenericError.whoCares)
                         }
                     }
                     
@@ -605,7 +571,7 @@ final class NetworkingEngineSpec: QuickSpec {
                         beforeEach {
                             url = URL(string: "https://99-finally-dot-com.net")!
                                                         
-                            fakeURLSessionExecutor.capturedExecuteDownloadCompletionHandler?(.success(url))
+                            fakeURLSessionTaskEngine.capturedDownloadTaskCompletionHandler?(.success(url))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -614,7 +580,7 @@ final class NetworkingEngineSpec: QuickSpec {
                             if case .success(let actualURL) = actualDownloadResult {
                                 let expectedURLRequest = try! fakeURLRequestBuilder.stubbedResult.get()
                                 
-                                expect(fakeURLSessionExecutor.capturedExecuteDownloadURLRequest).to.equal(expectedURLRequest)
+                                expect(fakeURLSessionTaskEngine.capturedDownloadTaskURLRequest).to.equal(expectedURLRequest)
 
                                 expect(actualURL).to.equal(url)
                             } else {
@@ -626,11 +592,11 @@ final class NetworkingEngineSpec: QuickSpec {
             }
             
             describe("#uploadFile(baseURL:headers:endpoint:parameters:data:completionHandler:)") {
-                var actualUploadResult: Result<String, PequenoNetworking.Error>!
+                var actualUploadResult: Result<String, Error>!
                 
                 describe("when url request cannot be built") {
                     beforeEach {
-                        fakeURLRequestBuilder.stubbedResult = .failure(.dataError)
+                        fakeURLRequestBuilder.stubbedResult = .failure(FakeGenericError.whoCares)
                         
                         subject.uploadFile(baseURL: String.empty,
                                            headers: nil,
@@ -644,11 +610,9 @@ final class NetworkingEngineSpec: QuickSpec {
                     }
                     
                     it("completes with url request builder error") {
-                        if case let .failure(error) = actualUploadResult {
-                            expect(error).to.equal(.dataError)
-                        } else {
-                            failSpec()
-                        }
+                        let error = actualUploadResult.getError() as? FakeGenericError
+                                                
+                        expect(error).to.equal(FakeGenericError.whoCares)
                     }
                 }
                 
@@ -665,17 +629,15 @@ final class NetworkingEngineSpec: QuickSpec {
                     
                     describe("when url session download executor completes with error") {
                         beforeEach {
-                            fakeURLSessionExecutor.capturedExecuteUploadCompletionHandler?(.failure(.dataError))
+                            fakeURLSessionTaskEngine.capturedUploadTaskCompletionHandler?(.failure(FakeGenericError.whoCares))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
                         
                         it("completes with url session executor error") {
-                            if case .failure(let error) = actualUploadResult {
-                                expect(error).to.equal(.dataError)
-                            } else {
-                                failSpec()
-                            }
+                            let error = actualUploadResult.getError() as? FakeGenericError
+                                                    
+                            expect(error).to.equal(FakeGenericError.whoCares)
                         }
                     }
                     
@@ -687,7 +649,7 @@ final class NetworkingEngineSpec: QuickSpec {
                             
                             data = "jason-voorhees".data(using: .utf8)!
                             
-                            fakeURLSessionExecutor.capturedExecuteUploadCompletionHandler?(.success(data))
+                            fakeURLSessionTaskEngine.capturedUploadTaskCompletionHandler?(.success(data))
                             
                             fakeDispatchQueueWrapper.capturedMainAsyncExecutionBlock?()
                         }
@@ -696,7 +658,7 @@ final class NetworkingEngineSpec: QuickSpec {
                             if case .success(let actualResponse) = actualUploadResult {
                                 let expectedURLRequest = try! fakeURLRequestBuilder.stubbedResult.get()
                                 
-                                expect(fakeURLSessionExecutor.capturedExecuteUploadURLRequest).to.equal(expectedURLRequest)
+                                expect(fakeURLSessionTaskEngine.capturedUploadTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONDecoder.capturedDecodeTypeAsString).to.equal("String.Type")
                                 expect(fakeJSONDecoder.capturedDecodeData).to.equal(data)

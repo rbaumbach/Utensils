@@ -12,8 +12,12 @@ struct Dog: Validatable, Codable, Equatable {
     }
 }
 
-class Dude: Validatable {
+class Dude: Validatable, Equatable {
     var isValid: Bool {
         return true
+    }
+    
+    static func == (lhs: Dude, rhs: Dude) -> Bool {
+        return lhs.isValid == rhs.isValid
     }
 }

@@ -28,45 +28,45 @@ public protocol PequenoNetworkingProtocol {
     
     func get(endpoint: String,
              parameters: [String: String]?,
-             completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+             completionHandler: @escaping (Result<Any, Swift.Error>) -> Void)
     
     func delete(endpoint: String,
                 parameters: [String: String]?,
-                completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+                completionHandler: @escaping (Result<Any, Swift.Error>) -> Void)
     
     func post(endpoint: String,
               body: [String: Any]?,
-              completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+              completionHandler: @escaping (Result<Any, Swift.Error>) -> Void)
     
     func put(endpoint: String,
              body: [String: Any]?,
-             completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+             completionHandler: @escaping (Result<Any, Swift.Error>) -> Void)
     
     func patch(endpoint: String,
                body: [String: Any]?,
-               completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+               completionHandler: @escaping (Result<Any, Swift.Error>) -> Void)
     
     // MARK: - Codable
     
     func get<T: Codable>(endpoint: String,
                          parameters: [String: String]?,
-                         completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+                         completionHandler: @escaping (Result<T, Swift.Error>) -> Void)
     
     func delete<T: Codable>(endpoint: String,
                             parameters: [String: String]?,
-                            completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+                            completionHandler: @escaping (Result<T, Swift.Error>) -> Void)
     
     func post<T: Codable>(endpoint: String,
                           body: [String: Any]?,
-                          completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+                          completionHandler: @escaping (Result<T, Swift.Error>) -> Void)
     
     func put<T: Codable>(endpoint: String,
                          body: [String: Any]?,
-                         completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+                         completionHandler: @escaping (Result<T, Swift.Error>) -> Void)
     
     func patch<T: Codable>(endpoint: String,
                            body: [String: Any]?,
-                           completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+                           completionHandler: @escaping (Result<T, Swift.Error>) -> Void)
     
     // MARK: - File transfers
     
@@ -74,17 +74,17 @@ public protocol PequenoNetworkingProtocol {
                       parameters: [String: String]?,
                       filename: String,
                       directory: Directory,
-                      completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void)
+                      completionHandler: @escaping (Result<URL, Swift.Error>) -> Void)
     
     func uploadFile(endpoint: String,
                     parameters: [String: String]?,
                     data: Data,
-                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+                    completionHandler: @escaping (Result<Any, Swift.Error>) -> Void)
     
     func uploadFile<T: Codable>(endpoint: String,
                                 parameters: [String: String]?,
                                 data: Data,
-                                completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void)
+                                completionHandler: @escaping (Result<T, Swift.Error>) -> Void)
 }
 
 open class PequenoNetworking: PequenoNetworkingProtocol {
@@ -124,7 +124,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     public func get(endpoint: String,
                     parameters: [String: String]?,
-                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                    completionHandler: @escaping (Result<Any, Swift.Error>) -> Void) {
         classicNetworkingEngine.get(baseURL: baseURL,
                                     headers: headers,
                                     endpoint: endpoint,
@@ -134,7 +134,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     public func delete(endpoint: String,
                        parameters: [String: String]?,
-                       completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                       completionHandler: @escaping (Result<Any, Swift.Error>) -> Void) {
         classicNetworkingEngine.delete(baseURL: baseURL,
                                        headers: headers,
                                        endpoint: endpoint,
@@ -144,7 +144,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     public func post(endpoint: String,
                      body: [String: Any]?,
-                     completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                     completionHandler: @escaping (Result<Any, Swift.Error>) -> Void) {
         classicNetworkingEngine.post(baseURL: baseURL,
                                      headers: headers,
                                      endpoint: endpoint,
@@ -154,7 +154,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     public func put(endpoint: String,
                     body: [String: Any]?,
-                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                    completionHandler: @escaping (Result<Any, Swift.Error>) -> Void) {
         classicNetworkingEngine.put(baseURL: baseURL,
                                     headers: headers,
                                     endpoint: endpoint,
@@ -164,7 +164,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     public func patch(endpoint: String,
                       body: [String: Any]?,
-                      completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                      completionHandler: @escaping (Result<Any, Swift.Error>) -> Void) {
         classicNetworkingEngine.patch(baseURL: baseURL,
                                       headers: headers,
                                       endpoint: endpoint,
@@ -174,7 +174,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     public func get<T: Codable>(endpoint: String,
                                 parameters: [String: String]?,
-                                completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                completionHandler: @escaping (Result<T, Swift.Error>) -> Void) {
         networkingEngine.get(baseURL: baseURL,
                              headers: headers,
                              endpoint: endpoint,
@@ -184,7 +184,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     public func delete<T: Codable>(endpoint: String,
                                    parameters: [String: String]?,
-                                   completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                   completionHandler: @escaping (Result<T, Swift.Error>) -> Void) {
         networkingEngine.delete(baseURL: baseURL,
                                 headers: headers,
                                 endpoint: endpoint,
@@ -194,7 +194,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     public func post<T: Codable>(endpoint: String,
                                  body: [String: Any]?,
-                                 completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                 completionHandler: @escaping (Result<T, Swift.Error>) -> Void) {
         networkingEngine.post(baseURL: baseURL,
                               headers: headers,
                               endpoint: endpoint,
@@ -204,7 +204,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     public func put<T: Codable>(endpoint: String,
                                 body: [String: Any]?,
-                                completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                completionHandler: @escaping (Result<T, Swift.Error>) -> Void) {
         networkingEngine.put(baseURL: baseURL,
                              headers: headers,
                              endpoint: endpoint,
@@ -214,7 +214,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     public func patch<T: Codable>(endpoint: String,
                                   body: [String: Any]?,
-                                  completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                  completionHandler: @escaping (Result<T, Swift.Error>) -> Void) {
         networkingEngine.patch(baseURL: baseURL,
                                headers: headers,
                                endpoint: endpoint,
@@ -226,7 +226,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
                              parameters: [String: String]?,
                              filename: String,
                              directory: Directory,
-                             completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
+                             completionHandler: @escaping (Result<URL, Swift.Error>) -> Void) {
         networkingEngine.downloadFile(baseURL: baseURL,
                                       headers: headers,
                                       endpoint: endpoint,
@@ -239,7 +239,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     public func uploadFile(endpoint: String,
                            parameters: [String: String]?,
                            data: Data,
-                           completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                           completionHandler: @escaping (Result<Any, Swift.Error>) -> Void) {
         classicNetworkingEngine.uploadFile(baseURL: baseURL,
                                            headers: headers,
                                            endpoint: endpoint,
@@ -251,7 +251,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     public func uploadFile<T: Codable>(endpoint: String,
                                        parameters: [String: String]?,
                                        data: Data,
-                                       completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                       completionHandler: @escaping (Result<T, Swift.Error>) -> Void) {
         networkingEngine.uploadFile(baseURL: baseURL,
                                     headers: headers,
                                     endpoint: endpoint,

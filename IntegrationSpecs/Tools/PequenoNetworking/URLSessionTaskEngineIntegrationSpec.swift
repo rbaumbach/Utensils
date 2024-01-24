@@ -3,10 +3,10 @@ import Moocher
 import Capsule
 @testable import Utensils
 
-final class URLSessionExecutorIntegrationSpec: QuickSpec {
+final class URLSessionTaskEngineIntegrationSpec: QuickSpec {
     override class func spec() {
-        describe("PequenoNetworking") {
-            var subject: URLSessionExecutor!
+        describe("URLSessionTaskEngine") {
+            var subject: URLSessionTaskEngine!
             
             var urlRequest: URLRequest!
             
@@ -15,10 +15,10 @@ final class URLSessionExecutorIntegrationSpec: QuickSpec {
             beforeEach {
                 testBundle = Bundle(for: self)
                                 
-                subject = URLSessionExecutor()
+                subject = URLSessionTaskEngine()
             }
             
-            describe("executing data tasks") {
+            describe("data tasks") {
                 beforeEach {
                     var urlComponents = URLComponents(string: "https://httpbin.org")!
                     urlComponents.path = "/get"
@@ -28,7 +28,7 @@ final class URLSessionExecutorIntegrationSpec: QuickSpec {
                 
                 it("completes with url to downloaded image") {
                     hangOn(for: .seconds(5)) { complete in
-                        subject.execute(urlRequest: urlRequest) { result in
+                        subject.dataTask(urlRequest: urlRequest) { result in
                             if case .success(let responseData) = result {
                                 let deserializedResponse = try! JSONDecoder().decode(HTTPBin.self,
                                                                                      from: responseData)
@@ -44,7 +44,7 @@ final class URLSessionExecutorIntegrationSpec: QuickSpec {
                 }
             }
             
-            describe("executing download tasks") {
+            describe("download tasks") {
                 beforeEach {
                     var urlComponents = URLComponents(string: "https://httpbin.org")!
                     urlComponents.path = "/image/jpeg"
@@ -54,9 +54,7 @@ final class URLSessionExecutorIntegrationSpec: QuickSpec {
                 
                 it("completes with url to downloaded image") {
                     hangOn(for: .seconds(5)) { complete in
-                        subject.executeDownload(urlRequest: urlRequest,
-                                                customFilename: "animal.jpeg",
-                                                directory: Directory(.caches(additionalPath: "session-downloadz/"))) { result in
+                        subject.downloadTask(urlRequest: urlRequest) { result in
                             if case .success(let url) = result {
                                 guard let data = try? Data(contentsOf: url) else {
                                     failSpec()
@@ -73,7 +71,7 @@ final class URLSessionExecutorIntegrationSpec: QuickSpec {
                 }
             }
             
-            describe("executing upload tasks") {
+            describe("upload tasks") {
                 var multipartFormData: Data!
                 
                 beforeEach {
@@ -100,8 +98,8 @@ final class URLSessionExecutorIntegrationSpec: QuickSpec {
                 
                 it("completes successfully") {
                     hangOn(for: .seconds(5)) { complete in
-                        subject.executeUpload(urlRequest: urlRequest,
-                                              data: multipartFormData) { result in
+                        subject.uploadTask(urlRequest: urlRequest,
+                                           data: multipartFormData) { result in
                             if case .success(let responseData) = result {
                                 let deserializedResponse = try! JSONDecoder().decode(HTTPBin.self,
                                                                                      from: responseData)

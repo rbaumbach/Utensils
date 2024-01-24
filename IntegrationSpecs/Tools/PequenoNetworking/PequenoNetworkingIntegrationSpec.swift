@@ -140,12 +140,10 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.get(endpoint: "/get",
-                                        parameters: nil) { (result: Result<HTTPBin, PequenoNetworking.Error>) in
-                                if case .success(let response) = result {
-                                    expect(response.url).to.equal("https://httpbin.org/get")
-                                } else {
-                                    failSpec()
-                                }
+                                        parameters: nil) { (result: Result<HTTPBin, Error>) in
+                                let responseURL = try? result.get().url
+                                
+                                expect(responseURL).to.equal("https://httpbin.org/get")
                                 
                                 complete()
                             }
@@ -157,12 +155,10 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.delete(endpoint: "/delete",
-                                           parameters: nil) { (result: Result<HTTPBin, PequenoNetworking.Error>) in
-                                if case .success(let response) = result {
-                                    expect(response.url).to.equal("https://httpbin.org/delete")
-                                } else {
-                                    failSpec()
-                                }
+                                           parameters: nil) { (result: Result<HTTPBin, Error>) in
+                                let responseURL = try? result.get().url
+                                
+                                expect(responseURL).to.equal("https://httpbin.org/delete")
                                 
                                 complete()
                             }
@@ -174,12 +170,10 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.post(endpoint: "/post",
-                                         body: nil) { (result: Result<HTTPBin, PequenoNetworking.Error>) in
-                                if case .success(let response) = result {
-                                    expect(response.url).to.equal("https://httpbin.org/post")
-                                } else {
-                                    failSpec()
-                                }
+                                         body: nil) { (result: Result<HTTPBin, Error>) in
+                                let responseURL = try? result.get().url
+                                
+                                expect(responseURL).to.equal("https://httpbin.org/post")
                                 
                                 complete()
                             }
@@ -191,12 +185,10 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.put(endpoint: "/put",
-                                        body: nil) { (result: Result<HTTPBin, PequenoNetworking.Error>) in
-                                if case .success(let response) = result {
-                                    expect(response.url).to.equal("https://httpbin.org/put")
-                                } else {
-                                    failSpec()
-                                }
+                                        body: nil) { (result: Result<HTTPBin, Error>) in
+                                let responseURL = try? result.get().url
+                                
+                                expect(responseURL).to.equal("https://httpbin.org/put")
                                 
                                 complete()
                             }
@@ -208,12 +200,10 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                     it("completes with deserialized json") {
                         hangOn(for: .seconds(5)) { complete in
                             subject.patch(endpoint: "/patch",
-                                          body: nil) { (result: Result<HTTPBin, PequenoNetworking.Error>) in
-                                if case .success(let response) = result {
-                                    expect(response.url).to.equal("https://httpbin.org/patch")
-                                } else {
-                                    failSpec()
-                                }
+                                          body: nil) { (result: Result<HTTPBin, Error>) in
+                                let responseURL = try? result.get().url
+                                
+                                expect(responseURL).to.equal("https://httpbin.org/patch")
                                 
                                 complete()
                             }
@@ -309,7 +299,7 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                             hangOn(for: .seconds(5)) { complete in
                                 subject.uploadFile(endpoint: "/post",
                                                    parameters: nil,
-                                                   data: multipartFormData) { (result: Result<HTTPBin, PequenoNetworking.Error>) in
+                                                   data: multipartFormData) { (result: Result<HTTPBin, Error>) in
                                     if case .success(let response) = result {
                                         expect(response.url).to.equal("https://httpbin.org/post")
                                         expect(response.files!.file).to.contain("Flipper")

@@ -30,7 +30,7 @@ open class FakeURLRequestBuilder: Fake, URLRequestBuilderProtocol {
     
     // MARK: - Stubbed properties
     
-    public var stubbedResult: Result<URLRequest, PequenoNetworking.Error> = {
+    public var stubbedResult: Result<URLRequest, Error> = {
         let urlRequest = URLRequest(url: URL(string: "https://whatever.dude-99.party")!)
         
         return .success(urlRequest)
@@ -42,7 +42,7 @@ open class FakeURLRequestBuilder: Fake, URLRequestBuilderProtocol {
     
     // MARK: - <URLRequestBuilderProtocol>
     
-    public func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, PequenoNetworking.Error> {
+    public func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, Error> {
         capturedURLRequestInfo = urlRequestInfo
         
         return stubbedResult

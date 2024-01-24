@@ -41,7 +41,7 @@ public extension PequenoNetworking {
         case downloadFileManagerError(wrappedError: Swift.Error)
         case uploadTaskError(wrappedError: Swift.Error)
         case uploadFileLoadError(wrappedError: Swift.Error)
-        
+                
         // MARK: - <CaseIterable>
         
         public static var allCases: [PequenoNetworking.Error] {
