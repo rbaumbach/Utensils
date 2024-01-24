@@ -33,9 +33,9 @@ public extension URLSessionTaskEngine {
         // MARK: - <CaseIterable>
         
         public static var allCases: [Error] {
-            return [.invalidSessionResponse, 
-                    invalidStatusCode(statusCode: 0),
-                    invalidSessionItem(type: T.self)]
+            return [.invalidSessionResponse,
+                    .invalidStatusCode(statusCode: 0),
+                    .invalidSessionItem(type: T.self)]
         }
         
         // MARK: - <Error>

@@ -7,10 +7,6 @@ final class URLRequestBuilder_ErrorSpec: QuickSpec {
     override class func spec() {
         describe("URLRequestBuilder+Error") {
             describe("<CaseIterable>)") {
-                
-            }
-            
-            describe("<Error>") {
                 it("has all required cases") {
                     let expectedCases: [URLRequestBuilder.Error] = [.invalidURL(urlString: String.empty),
                                                                     .invalidBody(body: [:],
@@ -20,7 +16,7 @@ final class URLRequestBuilder_ErrorSpec: QuickSpec {
                 }
             }
             
-            describe("<LocalizedError>") {
+            describe("<Error>") {
                 describe("#localizedDescription") {
                     it("has proper localized description") {
                         let invalidURLError: URLRequestBuilder.Error = .invalidURL(urlString: "filez://file.txt")

@@ -17,6 +17,7 @@
 		9404C5742B4332F9001626C8 /* NetworkingEngineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9404C5732B4332F9001626C8 /* NetworkingEngineSpec.swift */; };
 		9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9406829D238D7F24004278CB /* DebouncerSpec.swift */; };
 		940682AC238EE03A004278CB /* DirectorySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682AB238EE03A004278CB /* DirectorySpec.swift */; };
+		940B283F2B60B07F0084AD02 /* URLSessionTaskEngine+ErrorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940B283E2B60B07F0084AD02 /* URLSessionTaskEngine+ErrorSpec.swift */; };
 		940F9C6E23974A060028937B /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9C6D23974A060028937B /* CustomView.swift */; };
 		940F9DF3239B143E0028937B /* FakeDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DF2239B143E0028937B /* FakeDirectory.swift */; };
 		940F9DF5239B14440028937B /* Directory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DF4239B14440028937B /* Directory.swift */; };
@@ -125,6 +126,7 @@
 		9404C5732B4332F9001626C8 /* NetworkingEngineSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingEngineSpec.swift; sourceTree = "<group>"; };
 		9406829D238D7F24004278CB /* DebouncerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncerSpec.swift; sourceTree = "<group>"; };
 		940682AB238EE03A004278CB /* DirectorySpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectorySpec.swift; sourceTree = "<group>"; };
+		940B283E2B60B07F0084AD02 /* URLSessionTaskEngine+ErrorSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionTaskEngine+ErrorSpec.swift"; sourceTree = "<group>"; };
 		940F9C6D23974A060028937B /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		940F9DB12399CA940028937B /* Capsule.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Capsule.framework; path = Carthage/Build/iOS/Capsule.framework; sourceTree = "<group>"; };
 		940F9DF2239B143E0028937B /* FakeDirectory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeDirectory.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 			children = (
 				9404C5642B431523001626C8 /* ClassicNetworkingEngineSpec.swift */,
 				9404C5732B4332F9001626C8 /* NetworkingEngineSpec.swift */,
+				940B283E2B60B07F0084AD02 /* URLSessionTaskEngine+ErrorSpec.swift */,
 				945F43FC2B5D94DD002B37E1 /* URLSessionTaskEngineSpec.swift */,
 			);
 			path = Engine;
@@ -947,6 +950,7 @@
 				945F44052B5EC0C8002B37E1 /* URLRequestBuilder+ErrorSpec.swift in Sources */,
 				94569E152B274845008494E1 /* FileLoaderSpec.swift in Sources */,
 				945F43F72B5780E2002B37E1 /* MultipartFormDataBuilderSpec.swift in Sources */,
+				940B283F2B60B07F0084AD02 /* URLSessionTaskEngine+ErrorSpec.swift in Sources */,
 				946AB1792390568C003D0016 /* TrunkSpec.swift in Sources */,
 				9472665C2B5076AA00353F4E /* Directory+ErrorSpec.swift in Sources */,
 				94630F0B23AA76CB0054BAAD /* SpecModels.swift in Sources */,
