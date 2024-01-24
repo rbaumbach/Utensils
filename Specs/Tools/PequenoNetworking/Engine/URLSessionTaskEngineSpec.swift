@@ -81,8 +81,6 @@ final class URLSessionTaskEngineSpec: QuickSpec {
                     }
                     
                     describe("when url session completes with valid status code") {
-                        // TODO: Missing scenario where we aren't testing invalidSessionItem
-                        
                         beforeEach {
                             response = HTTPURLResponse(url: URL(string: "http://junkity-99.com")!,
                                                        statusCode: 200,
