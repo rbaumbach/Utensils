@@ -8,7 +8,7 @@ final class URLRequestBuilderSpec: QuickSpec {
         describe("URLRequestBuilder") {
             var subject: URLRequestBuilder!
             var fakeJSONSerializationWrapper: FakeJSONSerializationWrapper!
-            
+                        
             beforeEach {
                 fakeJSONSerializationWrapper = FakeJSONSerializationWrapper()
                 
@@ -17,14 +17,39 @@ final class URLRequestBuilderSpec: QuickSpec {
             
             describe("#build(baseURL:headers:urlRequestInfo:completionHandler:") {
                 describe("when baseURL is malformed") {
-                    it("returns an urlRequestError result") {
+                    it("returns an invalidURL result") {
                         // Note: I'm unable to figure out how to make URL(string:) return nil
                     }
                 }
                 
                 describe("when the url components url is malformed") {
-                    it("returns an urlRequestError result") {
+                    it("returns an invalidURL result") {
                         // Note: I'm unable to figure out how to make URLComponents.url return nil
+                    }
+                }
+                
+                describe("when the body is malformed") {
+                    var error: URLRequestBuilder.Error!
+                    
+                    beforeEach {
+                        fakeJSONSerializationWrapper.shouldThrowJSONDataException = true
+                        
+                        let urlRequestInfo = URLRequestInfo(baseURL: "https://cinemassacre.com",
+                                                            headers: nil,
+                                                            httpMethod: .get,
+                                                            endpoint: "/avgn",
+                                                            parameters: nil,
+                                                            body: ["junk": Dude()])
+                        
+                        let result = subject.build(urlRequestInfo: urlRequestInfo)
+                        
+                        error = result.getError() as? URLRequestBuilder.Error
+                    }
+                    
+                    it("returns an invalidBody result") {
+                        let expectedError: URLRequestBuilder.Error = .invalidBody(body: ["junk": Dude()],
+                                                                                  wrappedError: FakeGenericError.whoCares)
+                        expect(error).to.equal(expectedError)
                     }
                 }
                 
@@ -40,6 +65,7 @@ final class URLRequestBuilderSpec: QuickSpec {
                                                             body: ["console": "nintendo"])
                         
                         let result = subject.build(urlRequestInfo: urlRequestInfo)
+                        
                         urlRequest = try! result.get()
                     }
                     

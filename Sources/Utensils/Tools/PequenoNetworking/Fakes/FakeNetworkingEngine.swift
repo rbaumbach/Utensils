@@ -24,7 +24,7 @@ import Foundation
 import Capsule
 
 // Note: Any? is used for the capturedCompletionHandlers due to warning messages about "shadowing" at the
-// class level. As a consumer you can cast to (Result<T, PequenoNetworking.Error>) -> Void).
+// class level. As a consumer you can cast to (Result<T, Error>) -> Void).
 
 open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
     // MARK: - Captured properties
@@ -59,26 +59,34 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
     public var capturedPatchBody: [String: Any]?
     public var capturedPatchCompletionHandler: Any?
     
-    public var capturedDownloadBaseURL: String?
-    public var capturedDownloadHeaders: [String: String]?
-    public var capturedDownloadEndpoint: String?
-    public var capturedDownloadParameters: [String: String]?
-    public var capturedDownloadFilename: String?
-    public var capturedDownloadDirectory: DirectoryProtocol?
-    public var capturedDownloadCompletionHandler: ((Result<URL, PequenoNetworking.Error>) -> Void)?
+    public var capturedDownloadFileBaseURL: String?
+    public var capturedDownloadFileHeaders: [String: String]?
+    public var capturedDownloadFileEndpoint: String?
+    public var capturedDownloadFileParameters: [String: String]?
+    public var capturedDownloadFileFilename: String?
+    public var capturedDownloadFileDirectory: DirectoryProtocol?
+    public var capturedDownloadFileCompletionHandler: ((Result<URL, Error>) -> Void)?
+    
+    public var capturedUploadFileBaseURL: String?
+    public var capturedUploadFileHeaders: [String: String]?
+    public var capturedUploadFileEndpoint: String?
+    public var capturedUploadFileParameters: [String: String]?
+    public var capturedUploadFileData: Data?
+    public var capturedUploadFileCompletionHandler: Any?
     
     // MARK: - Stubbed properties
     
-    public var stubbedGetResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedDeleteResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedPostResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedPutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedPatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedDownloadResult: Result<URL, PequenoNetworking.Error> = {
+    public var stubbedGetResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedDeleteResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedPostResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedPutResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedPatchResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedDownloadFileResult: Result<URL, Error> = {
        let url = URL(string: "https://99-stubby-99.party")!
         
         return .success(url)
     }()
+    public var stubbedUploadFileResult: Result<Any, Error> = .success("Éxito")
     
     // MARK: - Public properties
     
@@ -94,7 +102,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
                                 headers: [String: String]?,
                                 endpoint: String,
                                 parameters: [String: String]?,
-                                completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                completionHandler: @escaping (Result<T, Error>) -> Void) {
         capturedGetBaseURL = baseURL
         capturedGetHeaders = headers
         capturedGetEndpoint = endpoint
@@ -118,7 +126,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
                                    headers: [String: String]?,
                                    endpoint: String,
                                    parameters: [String: String]?,
-                                   completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                   completionHandler: @escaping (Result<T, Error>) -> Void) {
         capturedDeleteBaseURL = baseURL
         capturedDeleteHeaders = headers
         capturedDeleteEndpoint = endpoint
@@ -142,7 +150,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
                                  headers: [String: String]?,
                                  endpoint: String,
                                  body: [String: Any]?,
-                                 completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                 completionHandler: @escaping (Result<T, Error>) -> Void) {
         capturedPostBaseURL = baseURL
         capturedPostHeaders = headers
         capturedPostEndpoint = endpoint
@@ -166,7 +174,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
                                 headers: [String: String]?,
                                 endpoint: String,
                                 body: [String: Any]?,
-                                completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                completionHandler: @escaping (Result<T, Error>) -> Void) {
         capturedPutBaseURL = baseURL
         capturedPutHeaders = headers
         capturedPutEndpoint = endpoint
@@ -190,7 +198,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
                                   headers: [String: String]?,
                                   endpoint: String,
                                   body: [String: Any]?,
-                                  completionHandler: @escaping (Result<T, PequenoNetworking.Error>) -> Void) {
+                                  completionHandler: @escaping (Result<T, Error>) -> Void) {
         capturedPatchBaseURL = baseURL
         capturedPatchHeaders = headers
         capturedPatchEndpoint = endpoint
@@ -215,18 +223,44 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
                              endpoint: String,
                              parameters: [String: String]?,
                              filename: String,
-                             directory: DirectoryProtocol,
-                             completionHandler: @escaping (Result<URL, PequenoNetworking.Error>) -> Void) {
-        capturedDownloadBaseURL = baseURL
-        capturedDownloadHeaders = headers
-        capturedDownloadEndpoint = endpoint
-        capturedDownloadParameters = parameters
-        capturedDownloadFilename = filename
-        capturedDownloadDirectory = directory
-        capturedDownloadCompletionHandler = completionHandler
+                             directory: Directory,
+                             completionHandler: @escaping (Result<URL, Error>) -> Void) {
+        capturedDownloadFileBaseURL = baseURL
+        capturedDownloadFileHeaders = headers
+        capturedDownloadFileEndpoint = endpoint
+        capturedDownloadFileParameters = parameters
+        capturedDownloadFileFilename = filename
+        capturedDownloadFileDirectory = directory
+        capturedDownloadFileCompletionHandler = completionHandler
         
         if shouldExecuteCompletionHandlersImmediately {
-            completionHandler(stubbedDownloadResult)
+            completionHandler(stubbedDownloadFileResult)
+        }
+    }
+    
+    public func uploadFile<T: Codable>(baseURL: String,
+                                       headers: [String: String]?,
+                                       endpoint: String,
+                                       parameters: [String: String]?,
+                                       data: Data,
+                                       completionHandler: @escaping (Result<T, Error>) -> Void) {
+        capturedUploadFileBaseURL = baseURL
+        capturedUploadFileHeaders = headers
+        capturedUploadFileEndpoint = endpoint
+        capturedUploadFileParameters = parameters
+        capturedUploadFileData = data
+        capturedUploadFileCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            let typedResult = stubbedUploadFileResult.map { value in
+                guard let typedValue = value as? T else {
+                    preconditionFailure("The stubbed codable upload result value is not the correct type")
+                }
+                
+                return typedValue
+            }
+            
+            completionHandler(typedResult)
         }
     }
 }

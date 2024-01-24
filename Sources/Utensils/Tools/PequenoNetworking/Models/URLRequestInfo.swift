@@ -31,7 +31,7 @@ public struct URLRequestInfo: Equatable {
     public let endpoint: String
     public let parameters: [String: String]?
     public let body: [String: Any]?
-    
+        
     // MARK: - <Equatable>
     
     public static func == (lhs: URLRequestInfo, rhs: URLRequestInfo) -> Bool {

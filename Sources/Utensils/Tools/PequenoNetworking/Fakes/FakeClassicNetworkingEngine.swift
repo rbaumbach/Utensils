@@ -30,39 +30,47 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
     public var capturedGetHeaders: [String: String]?
     public var capturedGetEndpoint: String?
     public var capturedGetParameters: [String: String]?
-    public var capturedGetCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    public var capturedGetCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     public var capturedDeleteBaseURL: String?
     public var capturedDeleteHeaders: [String: String]?
     public var capturedDeleteEndpoint: String?
     public var capturedDeleteParameters: [String: String]?
-    public var capturedDeleteCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    public var capturedDeleteCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     public var capturedPostBaseURL: String?
     public var capturedPostHeaders: [String: String]?
     public var capturedPostEndpoint: String?
     public var capturedPostBody: [String: Any]?
-    public var capturedPostCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    public var capturedPostCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     public var capturedPutBaseURL: String?
     public var capturedPutHeaders: [String: String]?
     public var capturedPutEndpoint: String?
     public var capturedPutBody: [String: Any]?
-    public var capturedPutCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    public var capturedPutCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     public var capturedPatchBaseURL: String?
     public var capturedPatchHeaders: [String: String]?
     public var capturedPatchEndpoint: String?
     public var capturedPatchBody: [String: Any]?
-    public var capturedPatchCompletionHandler: ((Result<Any, PequenoNetworking.Error>) -> Void)?
+    public var capturedPatchCompletionHandler: ((Result<Any, Error>) -> Void)?
+    
+    public var capturedUploadFileBaseURL: String?
+    public var capturedUploadFileHeaders: [String: String]?
+    public var capturedUploadFileEndpoint: String?
+    public var capturedUploadFileParameters: [String: String]?
+    public var capturedUploadFileData: Data?
+    public var capturedUploadFileCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     // MARK: - Stubbed properties
         
-    public var stubbedGetResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedDeleteResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedPostResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedPutResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
-    public var stubbedPatchResult: Result<Any, PequenoNetworking.Error> = .success("Éxito")
+    public var stubbedGetResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedDeleteResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedPostResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedPutResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedPatchResult: Result<Any, Error> = .success("Éxito")
+    public var stubbedUploadFileResult: Result<Any, Error> = .success("Éxito")
     
     // MARK: - Public properties
     
@@ -78,7 +86,7 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
                     headers: [String: String]?,
                     endpoint: String,
                     parameters: [String: String]?,
-                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                    completionHandler: @escaping (Result<Any, Error>) -> Void) {
         capturedGetBaseURL = baseURL
         capturedGetHeaders = headers
         capturedGetEndpoint = endpoint
@@ -94,7 +102,7 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
                        headers: [String: String]?,
                        endpoint: String,
                        parameters: [String: String]?,
-                       completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                       completionHandler: @escaping (Result<Any, Error>) -> Void) {
         capturedDeleteBaseURL = baseURL
         capturedDeleteHeaders = headers
         capturedDeleteEndpoint = endpoint
@@ -110,7 +118,7 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
                      headers: [String: String]?,
                      endpoint: String,
                      body: [String: Any]?,
-                     completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                     completionHandler: @escaping (Result<Any, Error>) -> Void) {
         capturedPostBaseURL = baseURL
         capturedPostHeaders = headers
         capturedPostEndpoint = endpoint
@@ -126,7 +134,7 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
                     headers: [String: String]?,
                     endpoint: String,
                     body: [String: Any]?,
-                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                    completionHandler: @escaping (Result<Any, Error>) -> Void) {
         capturedPutBaseURL = baseURL
         capturedPutHeaders = headers
         capturedPutEndpoint = endpoint
@@ -142,7 +150,7 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
                       headers: [String: String]?,
                       endpoint: String,
                       body: [String: Any]?,
-                      completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                      completionHandler: @escaping (Result<Any, Error>) -> Void) {
         capturedPatchBaseURL = baseURL
         capturedPatchHeaders = headers
         capturedPatchEndpoint = endpoint
@@ -151,6 +159,24 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
         
         if shouldExecuteCompletionHandlersImmediately {
             completionHandler(stubbedPatchResult)
+        }
+    }
+    
+    public func uploadFile(baseURL: String,
+                           headers: [String: String]?,
+                           endpoint: String,
+                           parameters: [String: String]?,
+                           data: Data,
+                           completionHandler: @escaping (Result<Any, Error>) -> Void) {
+        capturedUploadFileBaseURL = baseURL
+        capturedUploadFileHeaders = headers
+        capturedUploadFileEndpoint = endpoint
+        capturedUploadFileParameters = parameters
+        capturedUploadFileData = data
+        capturedUploadFileCompletionHandler = completionHandler
+        
+        if shouldExecuteCompletionHandlersImmediately {
+            completionHandler(stubbedUploadFileResult)
         }
     }
 }

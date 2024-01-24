@@ -22,7 +22,9 @@
 
 import Foundation
 
-public struct PequenoNetworkingConstants {
-    public static let BaseURLKey = "PequenoNetworkingBaseURLKey"
-    public static let HeadersKey = "PequenoNetworkingHeadersKey"
+public extension PequenoNetworking {
+    struct Constants {
+        public static let BaseURLKey = "PequenoNetworkingBaseURLKey"
+        public static let HeadersKey = "PequenoNetworkingHeadersKey"
+    }
 }

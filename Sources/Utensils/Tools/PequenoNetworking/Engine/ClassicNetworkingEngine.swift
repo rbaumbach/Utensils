@@ -28,49 +28,56 @@ public protocol ClassicNetworkingEngineProtocol {
              headers: [String: String]?,
              endpoint: String,
              parameters: [String: String]?,
-             completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+             completionHandler: @escaping (Result<Any, Error>) -> Void)
     
     func delete(baseURL: String,
                 headers: [String: String]?,
                 endpoint: String,
                 parameters: [String: String]?,
-                completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+                completionHandler: @escaping (Result<Any, Error>) -> Void)
     
     func post(baseURL: String,
               headers: [String: String]?,
               endpoint: String,
               body: [String: Any]?,
-              completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+              completionHandler: @escaping (Result<Any, Error>) -> Void)
     
     func put(baseURL: String,
              headers: [String: String]?,
              endpoint: String,
              body: [String: Any]?,
-             completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+             completionHandler: @escaping (Result<Any, Error>) -> Void)
     
     func patch(baseURL: String,
                headers: [String: String]?,
                endpoint: String,
                body: [String: Any]?,
-               completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void)
+               completionHandler: @escaping (Result<Any, Error>) -> Void)
+    
+    func uploadFile(baseURL: String,
+                    headers: [String: String]?,
+                    endpoint: String,
+                    parameters: [String: String]?,
+                    data: Data,
+                    completionHandler: @escaping (Result<Any, Error>) -> Void)
 }
 
 open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
     // MARK: - Private properties
     
     private let urlRequestBuilder: URLRequestBuilderProtocol
-    private let urlSessionExecutor: URLSessionExecutorProtocol
+    private let urlSessionTaskEngine: URLSessionTaskEngineProtocol
     private let jsonSerializationWrapper: JSONSerializationWrapperProtocol
     private let dispatchQueueWrapper: DispatchQueueWrapperProtocol
     
     // MARK: - Init methods
     
     public init(urlRequestBuilder: URLRequestBuilderProtocol = URLRequestBuilder(),
-                urlSessionExecutor: URLSessionExecutorProtocol = URLSessionExecutor(),
+                urlSessionTaskEngine: URLSessionTaskEngineProtocol = URLSessionTaskEngine(),
                 jsonSerializationWrapper: JSONSerializationWrapperProtocol = JSONSerializationWrapper(),
                 dispatchQueueWraper: DispatchQueueWrapperProtocol = DispatchQueueWrapper()) {
         self.urlRequestBuilder = urlRequestBuilder
-        self.urlSessionExecutor = urlSessionExecutor
+        self.urlSessionTaskEngine = urlSessionTaskEngine
         self.jsonSerializationWrapper = jsonSerializationWrapper
         self.dispatchQueueWrapper = dispatchQueueWraper
     }
@@ -81,7 +88,7 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
                     headers: [String: String]?,
                     endpoint: String,
                     parameters: [String: String]?,
-                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                    completionHandler: @escaping (Result<Any, Error>) -> Void) {
         let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
                                             headers: headers,
                                             httpMethod: .get,
@@ -102,7 +109,7 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
                        headers: [String: String]?,
                        endpoint: String,
                        parameters: [String: String]?,
-                       completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                       completionHandler: @escaping (Result<Any, Error>) -> Void) {
         let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
                                             headers: headers,
                                             httpMethod: .delete,
@@ -120,7 +127,7 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
                      headers: [String: String]?,
                      endpoint: String,
                      body: [String: Any]?,
-                     completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                     completionHandler: @escaping (Result<Any, Error>) -> Void) {
         let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
                                             headers: headers,
                                             httpMethod: .post,
@@ -141,7 +148,7 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
                     headers: [String: String]?,
                     endpoint: String,
                     body: [String: Any]?,
-                    completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                    completionHandler: @escaping (Result<Any, Error>) -> Void) {
         let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
                                             headers: headers,
                                             httpMethod: .put,
@@ -162,7 +169,7 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
                       headers: [String: String]?,
                       endpoint: String,
                       body: [String: Any]?,
-                      completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                      completionHandler: @escaping (Result<Any, Error>) -> Void) {
         let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
                                             headers: headers,
                                             httpMethod: .patch,
@@ -179,19 +186,39 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         }
     }
     
+    public func uploadFile(baseURL: String,
+                           headers: [String: String]?,
+                           endpoint: String,
+                           parameters: [String: String]?,
+                           data: Data,
+                           completionHandler: @escaping (Result<Any, Error>) -> Void) {
+        let urlRequestInfo = URLRequestInfo(baseURL: baseURL,
+                                            headers: headers,
+                                            httpMethod: .post,
+                                            endpoint: endpoint,
+                                            parameters: parameters,
+                                            body: nil)
+        
+        executeUploadRequest(urlRequestInfo: urlRequestInfo,
+                             data: data) { [weak self] result in
+            self?.dispatchQueueWrapper.mainAsync {
+                completionHandler(result)
+            }
+        }
+    }
+    
     // MARK: - Private methods
     
     private func executeRequest(baseURL: String,
                                 headers: [String: String]?,
                                 urlRequestInfo: URLRequestInfo,
-                                completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
+                                completionHandler: @escaping (Result<Any, Error>) -> Void) {
         let result = urlRequestBuilder.build(urlRequestInfo: urlRequestInfo)
         
         switch result {
         case .success(let urlRequest):
-            urlSessionExecutor.execute(urlRequest: urlRequest) { [weak self] data, error in
-                self?.handleResponse(data: data,
-                                     error: error,
+            urlSessionTaskEngine.dataTask(urlRequest: urlRequest) { [weak self] result in
+                self?.handleResponse(result: result,
                                      completionHandler: completionHandler)
             }
         case .failure(let error):
@@ -199,30 +226,34 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         }
     }
     
-    private func handleResponse(data: Data?,
-                                error: PequenoNetworking.Error?,
-                                completionHandler: @escaping (Result<Any, PequenoNetworking.Error>) -> Void) {
-        if let error = error {
+    private func executeUploadRequest(urlRequestInfo: URLRequestInfo,
+                                      data: Data,
+                                      completionHandler: @escaping (Result<Any, Error>) -> Void) {
+        let result = urlRequestBuilder.build(urlRequestInfo: urlRequestInfo)
+        
+        switch result {
+        case .success(let urlRequest):
+            urlSessionTaskEngine.uploadTask(urlRequest: urlRequest,
+                                            data: data) { [weak self] result in
+                self?.handleResponse(result: result,
+                                     completionHandler: completionHandler)
+            }
+        case .failure(let error):
             completionHandler(.failure(error))
-            
-            return
         }
-        
-        guard let data = data else {
-            completionHandler(.failure(.dataError))
-            
-            return
-        }
-        
-        let result: Result<Any, PequenoNetworking.Error>
-        
-        do {
-            let jsonResponse = try self.jsonSerializationWrapper.jsonObject(with: data,
-                                                                            options: .mutableContainers)
-            
-            result = .success(jsonResponse)
-        } catch {
-            result = .failure(.jsonObjectDecodeError(wrappedError: error))
+    }
+    
+    private func handleResponse(result: Result<Data, Error>,
+                                completionHandler: @escaping (Result<Any, Error>) -> Void) {
+        let result = result.flatMap { data in
+            do {
+                let jsonResponse = try self.jsonSerializationWrapper.jsonObject(with: data,
+                                                                                options: .mutableContainers)
+                
+                return .success(jsonResponse)
+            } catch {
+                return .failure(error)
+            }
         }
         
         completionHandler(result)

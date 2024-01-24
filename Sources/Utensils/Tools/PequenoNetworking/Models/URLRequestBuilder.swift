@@ -24,7 +24,7 @@ import Foundation
 import Capsule
 
 public protocol URLRequestBuilderProtocol {
-    func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, PequenoNetworking.Error>
+    func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, Swift.Error>
 }
 
 open class URLRequestBuilder: URLRequestBuilderProtocol {
@@ -40,9 +40,11 @@ open class URLRequestBuilder: URLRequestBuilderProtocol {
     
     // MARK: - Public methods
     
-    public func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, PequenoNetworking.Error> {
+    public func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, Swift.Error> {
         guard var urlComponents = URLComponents(string: urlRequestInfo.baseURL) else {
-            return .failure(.urlRequestError(info: urlRequestInfo))
+            let invalidURLError = Error.invalidURL(urlString: urlRequestInfo.baseURL) as Swift.Error
+            
+            return .failure(invalidURLError)
         }
         
         urlComponents.path = urlRequestInfo.endpoint
@@ -52,7 +54,9 @@ open class URLRequestBuilder: URLRequestBuilderProtocol {
         }
         
         guard let urlComponentsURL = urlComponents.url else {
-            return .failure(.urlRequestError(info: urlRequestInfo))
+            let invalidURLError = Error.invalidURL(urlString: urlRequestInfo.baseURL) as Swift.Error
+            
+            return .failure(invalidURLError)
         }
         
         var urlRequest = URLRequest(url: urlComponentsURL)
@@ -62,12 +66,17 @@ open class URLRequestBuilder: URLRequestBuilderProtocol {
             urlRequest.addValue(value, forHTTPHeaderField: key)
         }
         
-        if let body = urlRequestInfo.body {
-            guard let body = try? jsonSerializationWrapper.data(withJSONObject: body) else {
-                return .failure(.urlRequestError(info: urlRequestInfo))
+        if let urlRequestInfoBody = urlRequestInfo.body {
+            do {
+                let bodyData = try jsonSerializationWrapper.data(withJSONObject: urlRequestInfoBody)
+                
+                urlRequest.httpBody = bodyData
+            } catch {
+                let invalidBodyError = Error.invalidBody(body: urlRequestInfoBody,
+                                                         wrappedError: error) as Swift.Error
+                
+                return .failure(invalidBodyError)
             }
-            
-            urlRequest.httpBody = body
         }
         
         return .success(urlRequest)
