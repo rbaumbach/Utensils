@@ -26,5 +26,7 @@ public extension PequenoNetworking {
     struct Constants {
         public static let BaseURLKey = "PequenoNetworkingBaseURLKey"
         public static let HeadersKey = "PequenoNetworkingHeadersKey"
+        
+        public static let EnableURLRequestPrintingKey = "PequenoNetworkingEnableURLRequestPrintingKey"
     }
 }

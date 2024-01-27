@@ -18,6 +18,7 @@
 		9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9406829D238D7F24004278CB /* DebouncerSpec.swift */; };
 		940682AC238EE03A004278CB /* DirectorySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940682AB238EE03A004278CB /* DirectorySpec.swift */; };
 		940B283F2B60B07F0084AD02 /* URLSessionTaskEngine+ErrorSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940B283E2B60B07F0084AD02 /* URLSessionTaskEngine+ErrorSpec.swift */; };
+		940B284A2B631A560084AD02 /* URLRequest+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940B28492B631A560084AD02 /* URLRequest+Utensils.swift */; };
 		940F9C6E23974A060028937B /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9C6D23974A060028937B /* CustomView.swift */; };
 		940F9DF3239B143E0028937B /* FakeDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DF2239B143E0028937B /* FakeDirectory.swift */; };
 		940F9DF5239B14440028937B /* Directory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940F9DF4239B14440028937B /* Directory.swift */; };
@@ -127,6 +128,7 @@
 		9406829D238D7F24004278CB /* DebouncerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncerSpec.swift; sourceTree = "<group>"; };
 		940682AB238EE03A004278CB /* DirectorySpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectorySpec.swift; sourceTree = "<group>"; };
 		940B283E2B60B07F0084AD02 /* URLSessionTaskEngine+ErrorSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSessionTaskEngine+ErrorSpec.swift"; sourceTree = "<group>"; };
+		940B28492B631A560084AD02 /* URLRequest+Utensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLRequest+Utensils.swift"; sourceTree = "<group>"; };
 		940F9C6D23974A060028937B /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		940F9DB12399CA940028937B /* Capsule.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Capsule.framework; path = Carthage/Build/iOS/Capsule.framework; sourceTree = "<group>"; };
 		940F9DF2239B143E0028937B /* FakeDirectory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeDirectory.swift; sourceTree = "<group>"; };
@@ -522,6 +524,7 @@
 				947266482B4F86B200353F4E /* Fakes */,
 				94872AF82915D20700D3528B /* Bundle+Utensils.swift */,
 				947266452B4F671A00353F4E /* FileManager+Utensils.swift */,
+				940B28492B631A560084AD02 /* URLRequest+Utensils.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -907,6 +910,7 @@
 				94569E302B29F596008494E1 /* FakeFileLoader.swift in Sources */,
 				94BCF31C2B485F38008A5D78 /* FakePequenoNetworking.swift in Sources */,
 				94FD50582B3B24770090455F /* URLRequestBuilder.swift in Sources */,
+				940B284A2B631A560084AD02 /* URLRequest+Utensils.swift in Sources */,
 				94C63B3A2B51FECE002BE8DC /* Trunk+Defaults.swift in Sources */,
 				94569E372B2CB1EE008494E1 /* FileLoader+Utensils.swift in Sources */,
 				9404C5722B431AF6001626C8 /* FakeClassicNetworkingEngine.swift in Sources */,
