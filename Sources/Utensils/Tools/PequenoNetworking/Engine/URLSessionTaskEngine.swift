@@ -43,22 +43,41 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
     
     private let shouldExecuteTasksImmediately: Bool
     private let urlSession: URLSessionProtocol
+    private let userDefaults: UserDefaultsProtocol
     
     // MARK: - Readonly properties
     
     public private(set) var lastExecutedURLSessionTask: URLSessionTaskProtocol?
     
+    // MARK: - Public properties
+    
+    public var enableURLRequestPrinting: Bool {
+        get {
+            return userDefaults.bool(forKey: PequenoNetworking.Constants.EnableURLRequestPrintingKey)
+        }
+        
+        set {
+            userDefaults.set(newValue, forKey: PequenoNetworking.Constants.EnableURLRequestPrintingKey)
+        }
+    }
+    
     // MARK: - Init methods
     
     public init(shouldExecuteTasksImmediately: Bool = true,
-                urlSession: URLSessionProtocol = URLSession.shared) {
+                urlSession: URLSessionProtocol = URLSession.shared,
+                userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
         self.shouldExecuteTasksImmediately = shouldExecuteTasksImmediately
         self.urlSession = urlSession
+        self.userDefaults = userDefaults
     }
     
     @discardableResult
     public func dataTask(urlRequest: URLRequest,
                          completionHandler: @escaping (Result<Data, Swift.Error>) -> Void) -> URLSessionTaskProtocol {
+        if enableURLRequestPrinting {
+            urlRequest.print()
+        }
+        
         let dataTask = urlSession.dataTask(urlRequest: urlRequest) { [weak self] data, response, error in
             self?.handleSessionTask(item: data,
                                     response: response,
@@ -78,6 +97,10 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
     @discardableResult
     public func downloadTask(urlRequest: URLRequest,
                              completionHandler: @escaping (Result<URL, Swift.Error>) -> Void) -> URLSessionTaskProtocol {
+        if enableURLRequestPrinting {
+            urlRequest.print()
+        }
+        
         let downloadTask = urlSession.downloadTask(urlRequest: urlRequest) { [weak self] tempURL, response, error in
             self?.handleSessionTask(item: tempURL,
                                     response: response,
@@ -98,6 +121,10 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
     public func uploadTask(urlRequest: URLRequest,
                            data: Data,
                            completionHandler: @escaping (Result<Data, Swift.Error>) -> Void) -> URLSessionTaskProtocol {
+        if enableURLRequestPrinting {
+            urlRequest.print()
+        }
+        
         let uploadTask = urlSession.uploadTask(urlRequest: urlRequest,
                                                from: data) { [weak self] data, response, error in
             self?.handleSessionTask(item: data,

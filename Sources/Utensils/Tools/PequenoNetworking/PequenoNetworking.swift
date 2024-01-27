@@ -92,30 +92,45 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     private let classicNetworkingEngine: ClassicNetworkingEngineProtocol
     private let networkingEngine: NetworkingEngineProtocol
+    private let userDefaults: UserDefaultsProtocol
     
     // MARK: - Readonly properties
     
     public let baseURL: String
     public let headers: [String: String]?
     
+    // MARK: - Public properties
+    
+    public var enableURLRequestPrinting: Bool {
+        get {
+            return userDefaults.bool(forKey: Constants.EnableURLRequestPrintingKey)
+        }
+        
+        set {
+            userDefaults.set(newValue, forKey: Constants.EnableURLRequestPrintingKey)
+        }
+    }
+    
     // MARK: - Init methods
     
     public init(baseURL: String,
-                headers: [String: String]?,
+                headers: [String: String]? = nil,
                 classicNetworkingEngine: ClassicNetworkingEngineProtocol = ClassicNetworkingEngine(),
-                networkingEngine: NetworkingEngineProtocol = NetworkingEngine()) {
+                networkingEngine: NetworkingEngineProtocol = NetworkingEngine(),
+                userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
         self.baseURL = baseURL
         self.headers = headers
         self.classicNetworkingEngine = classicNetworkingEngine
         self.networkingEngine = networkingEngine
+        self.userDefaults = userDefaults
     }
     
     public convenience init(userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
-        guard let baseURL = userDefaults.string(forKey: PequenoNetworking.Constants.BaseURLKey) else {
+        guard let baseURL = userDefaults.string(forKey: Constants.BaseURLKey) else {
             preconditionFailure("BaseURL must exist in UserDefaults")
         }
         
-        let headers = userDefaults.object(forKey: PequenoNetworking.Constants.HeadersKey) as? [String: String]
+        let headers = userDefaults.object(forKey: Constants.HeadersKey) as? [String: String]
         
         self.init(baseURL: baseURL, headers: headers)
     }
