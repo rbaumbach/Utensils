@@ -167,15 +167,33 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                 }
                 
                 describe("POST request") {
-                    it("completes with deserialized json") {
-                        hangOn(for: .seconds(5)) { complete in
-                            subject.post(endpoint: "/post",
-                                         body: nil) { (result: Result<HTTPBin, Error>) in
-                                let responseURL = try? result.get().url
-                                
-                                expect(responseURL).to.equal("https://httpbin.org/post")
-                                
-                                complete()
+                    describe("without a body") {
+                        it("completes with deserialized json") {
+                            hangOn(for: .seconds(5)) { complete in
+                                subject.post(endpoint: "/post",
+                                             body: nil) { (result: Result<HTTPBin, Error>) in
+                                    let responseURL = try? result.get().url
+                                    
+                                    expect(responseURL).to.equal("https://httpbin.org/post")
+                                    
+                                    complete()
+                                }
+                            }
+                        }
+                    }
+                    
+                    describe("with a body") {
+                        it("completes with deserialized json") {
+                            hangOn(for: .seconds(5)) { complete in
+                                subject.post(endpoint: "/post",
+                                             body: ["junk-drawer": ["sissors", "tape", "matches"],
+                                                    "number-of-dogs": 2]) { (result: Result<HTTPBin, Error>) in
+                                    let responseURL = try? result.get().url
+                                    
+                                    expect(responseURL).to.equal("https://httpbin.org/post")
+                                    
+                                    complete()
+                                }
                             }
                         }
                     }

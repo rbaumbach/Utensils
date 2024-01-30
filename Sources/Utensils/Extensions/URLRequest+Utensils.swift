@@ -114,6 +114,13 @@ public extension URLRequest {
     }
     
     private func prettyDictionary(dictionary: [String: Any]) -> String? {
+        // Note: I found out that if you don't set a body for a URLRequest and you access allHTTPHeaderFields
+        // it returns an empty dictionary instead of nil
+        
+        guard !dictionary.isEmpty else {
+            return nil
+        }
+        
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dictionary,
                                                          options: .prettyPrinted) else {
             return nil
