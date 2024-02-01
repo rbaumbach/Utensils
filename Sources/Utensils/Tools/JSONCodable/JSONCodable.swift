@@ -30,7 +30,7 @@ public typealias JSONExpressibleLiteral =
     ExpressibleByFloatLiteral & ExpressibleByBooleanLiteral & 
     ExpressibleByDictionaryLiteral & ExpressibleByArrayLiteral
 
-public struct JSONCodable: AnyWrapper, JSONExpressibleLiteral, Codable {
+public struct JSONCodable: AnyWrapper, JSONExpressibleLiteral, Codable, Equatable {
     // MARK: - <AnyWrapper>
     
     public var anyValue: Any
@@ -63,7 +63,7 @@ public struct JSONCodable: AnyWrapper, JSONExpressibleLiteral, Codable {
         self.init(value: value)
     }
     
-    public init(dictionaryLiteral elements: (AnyHashable, Any)...) {
+    public init(dictionaryLiteral elements: (String, Any)...) {
         let anyHashableDictionary = Dictionary(uniqueKeysWithValues: elements)
         
         self.init(value: anyHashableDictionary)
@@ -81,12 +81,24 @@ public struct JSONCodable: AnyWrapper, JSONExpressibleLiteral, Codable {
         let singleValueContainer = try decoder.singleValueContainer()
         
         guard !singleValueContainer.decodeNil() else {
-            self.init(value: Optional<Self>.none)
+            self.init(value: ())
             
             return
         }
         
         if let string = try? singleValueContainer.decode(String.self) {
+            guard string.lowercased() != "null" else {
+                self.init(value: ())
+                
+                return
+            }
+            
+            guard string.lowercased() != "<null>" else {
+                self.init(value: ())
+                
+                return
+            }
+            
             self.init(value: string)
         } else if let int = try? singleValueContainer.decode(Int.self) {
             self.init(value: int)
@@ -117,13 +129,53 @@ public struct JSONCodable: AnyWrapper, JSONExpressibleLiteral, Codable {
     // MARK: - <Encodable>
     
     public func encode(to encoder: Encoder) throws {
-        if let encodable = anyValue as? Encodable {
-            try encodable.encode(to: encoder)
+        var singleValueContainer = encoder.singleValueContainer()
+        
+        guard !(anyValue is ()) else {
+            try singleValueContainer.encodeNil()
+            
+            return
+        }
+        
+        if let encodableValue = anyValue as? Encodable {
+            try encodableValue.encode(to: encoder)
+        } else if let anyTypedDictionary = anyValue as? [String: Any] {
+            let anyCodableDictionary = anyTypedDictionary.mapValues { anyValue in
+                return JSONCodable(value: anyValue)
+            }
+            
+            try singleValueContainer.encode(anyCodableDictionary)
+        } else if let anyTypedArray = anyValue as? [Any] {
+            let anyCodableArray = anyTypedArray.map { anyValue in
+                return JSONCodable(value: anyValue)
+            }
+            
+            try singleValueContainer.encode(anyCodableArray)
         } else {
             let errorContext = EncodingError.Context(codingPath: encoder.codingPath,
                                                      debugDescription: "Value cannot be encoded")
             
             throw EncodingError.invalidValue(anyValue, errorContext)
         }
+    }
+    
+    // MARK: - <Equatable>
+    
+    public static func == (lhs: JSONCodable, rhs: JSONCodable) -> Bool {
+        return "\(lhs.anyValue)" == "\(rhs.anyValue)"
+    }
+    
+    // MARK: - Private methods
+    
+    private func processDecodedString(string: String) -> String? {
+        guard string.lowercased() != "null" else {
+            return nil
+        }
+        
+        guard string.lowercased() != "<null>" else {
+            return nil
+        }
+        
+        return string
     }
 }
