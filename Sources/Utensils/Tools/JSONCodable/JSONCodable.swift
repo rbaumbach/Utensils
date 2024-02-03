@@ -30,7 +30,7 @@ public typealias JSONExpressibleLiteral =
     ExpressibleByFloatLiteral & ExpressibleByBooleanLiteral & 
     ExpressibleByDictionaryLiteral & ExpressibleByArrayLiteral
 
-public struct JSONCodable: AnyWrapper, JSONExpressibleLiteral, Codable, Equatable {
+public struct JSONCodable: Codable, Equatable, JSONExpressibleLiteral {
     // MARK: - <AnyWrapper>
     
     public var anyValue: Any
@@ -162,20 +162,56 @@ public struct JSONCodable: AnyWrapper, JSONExpressibleLiteral, Codable, Equatabl
     // MARK: - <Equatable>
     
     public static func == (lhs: JSONCodable, rhs: JSONCodable) -> Bool {
-        return "\(lhs.anyValue)" == "\(rhs.anyValue)"
+        let lhsAnyValue = lhs.anyValue
+        let rhsAnyValue = rhs.anyValue
+        
+        if lhsAnyValue is () && rhsAnyValue is () {
+            return true
+        }
+        
+        if let lhsString = lhsAnyValue as? String,
+           let rhsString = rhsAnyValue as? String {
+                return lhsString == rhsString
+        } else if 
+           let lhsInt = lhsAnyValue as? Int,
+           let rhsInt = rhsAnyValue as? Int {
+                return lhsInt == rhsInt
+        } else if
+            let lhsDouble = lhsAnyValue as? Double,
+            let rhsDouble = lhsAnyValue as? Double {
+                return lhsDouble == rhsDouble
+        } else if
+            let lhsBool = lhsAnyValue as? Bool,
+            let rhsBool = rhsAnyValue as? Bool {
+                return lhsBool == rhsBool
+        } else if
+            let lhsDictionary = lhsAnyValue as? [String: Any],
+            let rhsDictionary = rhsAnyValue as? [String: Any] {
+                return areDictionariesEqual(lhsDictionary, rhsDictionary)
+        } else if
+            let lhsArray = lhsAnyValue as? [Any],
+            let rhsArray = rhsAnyValue as? [Any] {
+                return areArraysEqual(lhsArray, rhsArray)
+        } else {
+            return false
+        }
     }
     
     // MARK: - Private methods
     
-    private func processDecodedString(string: String) -> String? {
-        guard string.lowercased() != "null" else {
-            return nil
-        }
+    private static func areDictionariesEqual(_ dictionary1: [String: Any],
+                                             _ dictionary2: [String: Any]) -> Bool {
+        let nsDictionary1 = NSDictionary(dictionary: dictionary1)
+        let nsDictionary2 = NSDictionary(dictionary: dictionary2)
         
-        guard string.lowercased() != "<null>" else {
-            return nil
-        }
+        return nsDictionary1 == nsDictionary2
+    }
+    
+    private static func areArraysEqual(_ array1: [Any],
+                                       _ array2: [Any]) -> Bool {
+        let nsArray1 = NSArray(array: array1)
+        let nsArray2 = NSArray(array: array2)
         
-        return string
+        return nsArray1 == nsArray2
     }
 }

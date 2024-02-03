@@ -197,12 +197,7 @@ final class JSONCodableIntegrationSpec: QuickSpec {
                         decodedJSON = try? JSONDecoder().decode([String: JSONCodable].self, 
                                                                 from: encodedJSON)
                         
-                        let burritoDictionary = decodedJSON["burrito"]?.anyValue as? [String: String]
-                                                
-                        expect(burritoDictionary?["carne"]).to.equal("asada")
-                        expect(burritoDictionary?["arroz"]).to.equal("spanish")
-                        expect(burritoDictionary?["salsa"]).to.equal("rojo")
-                        expect(burritoDictionary?["frijoles"]).to.equal("pinto")
+                        expect(decodedJSON).to.equal(jsonCodableWithDictionary)
                     }
                     
                     it("handles values of different types properly") {
@@ -220,16 +215,7 @@ final class JSONCodableIntegrationSpec: QuickSpec {
                         decodedJSON = try? JSONDecoder().decode([String: JSONCodable].self,
                                                                 from: encodedJSON)
                         
-                        let dogDictionary = decodedJSON["dog"]?.anyValue as? [String: Any]
-                        
-                        expect(dogDictionary?["name"] as? String).to.equal("maya")
-                        expect(dogDictionary?["age"] as? Int).to.equal(3)
-                        expect(dogDictionary?["loves-dog-food"] as? Bool).to.beFalsy()
-                        
-                        let breedArray = dogDictionary?["breed"] as? [String]
-                        
-                        expect(breedArray?[0]).to.equal("chihuahua")
-                        expect(breedArray?[1]).to.equal("miniature-pinscher")
+                        expect(decodedJSON).to.equal(jsonCodableWithDictionary)
                     }
                 }
                 
@@ -382,10 +368,6 @@ final class JSONCodableIntegrationSpec: QuickSpec {
                     }
                 }
             }
-            
-            // TODO: Fix equatable to deal with the fact that the ExpressibleByDictionaryLiteral
-            // takes an AnyHashable which makes the strings different when string comparing even though
-            // the values are the same
             
             describe("Equatable") {
                 it("is equatable") {
