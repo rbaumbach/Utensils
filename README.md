@@ -119,6 +119,20 @@ networker.get(endpoint: "/dogs",
 
 Note: The `Dog` model must conform to `Codable`
 
+* A `Printer`
+
+```swift
+let dog = Dog()
+
+let printer = Printer(printType: .lite)
+
+printer.print(dog)
+
+// Prints -> "Name: Sparky"
+```
+
+Note: The `Dog` model must conform to `Printable`
+
 And more to come...
 
 ## Goodies

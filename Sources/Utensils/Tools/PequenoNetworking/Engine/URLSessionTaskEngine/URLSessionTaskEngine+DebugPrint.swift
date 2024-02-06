@@ -22,8 +22,8 @@
 
 import Foundation
 
-extension URLSessionTaskEngine {
-    public struct DebugPrint {
+public extension URLSessionTaskEngine {
+    struct DebugPrint {
         // MARK: - Enums
         
         public enum Option: CaseIterable {

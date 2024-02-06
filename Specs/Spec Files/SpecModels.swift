@@ -3,12 +3,16 @@ import Foundation
 
 // Validator spec examples
 
-struct Dog: Validatable, Codable, Equatable {
+struct Dog: Validatable, Codable, Equatable, Printable {
     var name = "Sparky"
     var breed = "Chihuahua"
     
     var isValid: Bool {
         return breed == "Chihuahua"
+    }
+    
+    func print(_ printType: Utensils.PrintType) {
+        Swift.print("Name: \(name)")
     }
 }
 
