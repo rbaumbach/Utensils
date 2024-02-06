@@ -53,14 +53,14 @@ public extension URLSessionTaskEngine {
             if let urlRequest = value as? URLRequest {
                 switch option {
                 case .all, .request:
-                    urlRequest.print(printType)
+                    Swift.print(urlRequest.print(printType))
                 default:
                     break
                 }
             } else if let httpURLResponse = value as? HTTPURLResponse {
                 switch option {
                 case .all, .response:
-                    httpURLResponse.print(printType)
+                    Swift.print(httpURLResponse.print(printType))
                 default:
                     break
                 }

@@ -25,14 +25,14 @@ import Foundation
 extension HTTPURLResponse: Printable {
     // MARK: - <Printable>
     
-    public func print(_ printType: PrintType) {
+    public func print(_ printType: PrintType) -> String {
         switch printType {
         case .lite:
-            Swift.print(liteDescription())
+            return liteDescription()
         case .verbose:
-            Swift.print(verboseDescription())
+            return verboseDescription()
         case .raw:
-            Swift.print("HTTPURLResponse:\n\(description)")
+            return "HTTPURLResponse:\n\(description)"
         }
     }
     

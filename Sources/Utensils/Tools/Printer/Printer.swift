@@ -29,7 +29,7 @@ public enum PrintType {
 }
 
 public protocol Printable {
-    func print(_ printType: PrintType)
+    func print(_ printType: PrintType) -> String
 }
 
 public struct Printer {
@@ -46,6 +46,6 @@ public struct Printer {
     // MARK: - Public methods
     
     public func print<T: Printable>(value: T) {
-        value.print(printType)
+        Swift.print(value.print(printType))
     }
 }

@@ -26,14 +26,14 @@ import Capsule
 extension URLRequest: Printable {
     // MARK: - <Printable>
     
-    public func print(_ printType: PrintType) {
+    public func print(_ printType: PrintType) -> String {
         switch printType {
         case .lite:
-            Swift.print(liteDescription())
+            return liteDescription()
         case .verbose:
-            Swift.print(verboseDescription())
+            return verboseDescription()
         case .raw:
-            Swift.print("URLRequest: \(description)")
+            return "URLRequest: \(description)"
         }
     }
     
