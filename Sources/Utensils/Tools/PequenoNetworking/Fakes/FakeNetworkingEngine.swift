@@ -29,6 +29,8 @@ import Capsule
 open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
     // MARK: - Captured properties
     
+    public var capturedDebugPrint: URLSessionTaskEngine.DebugPrint?
+    
     public var capturedGetBaseURL: String?
     public var capturedGetHeaders: [String: String]?
     public var capturedGetEndpoint: String?
@@ -76,6 +78,13 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
     
     // MARK: - Stubbed properties
     
+    public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint? = {
+        let debugPrint = URLSessionTaskEngine.DebugPrint(option: .none,
+                                                         printType: .lite)
+        
+        return debugPrint
+    }()
+    
     public var stubbedGetResult: Result<Any, Error> = .success("Éxito")
     public var stubbedDeleteResult: Result<Any, Error> = .success("Éxito")
     public var stubbedPostResult: Result<Any, Error> = .success("Éxito")
@@ -97,6 +106,16 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
     public override init() { }
     
     // MARK: - <NetworkingEngineProtocol>
+    
+    public var debugPrint: URLSessionTaskEngine.DebugPrint? {
+        get {
+            return stubbedDebugPrint
+        }
+        
+        set {
+            capturedDebugPrint = newValue
+        }
+    }
     
     public func get<T: Codable>(baseURL: String,
                                 headers: [String: String]?,

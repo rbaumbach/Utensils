@@ -24,6 +24,8 @@ import Foundation
 import Capsule
 
 public protocol NetworkingEngineProtocol {
+    var debugPrint: URLSessionTaskEngine.DebugPrint? { get set }
+    
     func get<T: Codable>(baseURL: String,
                          headers: [String: String]?,
                          endpoint: String,
@@ -76,10 +78,22 @@ open class NetworkingEngine: NetworkingEngineProtocol {
     // MARK: - Private properties
     
     private let urlRequestBuilder: URLRequestBuilderProtocol
-    private let urlSessionTaskEngine: URLSessionTaskEngineProtocol
+    private var urlSessionTaskEngine: URLSessionTaskEngineProtocol
     private let jsonDecoder: JSONDecoderProtocol
     private let dataWrapper: DataWrapperProtocol
     private let dispatchQueueWrapper: DispatchQueueWrapperProtocol
+    
+    // MARK: - Public properties
+    
+    public var debugPrint: URLSessionTaskEngine.DebugPrint? {
+        get {
+            return urlSessionTaskEngine.debugPrint
+        }
+        
+        set {
+            urlSessionTaskEngine.debugPrint = newValue
+        }
+    }
     
     // MARK: - Init methods
     

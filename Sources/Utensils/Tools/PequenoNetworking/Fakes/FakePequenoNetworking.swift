@@ -29,6 +29,8 @@ import Capsule
 open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     // MARK: - Captured properties
     
+    public var capturedDebugPrint: URLSessionTaskEngine.DebugPrint?
+    
     // MARK: - JSONSerialization (ol' skoo)
     
     public var capturedGetEndpoint: String?
@@ -93,6 +95,13 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     // MARK: - Stubbed properties
     
+    public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint? = {
+        let debugPrint = URLSessionTaskEngine.DebugPrint(option: .none,
+                                                         printType: .lite)
+        
+        return debugPrint
+    }()
+    
     // MARK: - JSONSerialization (ol' skoo)
     
     public var stubbedGetResult: Result<Any, Error> = .success("Éxito")
@@ -128,6 +137,16 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     public override init() { }
     
     // MARK: - <PequenoNetworkingProtocol>
+    
+    public var debugPrint: URLSessionTaskEngine.DebugPrint? {
+        get {
+            return stubbedDebugPrint
+        }
+        
+        set {
+            capturedDebugPrint = newValue
+        }
+    }
     
     // MARK: - JSONSerialization (ol' skoo)
     

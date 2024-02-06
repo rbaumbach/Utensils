@@ -24,6 +24,8 @@ import Foundation
 import Capsule
 
 public protocol ClassicNetworkingEngineProtocol {
+    var debugPrint: URLSessionTaskEngine.DebugPrint? { get set }
+    
     func get(baseURL: String,
              headers: [String: String]?,
              endpoint: String,
@@ -66,9 +68,21 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
     // MARK: - Private properties
     
     private let urlRequestBuilder: URLRequestBuilderProtocol
-    private let urlSessionTaskEngine: URLSessionTaskEngineProtocol
+    private var urlSessionTaskEngine: URLSessionTaskEngineProtocol
     private let jsonSerializationWrapper: JSONSerializationWrapperProtocol
     private let dispatchQueueWrapper: DispatchQueueWrapperProtocol
+    
+    // MARK: - Public properties
+    
+    public var debugPrint: URLSessionTaskEngine.DebugPrint? {
+        get {
+            return urlSessionTaskEngine.debugPrint
+        }
+        
+        set {
+            urlSessionTaskEngine.debugPrint = newValue
+        }
+    }
     
     // MARK: - Init methods
     

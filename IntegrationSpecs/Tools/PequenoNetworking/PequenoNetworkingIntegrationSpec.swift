@@ -7,6 +7,38 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
     override class func spec() {
         describe("PequenoNetworking") {
             var subject: PequenoNetworking!
+            
+            describe("debug printing") {
+                beforeEach {
+                    subject = PequenoNetworking(baseURL: "https://httpbin.org",
+                                                headers: nil)
+                    subject.debugPrint = URLSessionTaskEngine.DebugPrint(option: .all,
+                                                                         printType: .verbose)
+                }
+                
+                it("prints the request and response") {
+                    // Note: Check the console for the print statements
+                    
+                    hangOn(for: .seconds(5)) { complete in
+                        subject.get(endpoint: "/get",
+                                    parameters: nil) { result in
+                            if case .success(let jsonResponse) = result {
+                                guard let jsonResponse = jsonResponse as? [String: Any] else {
+                                    failSpec()
+                                    
+                                    return
+                                }
+                                
+                                expect(jsonResponse).toNot.beEmpty()
+                            } else {
+                                failSpec()
+                            }
+                            
+                            complete()
+                        }
+                    }
+                }
+            }
 
             describe("using JSONSerialization") {
                 beforeEach {

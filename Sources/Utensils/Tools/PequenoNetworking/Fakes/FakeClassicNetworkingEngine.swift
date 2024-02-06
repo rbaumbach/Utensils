@@ -26,6 +26,8 @@ import Capsule
 open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
     // MARK: - Captured properties
     
+    public var capturedDebugPrint: URLSessionTaskEngine.DebugPrint?
+    
     public var capturedGetBaseURL: String?
     public var capturedGetHeaders: [String: String]?
     public var capturedGetEndpoint: String?
@@ -64,6 +66,13 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
     public var capturedUploadFileCompletionHandler: ((Result<Any, Error>) -> Void)?
     
     // MARK: - Stubbed properties
+    
+    public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint? = {
+        let debugPrint = URLSessionTaskEngine.DebugPrint(option: .none,
+                                                         printType: .lite)
+        
+        return debugPrint
+    }()
         
     public var stubbedGetResult: Result<Any, Error> = .success("Éxito")
     public var stubbedDeleteResult: Result<Any, Error> = .success("Éxito")
@@ -81,6 +90,16 @@ open class FakeClassicNetworkingEngine: Fake, ClassicNetworkingEngineProtocol {
     public override init() { }
     
     // MARK: - <ClassicNetworkingEngineProtocol>
+    
+    public var debugPrint: URLSessionTaskEngine.DebugPrint? {
+        get {
+            return stubbedDebugPrint
+        }
+        
+        set {
+            capturedDebugPrint = newValue
+        }
+    }
     
     public func get(baseURL: String,
                     headers: [String: String]?,

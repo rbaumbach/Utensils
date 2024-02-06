@@ -21,9 +21,8 @@
 //SOFTWARE.
 
 import Foundation
-import Capsule
 
-extension URLRequest: Printable {
+extension HTTPURLResponse: Printable {
     // MARK: - <Printable>
     
     public func print(_ printType: PrintType) {
@@ -33,7 +32,7 @@ extension URLRequest: Printable {
         case .verbose:
             Swift.print(verboseDescription())
         case .raw:
-            Swift.print("URLRequest: \(description)")
+            Swift.print("HTTPURLResponse:\n\(description)")
         }
     }
     
@@ -42,10 +41,10 @@ extension URLRequest: Printable {
     private func liteDescription() -> String {
         return """
         
-        URLRequest:
-        \(httpMethod ?? String.empty) \(url?.absoluteString ?? String.empty)
-        \(prettyPrint(dictionary: allHTTPHeaderFields, title: "HTTP Headers"))
-        \(prettyPrint(dictionaryData: httpBody, title: "HTTP Body"))
+        HTTPURLResponse:
+        \(url?.absoluteString ?? String.empty)
+        Status Code: \(statusCode)
+        \(prettyPrint(dictionary: allHeaderFields, title: "HTTP Headers"))
         
         """
     }
@@ -53,21 +52,19 @@ extension URLRequest: Printable {
     private func verboseDescription() -> String {
         return """
         
-        URLRequest:
-        HTTP Method: \(httpMethod ?? "N/A")
+        HTTPURLResponse:
         URL: \(url?.absoluteString ?? "N/A")
-        \(prettyPrint(dictionary: allHTTPHeaderFields, title: "HTTP Headers"))
-        \(prettyPrint(dictionaryData: httpBody, title: "HTTP Body"))
-        Cache Policy: \(cachePolicy)
-        Timeout Interval: \(timeoutInterval) seconds
-        HTTP should handle cookies: \(httpShouldHandleCookies)
-        HTTP should handle pipelining: \(httpShouldUsePipelining)
-        Allows cellular access: \(allowsCellularAccess)
+        Status Code: \(statusCode)
+        \(prettyPrint(dictionary: allHeaderFields, title: "HTTP Headers"))
+        Expected content length: \(expectedContentLength)
+        Suggested filename: \(suggestedFilename ?? "N/A")
+        MIME type: \(mimeType ?? "N/A")
+        Text encoding name: \(textEncodingName ?? "N/A")
         
         """
     }
     
-    private func prettyPrint(dictionary: [String: Any]?,
+    private func prettyPrint(dictionary: [AnyHashable: Any]?,
                              title: String) -> String {
         let fullTitle = "\(title):"
         
@@ -82,27 +79,7 @@ extension URLRequest: Printable {
         return prettyDictionary
     }
     
-    private func prettyPrint(dictionaryData: Data?,
-                             title: String) -> String {
-        let fullTitle = "\(title):"
-        
-        guard let dictionaryData = dictionaryData else {
-            return "\(fullTitle) N/A"
-        }
-        
-        guard let dictionary = try? JSONSerialization.jsonObject(with: dictionaryData,
-                                                                 options: []) as? [String: Any] else {
-            return "\(fullTitle) N/A"
-        }
-        
-        guard let prettyDictionary = prettyDictionary(dictionary: dictionary) else {
-            return "\(fullTitle) N/A"
-        }
-        
-        return prettyDictionary
-    }
-    
-    private func prettyDictionary(dictionary: [String: Any]) -> String? {
+    private func prettyDictionary(dictionary: [AnyHashable: Any]) -> String? {
         // Note: I found out that if you don't set a body for a URLRequest and you access allHTTPHeaderFields
         // it returns an empty dictionary instead of nil
         
