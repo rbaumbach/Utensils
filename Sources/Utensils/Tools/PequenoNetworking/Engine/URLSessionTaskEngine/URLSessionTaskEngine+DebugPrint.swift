@@ -26,7 +26,7 @@ extension URLSessionTaskEngine {
     public struct DebugPrint {
         // MARK: - Enums
         
-        public enum Option {
+        public enum Option: CaseIterable {
             case none
             case request
             case response
