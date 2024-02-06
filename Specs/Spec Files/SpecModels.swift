@@ -11,7 +11,7 @@ struct Dog: Validatable, Codable, Equatable, Printable {
         return breed == "Chihuahua"
     }
     
-    func print(_ printType: Utensils.PrintType) -> String {
+    func print(_ printType: PrintType) -> String {
         switch printType {
         case .lite:
             return "Name: \(name)"
