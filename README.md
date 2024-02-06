@@ -133,6 +133,35 @@ printer.print(dog)
 
 Note: The `Dog` model must conform to `Printable`
 
+* `JSONCodable` type that can be used with `Codable`
+
+This can be used if you don't fully know your JSON types at compile time:
+
+```swift
+let jsonCodableDictionary: [String: JSONCodable] = [
+    "favorite-cucumber": nil,
+    "name": "some-jsons",
+    "lucky": 777,
+    "gpa": 4.0,
+    "almost-an-a+": 99.99,
+    "loves-tacos": true,
+    "burrito": [
+        "carne": "asada",
+        "arroz": "spanish",
+        "salsa": "rojo",
+        "frijoles": "pinto"
+    ],
+    "dog": [
+        "name": "maya",
+        "age": 3,
+        "breed": ["chihuahua", "miniature-pinscher"],
+        "loves-dog-food": false
+    ],
+    "hobbies": ["bjj", "double-dragon", "drums"],
+    "numbers": ["uno", 2, 3.5]
+]
+```
+
 And more to come...
 
 ## Goodies
