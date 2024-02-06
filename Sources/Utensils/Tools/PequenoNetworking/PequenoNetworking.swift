@@ -24,6 +24,8 @@ import Foundation
 import Capsule
 
 public protocol PequenoNetworkingProtocol {
+    var debugPrint: URLSessionTaskEngine.DebugPrint? { get set }
+    
     // MARK: - JSONSerialization (ol' skoo)
     
     func get(endpoint: String,
@@ -90,9 +92,8 @@ public protocol PequenoNetworkingProtocol {
 open class PequenoNetworking: PequenoNetworkingProtocol {
     // MARK: - Private properties
     
-    private let classicNetworkingEngine: ClassicNetworkingEngineProtocol
-    private let networkingEngine: NetworkingEngineProtocol
-    private let userDefaults: UserDefaultsProtocol
+    private var classicNetworkingEngine: ClassicNetworkingEngineProtocol
+    private var networkingEngine: NetworkingEngineProtocol
     
     // MARK: - Readonly properties
     
@@ -101,13 +102,16 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     
     // MARK: - Public properties
     
-    public var enableURLRequestPrinting: Bool {
+    // MARK: - Public properties
+    
+    public var debugPrint: URLSessionTaskEngine.DebugPrint? {
         get {
-            return userDefaults.bool(forKey: Constants.EnableURLRequestPrintingKey)
+            return classicNetworkingEngine.debugPrint
         }
         
         set {
-            userDefaults.set(newValue, forKey: Constants.EnableURLRequestPrintingKey)
+            classicNetworkingEngine.debugPrint = newValue
+            networkingEngine.debugPrint = newValue
         }
     }
     
@@ -116,13 +120,11 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     public init(baseURL: String,
                 headers: [String: String]? = nil,
                 classicNetworkingEngine: ClassicNetworkingEngineProtocol = ClassicNetworkingEngine(),
-                networkingEngine: NetworkingEngineProtocol = NetworkingEngine(),
-                userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
+                networkingEngine: NetworkingEngineProtocol = NetworkingEngine()) {
         self.baseURL = baseURL
         self.headers = headers
         self.classicNetworkingEngine = classicNetworkingEngine
         self.networkingEngine = networkingEngine
-        self.userDefaults = userDefaults
     }
     
     public convenience init(userDefaults: UserDefaultsProtocol = UserDefaults.standard) {

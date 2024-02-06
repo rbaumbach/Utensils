@@ -24,6 +24,8 @@ import Foundation
 import Capsule
 
 public protocol URLSessionTaskEngineProtocol {
+    var debugPrint: URLSessionTaskEngine.DebugPrint? { get set }
+    
     @discardableResult
     func dataTask(urlRequest: URLRequest,
                   completionHandler: @escaping (Result<Data, Swift.Error>) -> Void) -> URLSessionTaskProtocol
@@ -43,7 +45,6 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
     
     private let shouldExecuteTasksImmediately: Bool
     private let urlSession: URLSessionProtocol
-    private let userDefaults: UserDefaultsProtocol
     
     // MARK: - Readonly properties
     
@@ -51,32 +52,20 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
     
     // MARK: - Public properties
     
-    public var enableURLRequestPrinting: Bool {
-        get {
-            return userDefaults.bool(forKey: PequenoNetworking.Constants.EnableURLRequestPrintingKey)
-        }
-        
-        set {
-            userDefaults.set(newValue, forKey: PequenoNetworking.Constants.EnableURLRequestPrintingKey)
-        }
-    }
+    public var debugPrint: DebugPrint?
     
     // MARK: - Init methods
     
     public init(shouldExecuteTasksImmediately: Bool = true,
-                urlSession: URLSessionProtocol = URLSession.shared,
-                userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
+                urlSession: URLSessionProtocol = URLSession.shared) {
         self.shouldExecuteTasksImmediately = shouldExecuteTasksImmediately
         self.urlSession = urlSession
-        self.userDefaults = userDefaults
     }
     
     @discardableResult
     public func dataTask(urlRequest: URLRequest,
                          completionHandler: @escaping (Result<Data, Swift.Error>) -> Void) -> URLSessionTaskProtocol {
-        if enableURLRequestPrinting {
-            urlRequest.print()
-        }
+        debugPrint?.print(value: urlRequest)
         
         let dataTask = urlSession.dataTask(urlRequest: urlRequest) { [weak self] data, response, error in
             self?.handleSessionTask(item: data,
@@ -97,9 +86,7 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
     @discardableResult
     public func downloadTask(urlRequest: URLRequest,
                              completionHandler: @escaping (Result<URL, Swift.Error>) -> Void) -> URLSessionTaskProtocol {
-        if enableURLRequestPrinting {
-            urlRequest.print()
-        }
+        debugPrint?.print(value: urlRequest)
         
         let downloadTask = urlSession.downloadTask(urlRequest: urlRequest) { [weak self] tempURL, response, error in
             self?.handleSessionTask(item: tempURL,
@@ -121,9 +108,7 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
     public func uploadTask(urlRequest: URLRequest,
                            data: Data,
                            completionHandler: @escaping (Result<Data, Swift.Error>) -> Void) -> URLSessionTaskProtocol {
-        if enableURLRequestPrinting {
-            urlRequest.print()
-        }
+        debugPrint?.print(value: urlRequest)
         
         let uploadTask = urlSession.uploadTask(urlRequest: urlRequest,
                                                from: data) { [weak self] data, response, error in
@@ -148,6 +133,8 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
                                       response: URLResponse?,
                                       error: Swift.Error?,
                                       completionHandler: (Result<T, Swift.Error>) -> Void) {
+        debugPrint?.print(value: response as? HTTPURLResponse)
+        
         let result = validateResponse(item: item,
                                       response: response,
                                       error: error)

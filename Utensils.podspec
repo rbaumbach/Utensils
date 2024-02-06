@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name                  = 'Utensils'
-  spec.version               = '0.5.1'
+  spec.version               = '0.5.2'
   spec.summary               = 'A set of useful iOS tools.'
   spec.homepage              = 'https://github.com/rbaumbach/utensils'
   spec.license               = { :type => 'MIT', :file => 'MIT-LICENSE.txt' }

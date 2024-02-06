@@ -26,6 +26,8 @@ import Capsule
 open class FakeURLSessionTaskEngine: Fake, URLSessionTaskEngineProtocol {
     // MARK: - Captured properties
     
+    public var capturedDebugPrint: URLSessionTaskEngine.DebugPrint?
+    
     public var capturedDataTaskURLRequest: URLRequest?
     public var capturedDataTaskCompletionHandler: ((Result<Data, Error>) -> Void)?
     
@@ -37,6 +39,13 @@ open class FakeURLSessionTaskEngine: Fake, URLSessionTaskEngineProtocol {
     public var capturedUploadTaskCompletionHandler: ((Result<Data, Error>) -> Void)?
     
     // MARK: - Stubbed properties
+    
+    public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint? = {
+        let debugPrint = URLSessionTaskEngine.DebugPrint(option: .none,
+                                                         printType: .lite)
+        
+        return debugPrint
+    }()
     
     public var stubbedDataTask: URLSessionTaskProtocol = FakeURLSessionTask()
     public var stubbedDataTaskResult: Result<Data, Error> = .success("Lucky Day".data(using: .utf8)!)
@@ -59,7 +68,17 @@ open class FakeURLSessionTaskEngine: Fake, URLSessionTaskEngineProtocol {
     
     public override init() { }
     
-    // MARK: - <URLSessionExecutorProtocol>
+    // MARK: - <URLSessionTaskEngine>
+    
+    public var debugPrint: URLSessionTaskEngine.DebugPrint? {
+        get {
+            return stubbedDebugPrint
+        }
+        
+        set {
+            capturedDebugPrint = newValue
+        }
+    }
     
     public func dataTask(urlRequest: URLRequest,
                          completionHandler: @escaping (Result<Data, Error>) -> Void) -> URLSessionTaskProtocol {

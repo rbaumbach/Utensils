@@ -7,6 +7,38 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
     override class func spec() {
         describe("PequenoNetworking") {
             var subject: PequenoNetworking!
+            
+            describe("debug printing") {
+                beforeEach {
+                    subject = PequenoNetworking(baseURL: "https://httpbin.org",
+                                                headers: nil)
+                    subject.debugPrint = URLSessionTaskEngine.DebugPrint(option: .all,
+                                                                         printType: .verbose)
+                }
+                
+                it("prints the request and response") {
+                    // Note: Check the console for the print statements
+                    
+                    hangOn(for: .seconds(5)) { complete in
+                        subject.get(endpoint: "/get",
+                                    parameters: nil) { result in
+                            if case .success(let jsonResponse) = result {
+                                guard let jsonResponse = jsonResponse as? [String: Any] else {
+                                    failSpec()
+                                    
+                                    return
+                                }
+                                
+                                expect(jsonResponse).toNot.beEmpty()
+                            } else {
+                                failSpec()
+                            }
+                            
+                            complete()
+                        }
+                    }
+                }
+            }
 
             describe("using JSONSerialization") {
                 beforeEach {
@@ -167,15 +199,33 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                 }
                 
                 describe("POST request") {
-                    it("completes with deserialized json") {
-                        hangOn(for: .seconds(5)) { complete in
-                            subject.post(endpoint: "/post",
-                                         body: nil) { (result: Result<HTTPBin, Error>) in
-                                let responseURL = try? result.get().url
-                                
-                                expect(responseURL).to.equal("https://httpbin.org/post")
-                                
-                                complete()
+                    describe("without a body") {
+                        it("completes with deserialized json") {
+                            hangOn(for: .seconds(5)) { complete in
+                                subject.post(endpoint: "/post",
+                                             body: nil) { (result: Result<HTTPBin, Error>) in
+                                    let responseURL = try? result.get().url
+                                    
+                                    expect(responseURL).to.equal("https://httpbin.org/post")
+                                    
+                                    complete()
+                                }
+                            }
+                        }
+                    }
+                    
+                    describe("with a body") {
+                        it("completes with deserialized json") {
+                            hangOn(for: .seconds(5)) { complete in
+                                subject.post(endpoint: "/post",
+                                             body: ["junk-drawer": ["sissors", "tape", "matches"],
+                                                    "number-of-dogs": 2]) { (result: Result<HTTPBin, Error>) in
+                                    let responseURL = try? result.get().url
+                                    
+                                    expect(responseURL).to.equal("https://httpbin.org/post")
+                                    
+                                    complete()
+                                }
                             }
                         }
                     }
