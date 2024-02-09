@@ -23,6 +23,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+// swift-tools-version:5.7
+
 import PackageDescription
 
 let package = Package(
@@ -39,7 +41,7 @@ let package = Package(
     dependencies: [
         .package(
             url: "https://github.com/rbaumbach/Capsule",
-            from: "1.5.0"
+            from: "1.6.0"
         )
     ],
     targets: [
@@ -48,5 +50,5 @@ let package = Package(
             dependencies: ["Capsule"]
         )
     ],
-    swiftLanguageVersions: [.v5]
+    swiftLanguageVersions: [.v5, .upToNextMajor(from: "5.7")]
 )
