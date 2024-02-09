@@ -92,7 +92,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                             expect(error).to.equal(FakeGenericError.whoCares)
                             
                             expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(String.empty.data(using: .utf8))
-                            expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                            expect(fakeJSONSerializationWrapper.capturedJSONObjectDataOptions).to.equal(.mutableContainers)
                         }
                     }
                     
@@ -112,7 +112,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                                 expect(fakeURLSessionTaskEngine.capturedDataTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(String.empty.data(using: .utf8))
-                                expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                                expect(fakeJSONSerializationWrapper.capturedJSONObjectDataOptions).to.equal(.mutableContainers)
                                 
                                 let expectedResult = fakeJSONSerializationWrapper.stubbedJSONObject as! String
                                 
@@ -192,7 +192,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                             expect(error).to.equal(FakeGenericError.whoCares)
                             
                             expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(String.empty.data(using: .utf8))
-                            expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                            expect(fakeJSONSerializationWrapper.capturedJSONObjectDataOptions).to.equal(.mutableContainers)
                         }
                     }
                     
@@ -212,7 +212,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                                 expect(fakeURLSessionTaskEngine.capturedDataTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(String.empty.data(using: .utf8))
-                                expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                                expect(fakeJSONSerializationWrapper.capturedJSONObjectDataOptions).to.equal(.mutableContainers)
                                 
                                 let expectedResult = fakeJSONSerializationWrapper.stubbedJSONObject as! String
                                 
@@ -292,7 +292,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                             expect(error).to.equal(FakeGenericError.whoCares)
                             
                             expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(String.empty.data(using: .utf8))
-                            expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                            expect(fakeJSONSerializationWrapper.capturedJSONObjectDataOptions).to.equal(.mutableContainers)
                         }
                     }
                     
@@ -312,7 +312,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                                 expect(fakeURLSessionTaskEngine.capturedDataTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(String.empty.data(using: .utf8))
-                                expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                                expect(fakeJSONSerializationWrapper.capturedJSONObjectDataOptions).to.equal(.mutableContainers)
                                 
                                 let expectedResult = fakeJSONSerializationWrapper.stubbedJSONObject as! String
                                 
@@ -392,7 +392,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                             expect(error).to.equal(FakeGenericError.whoCares)
                             
                             expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(String.empty.data(using: .utf8))
-                            expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                            expect(fakeJSONSerializationWrapper.capturedJSONObjectDataOptions).to.equal(.mutableContainers)
                         }
                     }
                     
@@ -412,7 +412,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                                 expect(fakeURLSessionTaskEngine.capturedDataTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(String.empty.data(using: .utf8))
-                                expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                                expect(fakeJSONSerializationWrapper.capturedJSONObjectDataOptions).to.equal(.mutableContainers)
                                 
                                 let expectedResult = fakeJSONSerializationWrapper.stubbedJSONObject as! String
                                 
@@ -492,7 +492,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                             expect(error).to.equal(FakeGenericError.whoCares)
                             
                             expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(String.empty.data(using: .utf8))
-                            expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                            expect(fakeJSONSerializationWrapper.capturedJSONObjectDataOptions).to.equal(.mutableContainers)
                         }
                     }
                     
@@ -512,7 +512,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                                 expect(fakeURLSessionTaskEngine.capturedDataTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(String.empty.data(using: .utf8))
-                                expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                                expect(fakeJSONSerializationWrapper.capturedJSONObjectDataOptions).to.equal(.mutableContainers)
                                 
                                 let expectedResult = fakeJSONSerializationWrapper.stubbedJSONObject as! String
                                 
@@ -593,7 +593,7 @@ final class ClassicNetworkingEngineSpec: QuickSpec {
                                 expect(fakeURLSessionTaskEngine.capturedUploadTaskURLRequest).to.equal(expectedURLRequest)
                                 
                                 expect(fakeJSONSerializationWrapper.capturedJSONObjectData).to.equal(data)
-                                expect(fakeJSONSerializationWrapper.capturedJSONObjectOptions).to.equal(.mutableContainers)
+                                expect(fakeJSONSerializationWrapper.capturedJSONObjectDataOptions).to.equal(.mutableContainers)
                                 
                                 let expectedResult = fakeJSONSerializationWrapper.stubbedJSONObject as! String
                                 

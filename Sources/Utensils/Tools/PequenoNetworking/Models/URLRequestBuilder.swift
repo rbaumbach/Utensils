@@ -68,7 +68,8 @@ open class URLRequestBuilder: URLRequestBuilderProtocol {
         
         if let urlRequestInfoBody = urlRequestInfo.body {
             do {
-                let bodyData = try jsonSerializationWrapper.data(withJSONObject: urlRequestInfoBody)
+                let bodyData = try jsonSerializationWrapper.data(withJSONObject: urlRequestInfoBody,
+                                                                 options: [])
                 
                 urlRequest.httpBody = bodyData
             } catch {
