@@ -200,6 +200,7 @@
 		9471F4CB2B72CA3B0065CD44 /* Fastfile */ = {isa = PBXFileReference; lastKnownFileType = text; name = Fastfile; path = fastlane/Fastfile; sourceTree = "<group>"; };
 		9471F4CC2B72CAB40065CD44 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		9471F4CD2B72CAC20065CD44 /* Utensils.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Utensils.podspec; sourceTree = "<group>"; };
+		9471F4E02B7662480065CD44 /* .ruby-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".ruby-version"; sourceTree = "<group>"; };
 		9472663F2B4DBDDD00353F4E /* DirectoryIntegrationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryIntegrationSpec.swift; sourceTree = "<group>"; };
 		947266412B4DE92500353F4E /* URLSessionTaskEngineIntegrationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionTaskEngineIntegrationSpec.swift; sourceTree = "<group>"; };
 		947266432B4E208700353F4E /* CleanupUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanupUtils.swift; sourceTree = "<group>"; };
@@ -394,7 +395,6 @@
 		94341AEF238CCECF00BC8355 = {
 			isa = PBXGroup;
 			children = (
-				94872AEE2915CD5A00D3528B /* Package.swift */,
 				94341AFB238CCECF00BC8355 /* Utensils */,
 				940F9DEB239B13910028937B /* Sources */,
 				944A011A238D7CBD00957702 /* Specs */,
@@ -575,10 +575,12 @@
 		9471F4BF2B72C9E00065CD44 /* Additional Files */ = {
 			isa = PBXGroup;
 			children = (
+				9471F4E02B7662480065CD44 /* .ruby-version */,
 				9471F4CC2B72CAB40065CD44 /* .swiftlint.yml */,
 				9471F4CB2B72CA3B0065CD44 /* Fastfile */,
 				9471F4C72B72CA270065CD44 /* Gemfile */,
 				9471F4C82B72CA270065CD44 /* MIT-LICENSE.txt */,
+				94872AEE2915CD5A00D3528B /* Package.swift */,
 				9471F4C92B72CA270065CD44 /* Podfile */,
 				9471F4CA2B72CA270065CD44 /* README.md */,
 				9471F4CD2B72CAC20065CD44 /* Utensils.podspec */,
@@ -1190,7 +1192,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.6.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1250,7 +1252,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.6.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1283,7 +1285,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.6.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = teamthick.utensils;
@@ -1320,7 +1322,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.5.2;
+				MARKETING_VERSION = 0.6.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = teamthick.utensils;
