@@ -33,7 +33,7 @@ public extension Trunk {
     }
     
     func save<T: Codable>(data: T,
-                          completionHandler: @escaping (Result<Void, Error>) -> Void) {
+                          completionHandler: @escaping @Sendable (Result<Void, Error>) -> Void) {
         save(data: data,
              filename: "trunk",
              directory: Directory(.applicationSupport(additionalPath: "trunk/")),
@@ -46,7 +46,7 @@ public extension Trunk {
                     directory: Directory(.applicationSupport(additionalPath: "trunk/")))
     }
     
-    func load<T: Codable>(completionHandler: @escaping (Result<T, Error>) -> Void) {
+    func load<T: Codable>(completionHandler: @escaping @Sendable (Result<T, Error>) -> Void) {
         load(filename: "trunk",
              directory: Directory(.applicationSupport(additionalPath: "trunk/")),
              completionHandler: completionHandler)

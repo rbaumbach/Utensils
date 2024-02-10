@@ -109,7 +109,7 @@ open class FakeTrunk: Fake, TrunkProtocol {
     public func save<T: Codable>(data: T,
                                  filename: String,
                                  directory: Directory,
-                                 completionHandler: @escaping (Result<Void, Error>) -> Void) {
+                                 completionHandler: @escaping @Sendable (Result<Void, Error>) -> Void) {
         capturedSaveDataAsync = data
         capturedSaveFilenameAsync = filename
         capturedSaveDirectoryAsync = directory
@@ -139,7 +139,7 @@ open class FakeTrunk: Fake, TrunkProtocol {
     
     public func load<T: Codable>(filename: String,
                                  directory: Directory,
-                                 completionHandler: @escaping (Result<T, Error>) -> Void) {
+                                 completionHandler: @escaping @Sendable (Result<T, Error>) -> Void) {
         capturedLoadFilenameAsync = filename
         capturedLoadDirectoryAsync = directory
         capturedLoadCompletionHandler = completionHandler

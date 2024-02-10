@@ -35,7 +35,7 @@ public protocol TrunkProtocol {
     func save<T: Codable>(data: T,
                           filename: String,
                           directory: Directory,
-                          completionHandler: @escaping (Result<Void, Error>) -> Void)
+                          completionHandler: @escaping @Sendable (Result<Void, Error>) -> Void)
     
     @discardableResult
     func load<T: Codable>(filename: String,
@@ -43,7 +43,7 @@ public protocol TrunkProtocol {
     
     func load<T: Codable>(filename: String,
                           directory: Directory,
-                          completionHandler: @escaping (Result<T, Error>) -> Void)
+                          completionHandler: @escaping @Sendable (Result<T, Error>) -> Void)
     
     func delete(directory: Directory) -> Result<Void, Error>
     
@@ -130,7 +130,7 @@ open class Trunk: TrunkProtocol {
     public func save<T: Codable>(data: T,
                                  filename: String,
                                  directory: Directory,
-                                 completionHandler: @escaping (Result<Void, Error>) -> Void) {
+                                 completionHandler: @escaping @Sendable (Result<Void, Error>) -> Void) {
         dispatchQueueWrapper.globalAsync(qos: .background) { [weak self] in
             guard let self = self else { return }
             
@@ -160,7 +160,7 @@ open class Trunk: TrunkProtocol {
     
     public func load<T: Codable>(filename: String,
                                  directory: Directory,
-                                 completionHandler: @escaping (Result<T, Error>) -> Void) {
+                                 completionHandler: @escaping @Sendable (Result<T, Error>) -> Void) {
         dispatchQueueWrapper.globalAsync(qos: .background) { [weak self] in
             guard let self = self else { return }
             
