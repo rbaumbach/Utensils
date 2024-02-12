@@ -24,7 +24,7 @@ import Foundation
 import Capsule
 
 public protocol DebouncerProtocol {
-    func mainDebounce(seconds: Double, execute: @escaping () -> Void)
+    func mainDebounce(seconds: Double, execute: @escaping @Sendable () -> Void)
 }
 
 open class Debouncer: DebouncerProtocol {
@@ -51,10 +51,11 @@ open class Debouncer: DebouncerProtocol {
     
     // MARK: - Public methods
     
-    public func mainDebounce(seconds: Double = 0.1, execute: @escaping () -> Void) {
+    public func mainDebounce(seconds: Double = 0.1, execute: @escaping @Sendable () -> Void) {
         currentDispatchWorkItemWrapper.cancel()
 
-        currentDispatchWorkItemWrapper = dispatchWorkItemWrapperBuilder.build(qos: .unspecified, work: execute)
+        currentDispatchWorkItemWrapper = dispatchWorkItemWrapperBuilder.build(qos: .unspecified, 
+                                                                              work: execute)
         
         dispatchQueueWrapper.mainAfter(seconds: seconds, dispatchWorkItemWrapper: currentDispatchWorkItemWrapper)
     }

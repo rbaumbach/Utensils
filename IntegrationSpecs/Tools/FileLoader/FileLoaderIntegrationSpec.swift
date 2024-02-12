@@ -6,7 +6,9 @@ import Capsule
 final class FileLoaderIntegrationSpec: QuickSpec {
     override class func spec() {
         describe("FileLoader") {
-            var subject: FileLoader!
+            var subject: FileLoader<Bundle,
+                                    StringWrapper,
+                                    JSONDecoder>!
             
             beforeEach {
                 let testBundle = Bundle(for: self)

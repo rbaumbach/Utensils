@@ -31,7 +31,7 @@ public extension FileLoader {
         
         // MARK: - <CaseIterable>
         
-        public static var allCases: [FileLoader.Error] {
+        public static var allCases: [Error] {
             return [.unableToFindFile(fileName: String.empty),
                     .unableToLoadJSONData(wrappedError: EmptyError.empty),
                     .unableToDecodeJSONData(wrappedError: EmptyError.empty)]

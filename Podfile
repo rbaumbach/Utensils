@@ -4,7 +4,7 @@ use_frameworks!
 inhibit_all_warnings!
 
 def shared_pods
-  pod 'Capsule', '1.5.0'
+  pod 'Capsule', '1.6.0'
 end
 
 target :Utensils do
@@ -18,7 +18,7 @@ def shared_spec_pods
   shared_pods
 
   pod 'Quick', '7.3.0'
-  pod 'Moocher', '0.4.0'
+  pod 'Moocher', '0.4.1'
 end
 
 target :Specs do
@@ -30,5 +30,5 @@ target :IntegrationSpecs do
   platform :ios, '15.0'
   shared_spec_pods
 
-  pod 'Moocher/Polling', '0.4.0'
+  pod 'Moocher/Polling', '0.4.1'
 end

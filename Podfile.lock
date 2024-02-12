@@ -1,16 +1,16 @@
 PODS:
-  - Capsule (1.5.0)
-  - Moocher (0.4.0):
-    - Moocher/Core (= 0.4.0)
-  - Moocher/Core (0.4.0)
-  - Moocher/Polling (0.4.0)
+  - Capsule (1.6.0)
+  - Moocher (0.4.1):
+    - Moocher/Core (= 0.4.1)
+  - Moocher/Core (0.4.1)
+  - Moocher/Polling (0.4.1)
   - Quick (7.3.0)
   - SwiftLint (0.54.0)
 
 DEPENDENCIES:
-  - Capsule (= 1.5.0)
-  - Moocher (= 0.4.0)
-  - Moocher/Polling (= 0.4.0)
+  - Capsule (= 1.6.0)
+  - Moocher (= 0.4.1)
+  - Moocher/Polling (= 0.4.1)
   - Quick (= 7.3.0)
   - SwiftLint (= 0.54.0)
 
@@ -22,11 +22,11 @@ SPEC REPOS:
     - SwiftLint
 
 SPEC CHECKSUMS:
-  Capsule: ddb7fff44e44863c1cdeffedbcaf2659c875148a
-  Moocher: 4c5f38df3caf6d4664e525a7e119584ad6614680
+  Capsule: c398ae455be841d6ef91eb57d6bf85ad07c14730
+  Moocher: fe2142ae8d18ba8b5d6e6217ece3cf1cb67bfb8e
   Quick: d32871931c05547cb4e0bc9009d66a18b50d8558
   SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
 
-PODFILE CHECKSUM: 202ac1ea195de2c11afd7564045d12ff8ef4d48a
+PODFILE CHECKSUM: e66cfddf68fc4fd3db3f2a0c40177ac26acc4331
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2

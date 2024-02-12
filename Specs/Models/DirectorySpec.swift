@@ -40,16 +40,10 @@ final class DirectorySpec: QuickSpec {
                         it("throws Doom error") {
                             expect {
                                 url = try subject.url()
-                            }.to.throwError { error in
-                                guard let typedError = error as? Doom else {
-                                    failSpec()
-                                    
-                                    return
-                                }
-                                                                
+                            }.to.throwError { (error: Doom) in
                                 let expectedError = Doom.error("Unable to access system directory: document")
                                 
-                                expect(typedError).to.equal(expectedError)
+                                expect(error).to.equal(expectedError)
                             }
                         }
                     }
@@ -65,18 +59,12 @@ final class DirectorySpec: QuickSpec {
                         it("throws unableToCreateDirectory error") {
                             expect {
                                 url = try subject.url()
-                            }.to.throwError { error in
-                                guard let typedError = error as? Directory.Error else {
-                                    failSpec()
-                                    
-                                    return
-                                }
-                                
+                            }.to.throwError { (error: Directory.Error) in
                                 let expectedURL = URL(string: "file:///fake-documents-directory/abc/123/")!
 
                                 let expectedError = Directory.Error.unableToCreateDirectory(url: expectedURL, wrappedError: FakeGenericError.whoCares)
                                 
-                                expect(typedError).to.equal(expectedError)
+                                expect(error).to.equal(expectedError)
                             }
                         }
                     }
@@ -127,18 +115,12 @@ final class DirectorySpec: QuickSpec {
                         it("throws unableToCreateDirectory error") {
                             expect {
                                 url = try subject.url()
-                            }.to.throwError { error in
-                                guard let typedError = error as? Directory.Error else {
-                                    failSpec()
-                                    
-                                    return
-                                }
-                                
+                            }.to.throwError { (error: Directory.Error) in
                                 let expectedURL = URL(string: "file:///fake-temp-directory/data/tmp/abc/123/")!
 
                                 let expectedError = Directory.Error.unableToCreateDirectory(url: expectedURL, wrappedError: FakeGenericError.whoCares)
                                 
-                                expect(typedError).to.equal(expectedError)
+                                expect(error).to.equal(expectedError)
                             }
                         }
                     }
@@ -189,16 +171,10 @@ final class DirectorySpec: QuickSpec {
                         it("throws systemDirectoryDoom error") {
                             expect {
                                 url = try subject.url()
-                            }.to.throwError { error in
-                                guard let typedError = error as? Doom else {
-                                    failSpec()
-                                    
-                                    return
-                                }
-                                
+                            }.to.throwError { (error: Doom) in
                                 let expectedError = Doom.error("Unable to access system directory: library")
                                 
-                                expect(typedError).to.equal(expectedError)
+                                expect(error).to.equal(expectedError)
                             }
                         }
                     }
@@ -214,18 +190,12 @@ final class DirectorySpec: QuickSpec {
                         it("throws unableToCreateDirectory error") {
                             expect {
                                 url = try subject.url()
-                            }.to.throwError { error in
-                                guard let typedError = error as? Directory.Error else {
-                                    failSpec()
-                                    
-                                    return
-                                }
-                                
+                            }.to.throwError { (error: Directory.Error) in
                                 let expectedURL = URL(string: "file:///fake-library-directory/abc/123/")!
 
                                 let expectedError = Directory.Error.unableToCreateDirectory(url: expectedURL, wrappedError: FakeGenericError.whoCares)
                                 
-                                expect(typedError).to.equal(expectedError)
+                                expect(error).to.equal(expectedError)
                             }
                         }
                     }
@@ -276,16 +246,10 @@ final class DirectorySpec: QuickSpec {
                         it("throws systemDirectoryDoom error") {
                             expect {
                                 url = try subject.url()
-                            }.to.throwError { error in
-                                guard let typedError = error as? Doom else {
-                                    failSpec()
-                                    
-                                    return
-                                }
-                                
+                            }.to.throwError { (error: Doom) in
                                 let expectedError = Doom.error("Unable to access system directory: caches")
                                 
-                                expect(typedError).to.equal(expectedError)
+                                expect(error).to.equal(expectedError)
                             }
                         }
                     }
@@ -301,18 +265,12 @@ final class DirectorySpec: QuickSpec {
                         it("throws unableToCreateDirectory error") {
                             expect {
                                 url = try subject.url()
-                            }.to.throwError { error in
-                                guard let typedError = error as? Directory.Error else {
-                                    failSpec()
-                                    
-                                    return
-                                }
-                                
+                            }.to.throwError { (error: Directory.Error) in
                                 let expectedURL = URL(string: "file:///fake-caches-directory/abc/123/")!
 
                                 let expectedError = Directory.Error.unableToCreateDirectory(url: expectedURL, wrappedError: FakeGenericError.whoCares)
                                 
-                                expect(typedError).to.equal(expectedError)
+                                expect(error).to.equal(expectedError)
                             }
                         }
                     }
@@ -363,16 +321,10 @@ final class DirectorySpec: QuickSpec {
                         it("throws systemDirectoryDoom error") {
                             expect {
                                 url = try subject.url()
-                            }.to.throwError { error in
-                                guard let typedError = error as? Doom else {
-                                    failSpec()
-                                    
-                                    return
-                                }
-                                
+                            }.to.throwError { (error: Doom) in
                                 let expectedError = Doom.error("Unable to access system directory: application support")
                                 
-                                expect(typedError).to.equal(expectedError)
+                                expect(error).to.equal(expectedError)
                             }
                         }
                     }
@@ -388,18 +340,12 @@ final class DirectorySpec: QuickSpec {
                         it("throws unableToCreateDirectory error") {
                             expect {
                                 url = try subject.url()
-                            }.to.throwError { error in
-                                guard let typedError = error as? Directory.Error else {
-                                    failSpec()
-                                    
-                                    return
-                                }
-                                
+                            }.to.throwError { (error: Directory.Error) in
                                 let expectedURL = URL(string: "file:///fake-application-support-directory/abc/123/")!
 
                                 let expectedError = Directory.Error.unableToCreateDirectory(url: expectedURL, wrappedError: FakeGenericError.whoCares)
                                 
-                                expect(typedError).to.equal(expectedError)
+                                expect(error).to.equal(expectedError)
                             }
                         }
                     }

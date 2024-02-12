@@ -24,21 +24,22 @@ import Foundation
 import Capsule
 
 public protocol FileLoaderProtocol {
-    func loadJSON<T: Codable>(name: String, fileExtension: String) throws -> T?
+    func loadJSON<D: Decodable>(name: String,
+                                fileExtension: String) throws -> D?
 }
 
-open class FileLoader {
+open class FileLoader<T: BundleProtocol,
+                      U: StringWrapperProtocol,
+                      V: JSONDecoderProtocol> {
     // MARK: - Private properties
     
-    private let bundle: BundleProtocol
-    private let stringWrapper: StringWrapperProtocol
-    private let jsonDecoder: JSONDecoderProtocol
+    private let bundle: T
+    private let stringWrapper: U
+    private let jsonDecoder: V
     
-    // MARK: - Init methods
-    
-    public init(bundle: BundleProtocol = Bundle.main,
-                stringWrapper: StringWrapperProtocol = StringWrapper(),
-                jsonDecoder: JSONDecoderProtocol = JSONDecoder()) {
+    public init(bundle: T = Bundle.main,
+                stringWrapper: U = StringWrapper(),
+                jsonDecoder: V = JSONDecoder()) {
         self.bundle = bundle
         self.stringWrapper = stringWrapper
         self.jsonDecoder = jsonDecoder
@@ -46,8 +47,8 @@ open class FileLoader {
     
     // MARK: - Public methods
     
-    public func loadJSON<T: Codable>(name: String,
-                                     fileExtension: String) throws -> T? {
+    public func loadJSON<D: Codable>(name: String,
+                                     fileExtension: String) throws -> D? {
         guard let bundlePath = bundle.path(forResource: name,
                                            ofType: fileExtension) else {
             throw Error.unableToFindFile(fileName: "\(name).\(fileExtension)")
@@ -61,7 +62,7 @@ open class FileLoader {
             }
         }() else { return nil }
         
-        let decodedJSON = try decodeJSON(T.self,
+        let decodedJSON = try decodeJSON(D.self,
                                          data: jsonData)
         
         return decodedJSON
@@ -83,10 +84,10 @@ open class FileLoader {
         }
     }
     
-    private func decodeJSON<T: Codable>(_ type: T.Type,
-                                        data: Data) throws -> T {
+    private func decodeJSON<D: Decodable>(_ type: D.Type,
+                                          data: Data) throws -> D {
         do {
-            let codableJSON  = try jsonDecoder.decode(T.self,
+            let codableJSON  = try jsonDecoder.decode(D.self,
                                                       from: data)
             
             return codableJSON

@@ -39,7 +39,7 @@ open class FakeDebouncer: Fake, DebouncerProtocol {
     
     // MARK: - <DebouncerProtocol>
     
-    public func mainDebounce(seconds: Double, execute: @escaping () -> Void) {
+    public func mainDebounce(seconds: Double, execute: @escaping @Sendable () -> Void) {
         capturedDebounceSeconds = seconds
         capturedDebounceExectution = execute
         

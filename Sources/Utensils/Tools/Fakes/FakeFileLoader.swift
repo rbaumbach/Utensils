@@ -43,8 +43,8 @@ open class FakeFileLoader: Fake, FileLoaderProtocol {
     
     // MARK: - FileLoaderProtocol
     
-    public func loadJSON<T: Codable>(name: String,
-                                     fileExtension: String) throws -> T? {
+    public func loadJSON<D: Decodable>(name: String,
+                                       fileExtension: String) throws -> D? {
         capturedLoadJSONName = name
         capturedLoadJSONFileExtension = fileExtension
         
@@ -52,6 +52,10 @@ open class FakeFileLoader: Fake, FileLoaderProtocol {
             throw FakeGenericError.whoCares
         }
         
-        return stubbedLoadJSON as? T
+        guard let stubbedLoadJSON = stubbedLoadJSON as? D else {
+            preconditionFailure("The stubbed load json is not the correct type")
+        }
+        
+        return stubbedLoadJSON
     }
 }

@@ -4,9 +4,15 @@ import Capsule
 @testable import Utensils
 
 final class FileLoaderSpec: QuickSpec {
+    typealias FileLoaderError = FileLoader<FakeBundle,
+                                           FakeStringWrapper,
+                                           FakeJSONDecoder>.Error
+    
     override class func spec() {
         describe("FileLoader") {
-            var subject: FileLoader!
+            var subject: FileLoader<FakeBundle,
+                                    FakeStringWrapper,
+                                    FakeJSONDecoder>!
             
             var fakeBundle: FakeBundle!
             var fakeStringWrapper: FakeStringWrapper!
@@ -32,10 +38,8 @@ final class FileLoaderSpec: QuickSpec {
                         expect({
                             let _: String? = try subject.loadJSON(name: "file",
                                                                   fileExtension: "json")
-                        }).to.throwError { error in
-                            let typedError = error as! FileLoader.Error
-                            
-                            expect(typedError.localizedDescription).to.equal("Unable to find file: file.json")
+                        }).to.throwError { (error: FileLoaderError) in
+                            expect(error.localizedDescription).to.equal("Unable to find file: file.json")
                         }
                     }
                 }
@@ -49,12 +53,12 @@ final class FileLoaderSpec: QuickSpec {
                         expect({
                             let _: String? = try subject.loadJSON(name: "file",
                                                                   fileExtension: "json")
-                        }).to.throwError { error in
-                            let fileLoaderError = error as! FileLoader.Error
+                        }).to.throwError { (error: FileLoaderError) in
+                            let expectedError = FileLoader<FakeBundle,
+                                                           FakeStringWrapper,
+                                                           FakeJSONDecoder>.Error.unableToLoadJSONData(wrappedError: FakeGenericError.whoCares)
                             
-                            let expectedError = FileLoader.Error.unableToLoadJSONData(wrappedError: FakeGenericError.whoCares)
-                            
-                            expect(fileLoaderError).to.equal(expectedError)
+                            expect(error).to.equal(expectedError)
                         }
                     }
                 }
@@ -87,12 +91,13 @@ final class FileLoaderSpec: QuickSpec {
                         expect({
                             let _: String? = try subject.loadJSON(name: "file",
                                                                   fileExtension: "json")
-                        }).to.throwError { error in                            
-                            let fileLoaderError = error as! FileLoader.Error
+                        }).to.throwError { (error: FileLoaderError) in
                             
-                            let expectedError = FileLoader.Error.unableToDecodeJSONData(wrappedError: FakeGenericError.whoCares)
+                            let expectedError = FileLoader<FakeBundle,
+                                                           FakeStringWrapper,
+                                                           FakeJSONDecoder>.Error.unableToDecodeJSONData(wrappedError: FakeGenericError.whoCares)
                             
-                            expect(fileLoaderError).to.equal(expectedError)
+                            expect(error).to.equal(expectedError)
                         }
                     }
                 }
