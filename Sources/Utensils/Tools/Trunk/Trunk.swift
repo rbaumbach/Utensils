@@ -58,8 +58,8 @@ open class Trunk: TrunkProtocol {
         case `default`
         case pretty
     }
-
-    public enum DateFormat {        
+    
+    public enum DateFormat {
         case `default`
         case iso8601
     }
@@ -81,7 +81,7 @@ open class Trunk: TrunkProtocol {
         get {
             return OutputFormat(rawValue: jsonCodableWrapper.outputFormat)!
         }
-
+        
         set(newOutputFormat) {
             jsonCodableWrapper.outputFormat = newOutputFormat.rawValue
         }
@@ -110,22 +110,22 @@ open class Trunk: TrunkProtocol {
     }
     
     // MARK: - Public methods
-        
+    
     @discardableResult
     public func save<T: Codable>(data: T,
                                  filename: String,
                                  directory: Directory) -> Result<Void, Error> {
-    do {
-        let encodedJSONData = try jsonCodableWrapper.encode(data)
-        let fullFileURL = try buildFullFileURL(filename: filename, directory: directory)
-        
-        try dataWrapper.write(data: encodedJSONData, toPath: fullFileURL)
-        
-        return Result<Void, Error>.success(())
-    } catch {
-        return Result<Void, Error>.failure(error)
+        do {
+            let encodedJSONData = try jsonCodableWrapper.encode(data)
+            let fullFileURL = try buildFullFileURL(filename: filename, directory: directory)
+            
+            try dataWrapper.write(data: encodedJSONData, toPath: fullFileURL)
+            
+            return Result<Void, Error>.success(())
+        } catch {
+            return Result<Void, Error>.failure(error)
+        }
     }
-}
     
     public func save<T: Codable>(data: T,
                                  filename: String,
@@ -145,18 +145,18 @@ open class Trunk: TrunkProtocol {
     @discardableResult
     public func load<T: Codable>(filename: String,
                                  directory: Directory) -> Result<T, Error> {
-    do {
-        let fullFileURL = try buildFullFileURL(filename: filename, directory: directory)
-        
-        let jsonData = try dataWrapper.loadData(contentsOfPath: fullFileURL)
-        
-        let modelData = try jsonCodableWrapper.decode(T.self, from: jsonData)
-        
-        return Result<T, Error>.success(modelData)
-    } catch {
-        return Result<T, Error>.failure(error)
+        do {
+            let fullFileURL = try buildFullFileURL(filename: filename, directory: directory)
+            
+            let jsonData = try dataWrapper.loadData(contentsOfPath: fullFileURL)
+            
+            let modelData = try jsonCodableWrapper.decode(T.self, from: jsonData)
+            
+            return Result<T, Error>.success(modelData)
+        } catch {
+            return Result<T, Error>.failure(error)
+        }
     }
-}
     
     public func load<T: Codable>(filename: String,
                                  directory: Directory,
@@ -192,7 +192,7 @@ open class Trunk: TrunkProtocol {
             let fullFilename = filename + fileExtension
             
             let fullFileLocationURL = try directory.url().appendingPathComponent(fullFilename)
-                        
+            
             try fileManager.deleteFile(url: fullFileLocationURL)
             
             return .success(())

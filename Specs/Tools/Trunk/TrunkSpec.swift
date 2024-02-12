@@ -124,17 +124,16 @@ final class TrunkSpec: QuickSpec {
             }
             
             describe("#save(data:filename:directory:completionHandler:)") {
-                var didComplete: Bool!
-                var actualResult: Result<Void, Error>!
+                let actualResult = TestValueWrapper<Result<Void, Error>>()
+                
+                let didComplete = TestValueWrapper<Bool>()
                 
                 beforeEach {
-                    didComplete = false
-
                     subject.save(data: [0, 1, 2, 3, 4],
                                  filename: "trunk",
                                  directory: directory) { result in
-                        actualResult = result
-                        didComplete = true
+                        actualResult.value = result
+                        didComplete.value = true
                     }
                     
                     fakeDispatchQueueWrapper.capturedGlobalAsyncExecutionBlock?()
@@ -156,9 +155,9 @@ final class TrunkSpec: QuickSpec {
                 }
                 
                 it("completes with result (on main queue)") {
-                    if case .failure = actualResult { failSpec() }
+                    if case .failure = actualResult.value { failSpec() }
                     
-                    expect(didComplete).to.beTruthy()
+                    expect(didComplete.value).to.beTruthy()
                 }
             }
 
@@ -229,13 +228,13 @@ final class TrunkSpec: QuickSpec {
             }
             
             describe("#load(filename:directory:completionHandler:)") {
-                var actualResult: Result<[Int], Error>!
+                let actualResult = TestValueWrapper<Result<[Int], Error>>()
                 
                 beforeEach {
                     fakeJSONCodableWrapper.stubbedDecodedData = [0, 1, 2, 3, 4]
                     
                     subject.load(filename: "trunk", directory: directory) { result in
-                        actualResult = result
+                        actualResult.value = result
                     }
                     
                     fakeDispatchQueueWrapper.capturedGlobalAsyncExecutionBlock?()
@@ -254,7 +253,7 @@ final class TrunkSpec: QuickSpec {
                 }
                 
                 it("completes with a result (on main queue)") {
-                    if case .success(let modelData) = actualResult {
+                    if case .success(let modelData) = actualResult.value {
                         expect(modelData).to.equal([0, 1, 2, 3, 4])
                     } else {
                         failSpec()

@@ -69,6 +69,7 @@
 		946AB1792390568C003D0016 /* TrunkSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946AB1782390568C003D0016 /* TrunkSpec.swift */; };
 		9471F4B82B72C41B0065CD44 /* URLSessionTaskEngine+DebugPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9471F4B72B72C41B0065CD44 /* URLSessionTaskEngine+DebugPrint.swift */; };
 		9471F4BE2B72C6710065CD44 /* URLSessionTaskEngine+DebugPrintSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9471F4BD2B72C6710065CD44 /* URLSessionTaskEngine+DebugPrintSpec.swift */; };
+		9471F4EE2B79BE7D0065CD44 /* TestValueWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9471F4ED2B79BE7D0065CD44 /* TestValueWrapper.swift */; };
 		947266402B4DBDDD00353F4E /* DirectoryIntegrationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9472663F2B4DBDDD00353F4E /* DirectoryIntegrationSpec.swift */; };
 		947266422B4DE92500353F4E /* URLSessionTaskEngineIntegrationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947266412B4DE92500353F4E /* URLSessionTaskEngineIntegrationSpec.swift */; };
 		947266442B4E208700353F4E /* CleanupUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947266432B4E208700353F4E /* CleanupUtils.swift */; };
@@ -204,6 +205,7 @@
 		9471F4CC2B72CAB40065CD44 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		9471F4CD2B72CAC20065CD44 /* Utensils.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Utensils.podspec; sourceTree = "<group>"; };
 		9471F4E02B7662480065CD44 /* .ruby-version */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".ruby-version"; sourceTree = "<group>"; };
+		9471F4ED2B79BE7D0065CD44 /* TestValueWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestValueWrapper.swift; sourceTree = "<group>"; };
 		9472663F2B4DBDDD00353F4E /* DirectoryIntegrationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryIntegrationSpec.swift; sourceTree = "<group>"; };
 		947266412B4DE92500353F4E /* URLSessionTaskEngineIntegrationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionTaskEngineIntegrationSpec.swift; sourceTree = "<group>"; };
 		947266432B4E208700353F4E /* CleanupUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanupUtils.swift; sourceTree = "<group>"; };
@@ -717,6 +719,7 @@
 				945F44022B5DDC0D002B37E1 /* Result+Spec.swift */,
 				94569E162B28E279008494E1 /* SomeTestFunctions.swift */,
 				94630F0A23AA76CB0054BAAD /* SpecModels.swift */,
+				9471F4ED2B79BE7D0065CD44 /* TestValueWrapper.swift */,
 			);
 			path = "Spec Files";
 			sourceTree = "<group>";
@@ -1099,6 +1102,7 @@
 				9404C5742B4332F9001626C8 /* NetworkingEngineSpec.swift in Sources */,
 				94569E172B28E279008494E1 /* SomeTestFunctions.swift in Sources */,
 				942B4E7E2B3B206E0086D749 /* PequenoNetworking+ConstantsSpec.swift in Sources */,
+				9471F4EE2B79BE7D0065CD44 /* TestValueWrapper.swift in Sources */,
 				94DB4641239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift in Sources */,
 				9406829E238D7F24004278CB /* DebouncerSpec.swift in Sources */,
 			);
