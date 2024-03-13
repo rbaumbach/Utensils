@@ -16,7 +16,7 @@ A set of useful iOS tools.
 
 [Swift Package Manager](https://swift.org/package-manager/) can be used to add `Utensils` the to your project:
 
-1.  Add `.package(url: "https://github.com/rbaumbach/Utensils", from: "0.6.1")`
+1.  Add `.package(url: "https://github.com/rbaumbach/Utensils", from: "0.6.2")`
 2.  [Follow intructions to add](https://swift.org/getting-started/#using-the-package-manager) the Utensils package to your project.
 
 ### Clone from Github
