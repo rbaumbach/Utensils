@@ -142,8 +142,11 @@ open class NetworkingEngine: NetworkingEngineProtocol {
                                             parameters: parameters,
                                             body: nil)
         
-        executeRequest(urlRequestInfo: urlRequestInfo,
-                       completionHandler: completionHandler)
+        executeRequest(urlRequestInfo: urlRequestInfo) { [weak self] result in
+            self?.dispatchQueueWrapper.mainAsync {
+                completionHandler(result)
+            }
+        }
     }
     
     public func post<T: Codable>(baseURL: String,
