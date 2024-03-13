@@ -133,8 +133,11 @@ open class ClassicNetworkingEngine: ClassicNetworkingEngineProtocol {
         
         executeRequest(baseURL: baseURL,
                        headers: headers,
-                       urlRequestInfo: urlRequestInfo,
-                       completionHandler: completionHandler)
+                       urlRequestInfo: urlRequestInfo) { [weak self] result in
+            self?.dispatchQueueWrapper.mainAsync {
+                completionHandler(result)
+            }
+        }
     }
     
     public func post(baseURL: String,

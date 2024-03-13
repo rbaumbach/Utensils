@@ -45,8 +45,10 @@ public protocol TrunkProtocol {
                           directory: Directory,
                           completionHandler: @escaping @Sendable (Result<T, Error>) -> Void)
     
+    @discardableResult
     func delete(directory: Directory) -> Result<Void, Error>
     
+    @discardableResult
     func delete(filename: String,
                 directory: Directory) -> Result<Void, Error>
 }

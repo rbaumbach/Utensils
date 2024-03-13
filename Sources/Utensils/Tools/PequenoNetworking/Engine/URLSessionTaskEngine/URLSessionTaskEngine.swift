@@ -129,11 +129,12 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
     
     // MARK: - Private methods
     
-    private func handleSessionTask<T>(item: T?,
-                                      response: URLResponse?,
-                                      error: Swift.Error?,
-                                      completionHandler: (Result<T, Swift.Error>) -> Void) {
+    private func handleSessionTask<T: Printable>(item: T?,
+                                                 response: URLResponse?,
+                                                 error: Swift.Error?,
+                                                 completionHandler: (Result<T, Swift.Error>) -> Void) {
         debugPrint?.print(value: response as? HTTPURLResponse)
+        debugPrint?.print(value: item)
         
         let result = validateResponse(item: item,
                                       response: response,
