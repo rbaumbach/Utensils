@@ -33,10 +33,10 @@ public extension URLSessionTaskEngine {
             case all
         }
         
-        // MARK: - Private properties
+        // MARK: - Readonly properties
         
-        private let option: Option
-        private let printType: PrintType
+        let option: Option
+        let printType: PrintType
         
         // MARK: - Init methods
         
@@ -57,13 +57,15 @@ public extension URLSessionTaskEngine {
                 default:
                     break
                 }
-            } else if let httpURLResponse = value as? HTTPURLResponse {
-                switch option {
-                case .all, .response:
-                    Swift.print(httpURLResponse.print(printType))
-                default:
-                    break
-                }
+                
+                return
+            }
+            
+            switch option {
+            case .all, .response:
+                Swift.print(value.print(printType))
+            default:
+                break
             }
         }
     }

@@ -82,6 +82,8 @@
 		94872AF52915D16F00D3528B /* AppLaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AF32915D16F00D3528B /* AppLaunchViewController.swift */; };
 		94872AF92915D20700D3528B /* Bundle+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AF82915D20700D3528B /* Bundle+Utensils.swift */; };
 		94872AFF2915D28E00D3528B /* Trunk+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94872AFE2915D28E00D3528B /* Trunk+Utensils.swift */; };
+		94A4C2A72BA1D788005FEC56 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A4C2A62BA1D788005FEC56 /* URL+Extensions.swift */; };
+		94A4C2A92BA1D7CD005FEC56 /* Data+Utensils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A4C2A82BA1D7CD005FEC56 /* Data+Utensils.swift */; };
 		94B2AE712B3740900081B1FE /* PequenoNetworkingIntegrationSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B2AE702B3740900081B1FE /* PequenoNetworkingIntegrationSpec.swift */; };
 		94BCF31C2B485F38008A5D78 /* FakePequenoNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BCF31B2B485F37008A5D78 /* FakePequenoNetworking.swift */; };
 		94C63B3A2B51FECE002BE8DC /* Trunk+Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C63B392B51FECE002BE8DC /* Trunk+Defaults.swift */; };
@@ -219,6 +221,8 @@
 		94872AF32915D16F00D3528B /* AppLaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppLaunchViewController.swift; sourceTree = "<group>"; };
 		94872AF82915D20700D3528B /* Bundle+Utensils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Utensils.swift"; sourceTree = "<group>"; };
 		94872AFE2915D28E00D3528B /* Trunk+Utensils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Trunk+Utensils.swift"; sourceTree = "<group>"; };
+		94A4C2A62BA1D788005FEC56 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
+		94A4C2A82BA1D7CD005FEC56 /* Data+Utensils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Utensils.swift"; sourceTree = "<group>"; };
 		94B2AE702B3740900081B1FE /* PequenoNetworkingIntegrationSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PequenoNetworkingIntegrationSpec.swift; sourceTree = "<group>"; };
 		94BCF31B2B485F37008A5D78 /* FakePequenoNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakePequenoNetworking.swift; sourceTree = "<group>"; };
 		94C63B392B51FECE002BE8DC /* Trunk+Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Trunk+Defaults.swift"; sourceTree = "<group>"; };
@@ -643,8 +647,10 @@
 			children = (
 				947266482B4F86B200353F4E /* Fakes */,
 				94872AF82915D20700D3528B /* Bundle+Utensils.swift */,
+				94A4C2A82BA1D7CD005FEC56 /* Data+Utensils.swift */,
 				947266452B4F671A00353F4E /* FileManager+Utensils.swift */,
 				94163A722B6DC3FB005AC3E3 /* HTTPURLResponse+Utensils.swift */,
+				94A4C2A62BA1D788005FEC56 /* URL+Extensions.swift */,
 				940B28492B631A560084AD02 /* URLRequest+Utensils.swift */,
 			);
 			path = Extensions;
@@ -1042,6 +1048,7 @@
 				94569E372B2CB1EE008494E1 /* FileLoader+Utensils.swift in Sources */,
 				9404C5722B431AF6001626C8 /* FakeClassicNetworkingEngine.swift in Sources */,
 				94FD50632B3C7C4F0090455F /* NetworkingEngine.swift in Sources */,
+				94A4C2A72BA1D788005FEC56 /* URL+Extensions.swift in Sources */,
 				947266472B4F85E900353F4E /* FileManager+Utensils.swift in Sources */,
 				940F9DFB239B14630028937B /* FakeTrunk.swift in Sources */,
 				945F44012B5DD4E8002B37E1 /* URLRequestBuilder+Error.swift in Sources */,
@@ -1051,6 +1058,7 @@
 				94163A732B6DC3FB005AC3E3 /* HTTPURLResponse+Utensils.swift in Sources */,
 				94FD50602B3B8F9A0090455F /* ClassicNetworkingEngine.swift in Sources */,
 				940F9DFA239B14630028937B /* FakeDebouncer.swift in Sources */,
+				94A4C2A92BA1D7CD005FEC56 /* Data+Utensils.swift in Sources */,
 				9471F4B82B72C41B0065CD44 /* URLSessionTaskEngine+DebugPrint.swift in Sources */,
 				94872AF42915D16F00D3528B /* DefaultAppLaunchView.swift in Sources */,
 				9404C56F2B4318E3001626C8 /* FakeNetworkingEngine.swift in Sources */,
