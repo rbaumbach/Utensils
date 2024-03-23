@@ -27,14 +27,14 @@ public extension URLSessionTaskEngine {
     
     enum Error<T>: CaseIterable, LocalizedError, Equatable {
         case invalidSessionResponse
-        case invalidStatusCode(statusCode: Int)
+        case invalidStatusCode(statusCode: Int, responseData: Data?)
         case invalidSessionItem(type: T.Type)
         
         // MARK: - <CaseIterable>
         
         public static var allCases: [Error] {
             return [.invalidSessionResponse,
-                    .invalidStatusCode(statusCode: 0),
+                    .invalidStatusCode(statusCode: 0, responseData: nil),
                     .invalidSessionItem(type: T.self)]
         }
         
@@ -44,7 +44,7 @@ public extension URLSessionTaskEngine {
             switch self {
             case .invalidSessionResponse:
                 return "Invalid URLSession task response"
-            case .invalidStatusCode(let statusCode):
+            case .invalidStatusCode(let statusCode, let responseData):
                 return "Invalid status code: \(statusCode)"
             case .invalidSessionItem(let type):
                 return "Invalid URLSession task item of type: \(type.self)"

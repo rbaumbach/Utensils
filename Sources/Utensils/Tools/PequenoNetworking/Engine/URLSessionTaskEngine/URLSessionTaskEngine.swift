@@ -157,7 +157,10 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
         }
         
         guard (200...299).contains(response.statusCode) else {
-            let sesssionError = Error<T>.invalidStatusCode(statusCode: response.statusCode) as Swift.Error
+            let responseData: Data? = item as? Data
+            
+            let sesssionError = Error<T>.invalidStatusCode(statusCode: response.statusCode,
+                                                           responseData: responseData) as Swift.Error
             
             return .failure(sesssionError)
         }

@@ -3,13 +3,15 @@ import Moocher
 import Capsule
 @testable import Utensils
 
+// TODO: Fix tests for the invalidStatusCode update
+
 final class URLSessionTaskEngine_ErrorSpec: QuickSpec {
     override class func spec() {
         describe("URLSessionTaskEngine+Error") {
             describe("<CaseIterable>)") {
                 it("has all required cases") {
                     let expectedCases: [URLSessionTaskEngine.Error<Int>] = [.invalidSessionResponse,
-                                                                            .invalidStatusCode(statusCode: 0),
+                                                                            .invalidStatusCode(statusCode: 0, responseData: nil),
                                                                             .invalidSessionItem(type: Int.self)]
                     
                     expect(URLSessionTaskEngine.Error<Int>.allCases).to.equal(expectedCases)
@@ -23,7 +25,7 @@ final class URLSessionTaskEngine_ErrorSpec: QuickSpec {
                                                     
                         expect(invalidSessionResponse.localizedDescription).to.equal("Invalid URLSession task response")
                         
-                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1)
+                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1, responseData: nil)
                         
                         expect(invalidStatusCode.localizedDescription).to.equal("Invalid status code: 1")
                         
@@ -41,7 +43,7 @@ final class URLSessionTaskEngine_ErrorSpec: QuickSpec {
                                                     
                         expect(invalidSessionResponse.errorDescription).to.equal("Invalid URLSession task response")
                         
-                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1)
+                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1, responseData: nil)
                         
                         expect(invalidStatusCode.errorDescription).to.equal("200 - 299 are valid status codes")
                         
@@ -57,7 +59,7 @@ final class URLSessionTaskEngine_ErrorSpec: QuickSpec {
                                                     
                         expect(invalidSessionResponse.failureReason).to.equal("HTTPURLResponse returned by URLSession task is nil")
                         
-                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1)
+                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1, responseData: nil)
                         
                         expect(invalidStatusCode.failureReason).to.equal("Invalid status code: 1")
                         
@@ -73,7 +75,7 @@ final class URLSessionTaskEngine_ErrorSpec: QuickSpec {
                                                     
                         expect(invalidSessionResponse.recoverySuggestion).to.equal("Invalid URLSession task response")
                         
-                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1)
+                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1, responseData: nil)
                         let expectedInvalidStatusCode = "Verify your URLSession task is built appropriately as required by your API"
                         
                         expect(invalidStatusCode.recoverySuggestion).to.equal(expectedInvalidStatusCode)
@@ -91,7 +93,7 @@ final class URLSessionTaskEngine_ErrorSpec: QuickSpec {
                     
                     expect(invalidSessionResponse).to.equal(.invalidSessionResponse)
                     
-                    let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 99)
+                    let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 99, responseData: nil)
                     
                     expect(invalidSessionResponse).toNot.equal(invalidStatusCode)
                 }
