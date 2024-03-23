@@ -44,7 +44,7 @@ public extension URLSessionTaskEngine {
             switch self {
             case .invalidSessionResponse:
                 return "Invalid URLSession task response"
-            case .invalidStatusCode(let statusCode, let responseData):
+            case .invalidStatusCode(let statusCode, _):
                 return "Invalid status code: \(statusCode)"
             case .invalidSessionItem(let type):
                 return "Invalid URLSession task item of type: \(type.self)"
