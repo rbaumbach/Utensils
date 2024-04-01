@@ -148,7 +148,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
         return stubbedBaseURL
     }
     
-    public var headers: [String : String]? {
+    public var headers: [String: String]? {
         get {
             return stubbedHeaders
         }
