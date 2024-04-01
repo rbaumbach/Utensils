@@ -23,10 +23,8 @@
 import Foundation
 
 public extension PequenoNetworking {
-    struct Constants {
+    struct Keys {
         public static let BaseURLKey = "PequenoNetworkingBaseURLKey"
         public static let HeadersKey = "PequenoNetworkingHeadersKey"
-        
-        public static let EnableURLRequestPrintingKey = "PequenoNetworkingEnableURLRequestPrintingKey"
     }
 }

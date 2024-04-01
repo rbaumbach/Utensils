@@ -97,7 +97,7 @@ let networker = PequenoNetworking(baseURL: "https://dogsrbettahthancats.party")
 // Using global BaseURL contained within UserDefaults
 
 UserDefaults.standard.set("https://dogsrbettahthancats.party",
-                          forKey: PequenoNetworkingConstants.BaseURLKey)
+                          forKey: PequenoNetworking.Keys.BaseURLKey)
 
 let networker = PequenoNetworking()
 
