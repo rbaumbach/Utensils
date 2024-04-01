@@ -24,6 +24,9 @@ import Foundation
 import Capsule
 
 public protocol PequenoNetworkingProtocol {
+    var baseURL: String { get }
+    var headers: [String: String]? { get set }
+    
     var debugPrint: URLSessionTaskEngine.DebugPrint? { get set }
     
     // MARK: - JSONSerialization (ol' skoo)
@@ -98,7 +101,7 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     // MARK: - Readonly properties
     
     public let baseURL: String
-    public let headers: [String: String]?
+    public var headers: [String: String]?
     
     // MARK: - Public properties
     
@@ -128,11 +131,11 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
     }
     
     public convenience init(userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
-        guard let baseURL = userDefaults.string(forKey: Constants.BaseURLKey) else {
+        guard let baseURL = userDefaults.string(forKey: Keys.BaseURLKey) else {
             preconditionFailure("BaseURL must exist in UserDefaults")
         }
         
-        let headers = userDefaults.object(forKey: Constants.HeadersKey) as? [String: String]
+        let headers = userDefaults.object(forKey: Keys.HeadersKey) as? [String: String]
         
         self.init(baseURL: baseURL, headers: headers)
     }

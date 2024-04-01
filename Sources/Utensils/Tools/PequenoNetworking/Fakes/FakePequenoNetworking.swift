@@ -29,6 +29,8 @@ import Capsule
 open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     // MARK: - Captured properties
     
+    public var capturedHeaders: [String: String]?
+    
     public var capturedDebugPrint: URLSessionTaskEngine.DebugPrint?
     
     // MARK: - JSONSerialization (ol' skoo)
@@ -95,6 +97,10 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     // MARK: - Stubbed properties
     
+    public var stubbedBaseURL = "https://junky-base-url.party"
+    
+    public var stubbedHeaders: [String: String] = ["junk": "garbage"]
+    
     public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint? = {
         let debugPrint = URLSessionTaskEngine.DebugPrint(option: .none,
                                                          printType: .lite)
@@ -137,6 +143,20 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     public override init() { }
     
     // MARK: - <PequenoNetworkingProtocol>
+    
+    public var baseURL: String {
+        return stubbedBaseURL
+    }
+    
+    public var headers: [String: String]? {
+        get {
+            return stubbedHeaders
+        }
+        
+        set {
+            capturedHeaders = newValue
+        }
+    }
     
     public var debugPrint: URLSessionTaskEngine.DebugPrint? {
         get {
