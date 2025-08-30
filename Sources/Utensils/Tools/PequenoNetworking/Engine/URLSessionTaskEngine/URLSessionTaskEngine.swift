@@ -151,22 +151,19 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
         }
         
         guard let response = response as? HTTPURLResponse else {
-            let sesssionError = Error<T>.invalidSessionResponse as Swift.Error
+            let sesssionError = Error.invalidSessionResponse as Swift.Error
             
             return .failure(sesssionError)
         }
         
         guard (200...299).contains(response.statusCode) else {
-            let responseData: Data? = item as? Data
-            
-            let sesssionError = Error<T>.invalidStatusCode(statusCode: response.statusCode,
-                                                           responseData: responseData) as Swift.Error
+            let sesssionError = Error.invalidStatusCode(statusCode: response.statusCode)
             
             return .failure(sesssionError)
         }
         
         guard let item = item else {
-            let sessionError = Error<T>.invalidSessionItem(type: T.self) as Swift.Error
+            let sessionError = Error.missingResponseItem
             
             return .failure(sessionError)
         }
