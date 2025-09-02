@@ -13,7 +13,7 @@ final class PequenoNetworkingIntegrationSpec: QuickSpec {
                     subject = PequenoNetworking(baseURL: "https://httpbin.org",
                                                 headers: nil)
                     subject.debugPrint = URLSessionTaskEngine.DebugPrint(option: .all,
-                                                                         printType: .verbose)
+                                                                         printer: Printer(printType: .verbose))
                 }
                 
                 it("prints the request and response") {

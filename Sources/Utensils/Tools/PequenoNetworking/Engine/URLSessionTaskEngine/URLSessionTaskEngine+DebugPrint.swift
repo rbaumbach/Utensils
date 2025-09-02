@@ -31,41 +31,47 @@ public extension URLSessionTaskEngine {
             case request
             case response
             case all
+            
+            var printsRequest: Bool {
+                return self == .request || self == .all
+            }
+            
+            var printsResponse: Bool {
+                return self == .response || self == .all
+            }
         }
         
         // MARK: - Readonly properties
         
         let option: Option
-        let printType: PrintType
+        let printer: Printer
         
         // MARK: - Init methods
         
-        public init(option: Option, printType: PrintType) {
+        public init(option: Option, printer: Printer) {
             self.option = option
-            self.printType = printType
+            self.printer = printer
         }
         
         // MARK: - Public methods
         
-        public func print<T: Printable>(value: T?) {
-            guard let value = value else { return }
+        public func print(request: URLRequest) {
+            guard option.printsRequest else { return }
             
-            if let urlRequest = value as? URLRequest {
-                switch option {
-                case .all, .request:
-                    Swift.print(urlRequest.print(printType))
-                default:
-                    break
-                }
+            printer.print(value: request)
+        }
+
+        public func print(response: URLResponse) {
+            guard option.printsResponse else { return }
+
+            if let httpResponse = response as? HTTPURLResponse {
+                printer.print(value: httpResponse)
+            } else {
+                var warningMessage = "[URLSessionTaskEngine - [Warning] Received non-HTTP response: \(type(of: response)). "
+                warningMessage += "Falling back to basic response printing"
                 
-                return
-            }
-            
-            switch option {
-            case .all, .response:
-                Swift.print(value.print(printType))
-            default:
-                break
+                Swift.print(warningMessage)
+                Swift.print(response)
             }
         }
     }

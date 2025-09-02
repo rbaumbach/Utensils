@@ -80,7 +80,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
     
     public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint? = {
         let debugPrint = URLSessionTaskEngine.DebugPrint(option: .none,
-                                                         printType: .lite)
+                                                         printer: Printer(printType: .lite))
         
         return debugPrint
     }()
