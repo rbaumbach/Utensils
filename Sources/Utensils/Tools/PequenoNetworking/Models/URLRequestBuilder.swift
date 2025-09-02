@@ -42,11 +42,11 @@ open class URLRequestBuilder: URLRequestBuilderProtocol {
     
     public func build(urlRequestInfo: URLRequestInfo) -> Result<URLRequest, Swift.Error> {
         guard var urlComponents = URLComponents(string: urlRequestInfo.baseURL) else {
-            let invalidURLError = Error.invalidURL(urlString: urlRequestInfo.baseURL) as Swift.Error
+            let invalidURLError = Error.invalidURL(urlString: urlRequestInfo.baseURL)
             
             return .failure(invalidURLError)
         }
-        
+                
         urlComponents.path = urlRequestInfo.endpoint
         
         urlComponents.queryItems = urlRequestInfo.parameters?.map { (key, value) in
@@ -54,7 +54,7 @@ open class URLRequestBuilder: URLRequestBuilderProtocol {
         }
         
         guard let urlComponentsURL = urlComponents.url else {
-            let invalidURLError = Error.invalidURL(urlString: urlRequestInfo.baseURL) as Swift.Error
+            let invalidURLError = Error.invalidURL(urlString: urlRequestInfo.baseURL)
             
             return .failure(invalidURLError)
         }
@@ -74,7 +74,7 @@ open class URLRequestBuilder: URLRequestBuilderProtocol {
                 urlRequest.httpBody = bodyData
             } catch {
                 let invalidBodyError = Error.invalidBody(body: urlRequestInfoBody,
-                                                         wrappedError: error) as Swift.Error
+                                                         wrappedError: error)
                 
                 return .failure(invalidBodyError)
             }

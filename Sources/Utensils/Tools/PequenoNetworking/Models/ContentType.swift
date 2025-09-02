@@ -67,11 +67,17 @@ public enum ContentType: String, CaseIterable, Equatable {
     case mkv       = "video/x-matroska"
     case avi       = "video/x-msvideo"
     
-    var headerKey: String {
+    // MARK: - Readonly properties
+    
+    public var headerKey: String {
         return "Content-Type"
     }
     
-    var headerKeyValue: String {
+    public var headerKeyValue: String {
         return self.rawValue
+    }
+    
+    public var asHeader: [String: String] {
+        return [headerKey: headerKeyValue]
     }
 }
