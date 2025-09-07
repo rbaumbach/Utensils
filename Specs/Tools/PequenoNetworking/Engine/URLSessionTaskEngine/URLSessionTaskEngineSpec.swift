@@ -77,9 +77,8 @@ final class URLSessionTaskEngineSpec: QuickSpec {
                         
                         it("completes with invalidStatusCode") {
                             let error = actualResult.getError() as? URLSessionTaskEngine.Error
-                            
-                            expect(error).toNot.beNil()
-//                            expect(error).to.equal(.invalidStatusCode(statusCode: 1))
+                                                        
+                            expect(error).to.equal(URLSessionTaskEngine.Error.invalidStatusCode(statusCode: 1))
                         }
                     }
                     
@@ -96,10 +95,10 @@ final class URLSessionTaskEngineSpec: QuickSpec {
                                 fakeURLSession.capturedExtendedDataTaskURLRequestCompletionHandler?(nil, response, nil)
                             }
                             
-                            it("completes with invalidSessionItem") {
+                            it("completes with missingResponseItem") {
                                 let error = actualResult.getError() as? URLSessionTaskEngine.Error
                                 
-//                                expect(error).to.equal(.invalidSessionItem(type: Data.self))
+                                expect(error).to.equal(URLSessionTaskEngine.Error.missingResponseItem)
                             }
                         }
                         
@@ -184,8 +183,7 @@ final class URLSessionTaskEngineSpec: QuickSpec {
                         it("completes with invalidStatusCode") {
                             let error = actualResult.getError() as? URLSessionTaskEngine.Error
                             
-                            expect(error).toNot.beNil()
-//                            expect(error).to.equal(.invalidStatusCode(statusCode: 1))
+                            expect(error).to.equal(URLSessionTaskEngine.Error.invalidStatusCode(statusCode: 1))
                         }
                     }
                     
@@ -202,10 +200,10 @@ final class URLSessionTaskEngineSpec: QuickSpec {
                                 fakeURLSession.capturedExtendedDownloadTaskURLRequestCompletionHandler?(nil, response, nil)
                             }
                             
-                            it("completes with invalidSessionItem") {
+                            it("completes with missingResponseItem") {
                                 let error = actualResult.getError() as? URLSessionTaskEngine.Error
                                 
-//                                expect(error).to.equal(.invalidSessionItem(type: URL.self))
+                                expect(error).to.equal(URLSessionTaskEngine.Error.missingResponseItem)
                             }
                         }
                         
@@ -293,8 +291,7 @@ final class URLSessionTaskEngineSpec: QuickSpec {
                         it("completes with invalidStatusCode") {
                             let error = actualResult.getError() as? URLSessionTaskEngine.Error
                             
-                            expect(error).toNot.beNil()
-//                            expect(error).to.equal(.invalidStatusCode(statusCode: 1))
+                            expect(error).to.equal(URLSessionTaskEngine.Error.invalidStatusCode(statusCode: 1))
                         }
                     }
                     
@@ -311,10 +308,10 @@ final class URLSessionTaskEngineSpec: QuickSpec {
                                 fakeURLSession.capturedExtendedUploadTaskURLRequestCompletionHandler?(nil, response, nil)
                             }
                             
-                            it("completes with invalidSessionItem") {
+                            it("completes with missingResponseItem") {
                                 let error = actualResult.getError() as? URLSessionTaskEngine.Error
                                 
-//                                expect(error).to.equal(.invalidSessionItem(type: Data.self))
+                                expect(error).to.equal(URLSessionTaskEngine.Error.missingResponseItem)
                             }
                         }
                         
