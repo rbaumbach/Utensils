@@ -78,12 +78,7 @@ open class FakeNetworkingEngine: Fake, NetworkingEngineProtocol {
     
     // MARK: - Stubbed properties
     
-    public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint? = {
-        let debugPrint = URLSessionTaskEngine.DebugPrint(option: .none,
-                                                         printer: Printer(printType: .lite))
-        
-        return debugPrint
-    }()
+    public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint?
     
     public var stubbedGetResult: Result<Any, Error> = .success("Éxito")
     public var stubbedDeleteResult: Result<Any, Error> = .success("Éxito")

@@ -86,6 +86,7 @@
 		94BCF31C2B485F38008A5D78 /* FakePequenoNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BCF31B2B485F37008A5D78 /* FakePequenoNetworking.swift */; };
 		94C63B3A2B51FECE002BE8DC /* Trunk+Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94C63B392B51FECE002BE8DC /* Trunk+Defaults.swift */; };
 		94DB4641239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94DB4640239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift */; };
+		94FCA78E2E6E4B1D00CA34E3 /* DebugPrinterTester.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FCA78D2E6E4B1D00CA34E3 /* DebugPrinterTester.swift */; };
 		94FD50582B3B24770090455F /* URLRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FD50572B3B24770090455F /* URLRequestBuilder.swift */; };
 		94FD505B2B3B26020090455F /* URLRequestBuilderSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FD505A2B3B26020090455F /* URLRequestBuilderSpec.swift */; };
 		94FD50602B3B8F9A0090455F /* ClassicNetworkingEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B4E7F2B3B22420086D749 /* ClassicNetworkingEngine.swift */; };
@@ -223,6 +224,7 @@
 		94BCF31B2B485F37008A5D78 /* FakePequenoNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakePequenoNetworking.swift; sourceTree = "<group>"; };
 		94C63B392B51FECE002BE8DC /* Trunk+Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Trunk+Defaults.swift"; sourceTree = "<group>"; };
 		94DB4640239479EF00D0C0A2 /* AppLaunchViewControllerSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunchViewControllerSpec.swift; sourceTree = "<group>"; };
+		94FCA78D2E6E4B1D00CA34E3 /* DebugPrinterTester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugPrinterTester.swift; sourceTree = "<group>"; };
 		94FD50572B3B24770090455F /* URLRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestBuilder.swift; sourceTree = "<group>"; };
 		94FD505A2B3B26020090455F /* URLRequestBuilderSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestBuilderSpec.swift; sourceTree = "<group>"; };
 		94FD50612B3C7B8B0090455F /* NetworkingEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingEngine.swift; sourceTree = "<group>"; };
@@ -464,6 +466,7 @@
 		94569E292B28EEFE008494E1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				94FCA78D2E6E4B1D00CA34E3 /* DebugPrinterTester.swift */,
 				94569E2A2B28EF10008494E1 /* file.json */,
 			);
 			path = Resources;
@@ -1120,6 +1123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94FCA78E2E6E4B1D00CA34E3 /* DebugPrinterTester.swift in Sources */,
 				947266542B505D6400353F4E /* TrunkIntegrationSpec.swift in Sources */,
 				94B2AE712B3740900081B1FE /* PequenoNetworkingIntegrationSpec.swift in Sources */,
 				94569E5B2B30E776008494E1 /* SpecModels.swift in Sources */,

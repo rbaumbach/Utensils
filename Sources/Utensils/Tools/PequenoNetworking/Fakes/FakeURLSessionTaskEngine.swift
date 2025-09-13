@@ -40,12 +40,7 @@ open class FakeURLSessionTaskEngine: Fake, URLSessionTaskEngineProtocol {
     
     // MARK: - Stubbed properties
     
-    public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint? = {
-        let debugPrint = URLSessionTaskEngine.DebugPrint(option: .none,
-                                                         printer: Printer(printType: .lite))
-        
-        return debugPrint
-    }()
+    public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint?
     
     public var stubbedDataTask: URLSessionTaskProtocol = FakeURLSessionTask()
     public var stubbedDataTaskResult: Result<Data, Error> = .success("Lucky Day".data(using: .utf8)!)

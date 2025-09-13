@@ -101,12 +101,7 @@ open class FakePequenoNetworking: Fake, PequenoNetworkingProtocol {
     
     public var stubbedHeaders: [String: String] = ["junk": "garbage"]
     
-    public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint? = {
-        let debugPrint = URLSessionTaskEngine.DebugPrint(option: .none,
-                                                         printer: Printer(printType: .lite))
-        
-        return debugPrint
-    }()
+    public var stubbedDebugPrint: URLSessionTaskEngine.DebugPrint?
     
     // MARK: - JSONSerialization (ol' skoo)
     

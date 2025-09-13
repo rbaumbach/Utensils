@@ -27,7 +27,6 @@ public extension URLSessionTaskEngine {
         // MARK: - Enums
         
         public enum Option: CaseIterable {
-            case none
             case request
             case response
             case all
