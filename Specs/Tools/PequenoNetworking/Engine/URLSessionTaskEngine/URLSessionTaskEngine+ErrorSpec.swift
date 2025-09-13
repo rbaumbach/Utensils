@@ -3,102 +3,106 @@ import Moocher
 import Capsule
 @testable import Utensils
 
-// TODO: Fix tests for the invalidStatusCode update
-
 final class URLSessionTaskEngine_ErrorSpec: QuickSpec {
     override class func spec() {
-        describe("URLSessionTaskEngine+Error") {
-            describe("<CaseIterable>)") {
-                it("has all required cases") {
-                    let expectedCases: [URLSessionTaskEngine.Error<Int>] = [.invalidSessionResponse,
-                                                                            .invalidStatusCode(statusCode: 0, responseData: nil),
-                                                                            .invalidSessionItem(type: Int.self)]
+        describe("URLSessionTaskEngine.Error") {
+            
+            describe(".invalidSessionResponse") {
+                it("provides correct errorDescription") {
+                    let actualError = URLSessionTaskEngine.Error.invalidSessionResponse
                     
-                    expect(URLSessionTaskEngine.Error<Int>.allCases).to.equal(expectedCases)
+                    expect(actualError.errorDescription)
+                        .to.equal("Invalid networking response")
+                }
+
+                it("provides correct failureReason") {
+                    let actualError = URLSessionTaskEngine.Error.invalidSessionResponse
+
+                    expect(actualError.failureReason).to.equal("Networking did not return a valid response")
+                }
+
+                it("provides correct recoverySuggestion") {
+                    let actualError = URLSessionTaskEngine.Error.invalidSessionResponse
+
+                    expect(actualError.recoverySuggestion)
+                        .to.equal("Verify your networking reuqest isn't malformed. The server is returning an invalid response.")
                 }
             }
-            
-            describe("<Error>") {
-                describe("#localizedDescription") {
-                    it("has proper localized description") {
-                        let invalidSessionResponse: URLSessionTaskEngine.Error<Int> = .invalidSessionResponse
-                                                    
-                        expect(invalidSessionResponse.localizedDescription).to.equal("Invalid URLSession task response")
-                        
-                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1, responseData: nil)
-                        
-                        expect(invalidStatusCode.localizedDescription).to.equal("Invalid status code: 1")
-                        
-                        let invalidSessionItem: URLSessionTaskEngine.Error<Int> = .invalidSessionItem(type: Int.self)
-                        
-                        expect(invalidSessionItem.localizedDescription).to.equal("Invalid URLSession task item of type: Int")
-                    }
+
+            describe(".invalidStatusCode") {
+                it("provides correct errorDescription") {
+                    let actualError = URLSessionTaskEngine.Error.invalidStatusCode(statusCode: 404)
+                    
+                    expect(actualError.errorDescription).to.equal("Invalid status code: 404")
+                }
+
+                it("provides correct failureReason") {
+                    let actualError = URLSessionTaskEngine.Error.invalidStatusCode(statusCode: 404)
+
+                    expect(actualError.failureReason)
+                        .to.equal("The server responded with a status code outside the 200–299 success range")
+                }
+
+                it("provides correct recoverySuggestion") {
+                    let actualError = URLSessionTaskEngine.Error.invalidStatusCode(statusCode: 404)
+
+                    expect(actualError.recoverySuggestion)
+                        .to.equal("Verify your networking request isn't malformed. The server may be rejecting your input.")
                 }
             }
-            
-            describe("<LocalizedError>") {
-                describe("#errorDescription") {
-                    it("has proper error description") {
-                        let invalidSessionResponse: URLSessionTaskEngine.Error<Int> = .invalidSessionResponse
-                                                    
-                        expect(invalidSessionResponse.errorDescription).to.equal("Invalid URLSession task response")
-                        
-                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1, responseData: nil)
-                        
-                        expect(invalidStatusCode.errorDescription).to.equal("200 - 299 are valid status codes")
-                        
-                        let invalidSessionItem: URLSessionTaskEngine.Error<Int> = .invalidSessionItem(type: Int.self)
-                        
-                        expect(invalidSessionItem.errorDescription).to.equal("Invalid URLSession task item of type: Int")
-                    }
+
+            describe(".missingResponseItem") {
+                it("provides correct errorDescription") {
+                    let actualError = URLSessionTaskEngine.Error.missingResponseItem
+                    
+                    expect(actualError.errorDescription)
+                        .to.equal("Missing response content")
                 }
-                
-                describe("#failureReason") {
-                    it("has proper failure reason") {
-                        let invalidSessionResponse: URLSessionTaskEngine.Error<Int> = .invalidSessionResponse
-                                                    
-                        expect(invalidSessionResponse.failureReason).to.equal("HTTPURLResponse returned by URLSession task is nil")
-                        
-                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1, responseData: nil)
-                        
-                        expect(invalidStatusCode.failureReason).to.equal("Invalid status code: 1")
-                        
-                        let invalidSessionItem: URLSessionTaskEngine.Error<Int> = .invalidSessionItem(type: Int.self)
-                        
-                        expect(invalidSessionItem.failureReason).to.equal("Item returned by URLSession task of type Int is nil")
-                    }
+
+                it("provides correct failureReason") {
+                    let actualError = URLSessionTaskEngine.Error.missingResponseItem
+
+                    expect(actualError.failureReason)
+                        .to.equal("The response content is missing")
                 }
-                
-                describe("#recoverySuggestion") {
-                    it("has proper recovery suggestion") {
-                        let invalidSessionResponse: URLSessionTaskEngine.Error<Int> = .invalidSessionResponse
-                                                    
-                        expect(invalidSessionResponse.recoverySuggestion).to.equal("Invalid URLSession task response")
-                        
-                        let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 1, responseData: nil)
-                        let expectedInvalidStatusCode = "Verify your URLSession task is built appropriately as required by your API"
-                        
-                        expect(invalidStatusCode.recoverySuggestion).to.equal(expectedInvalidStatusCode)
-                        
-                        let invalidSessionItem: URLSessionTaskEngine.Error<Int> = .invalidSessionItem(type: Int.self)
-                        
-                        expect(invalidSessionItem.recoverySuggestion).to.equal("Invalid URLSession task item of type: Int")
-                    }
+
+                it("provides correct recoverySuggestion") {
+                    let actualError = URLSessionTaskEngine.Error.missingResponseItem
+
+                    expect(actualError.recoverySuggestion)
+                        .to.equal("Verify that the server returns a valid response item")
                 }
             }
-            
-            describe("<Equatable") {
-                it("is equatable") {
-                    let invalidSessionResponse: URLSessionTaskEngine.Error<Int> = .invalidSessionResponse
-                    
-                    expect(invalidSessionResponse).to.equal(.invalidSessionResponse)
-                    
-                    let invalidStatusCode: URLSessionTaskEngine.Error<Int> = .invalidStatusCode(statusCode: 99, responseData: nil)
-                    
-                    expect(invalidSessionResponse).toNot.equal(invalidStatusCode)
+
+            describe("<Equatable>") {
+                it("equates two identical invalidSessionResponse errors") {
+                    let actualError = URLSessionTaskEngine.Error.invalidSessionResponse
+                    let expectedError = URLSessionTaskEngine.Error.invalidSessionResponse
+
+                    expect(actualError).to.equal(expectedError)
+                }
+
+                it("equates two identical invalidStatusCode errors with same code") {
+                    let actualError = URLSessionTaskEngine.Error.invalidStatusCode(statusCode: 403)
+                    let expectedError = URLSessionTaskEngine.Error.invalidStatusCode(statusCode: 403)
+
+                    expect(actualError).to.equal(expectedError)
+                }
+
+                it("equates two identical missingResponseItem errors") {
+                    let actualError = URLSessionTaskEngine.Error.missingResponseItem
+                    let expectedError = URLSessionTaskEngine.Error.missingResponseItem
+
+                    expect(actualError).to.equal(expectedError)
+                }
+
+                it("does not equate different errors") {
+                    let actualError = URLSessionTaskEngine.Error.invalidStatusCode(statusCode: 500)
+                    let differentError = URLSessionTaskEngine.Error.missingResponseItem
+
+                    expect(actualError).toNot.equal(differentError)
                 }
             }
         }
     }
 }
-            

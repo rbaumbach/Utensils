@@ -9,7 +9,7 @@ final class URLSessionTaskEngine_DebugPrintSpec: QuickSpec {
             describe("URLSessionTaskEngine.DebugPrint.Option") {
                 it("has all the required cases") {
                     let expectedCases: [URLSessionTaskEngine.DebugPrint.Option] = [
-                        .none, .request, .response, .all
+                        .request, .response, .all
                     ]
                     
                     expect(URLSessionTaskEngine.DebugPrint.Option.allCases).to.equal(expectedCases)

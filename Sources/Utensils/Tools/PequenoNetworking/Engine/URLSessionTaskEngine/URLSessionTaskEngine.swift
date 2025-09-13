@@ -65,7 +65,7 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
     @discardableResult
     public func dataTask(urlRequest: URLRequest,
                          completionHandler: @escaping (Result<Data, Swift.Error>) -> Void) -> URLSessionTaskProtocol {
-        debugPrint?.print(value: urlRequest)
+        debugPrint?.print(request: urlRequest)
         
         let dataTask = urlSession.dataTask(urlRequest: urlRequest) { [weak self] data, response, error in
             self?.handleSessionTask(item: data,
@@ -86,7 +86,7 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
     @discardableResult
     public func downloadTask(urlRequest: URLRequest,
                              completionHandler: @escaping (Result<URL, Swift.Error>) -> Void) -> URLSessionTaskProtocol {
-        debugPrint?.print(value: urlRequest)
+        debugPrint?.print(request: urlRequest)
         
         let downloadTask = urlSession.downloadTask(urlRequest: urlRequest) { [weak self] tempURL, response, error in
             self?.handleSessionTask(item: tempURL,
@@ -108,7 +108,7 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
     public func uploadTask(urlRequest: URLRequest,
                            data: Data,
                            completionHandler: @escaping (Result<Data, Swift.Error>) -> Void) -> URLSessionTaskProtocol {
-        debugPrint?.print(value: urlRequest)
+        debugPrint?.print(request: urlRequest)
         
         let uploadTask = urlSession.uploadTask(urlRequest: urlRequest,
                                                from: data) { [weak self] data, response, error in
@@ -133,8 +133,13 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
                                                  response: URLResponse?,
                                                  error: Swift.Error?,
                                                  completionHandler: (Result<T, Swift.Error>) -> Void) {
-        debugPrint?.print(value: response as? HTTPURLResponse)
-        debugPrint?.print(value: item)
+        if let debugPrint = debugPrint {
+            if let response = response {
+                debugPrint.print(response: response)
+            } else {
+                Swift.print("[URLSessionTaskEngine - Warning] Attempted to print a response, but the response is nil.")
+            }
+        }
         
         let result = validateResponse(item: item,
                                       response: response,
@@ -151,22 +156,19 @@ open class URLSessionTaskEngine: URLSessionTaskEngineProtocol {
         }
         
         guard let response = response as? HTTPURLResponse else {
-            let sesssionError = Error<T>.invalidSessionResponse as Swift.Error
+            let sesssionError = Error.invalidSessionResponse as Swift.Error
             
             return .failure(sesssionError)
         }
         
         guard (200...299).contains(response.statusCode) else {
-            let responseData: Data? = item as? Data
-            
-            let sesssionError = Error<T>.invalidStatusCode(statusCode: response.statusCode,
-                                                           responseData: responseData) as Swift.Error
+            let sesssionError = Error.invalidStatusCode(statusCode: response.statusCode)
             
             return .failure(sesssionError)
         }
         
         guard let item = item else {
-            let sessionError = Error<T>.invalidSessionItem(type: T.self) as Swift.Error
+            let sessionError = Error.missingResponseItem
             
             return .failure(sessionError)
         }

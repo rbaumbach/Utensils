@@ -26,24 +26,14 @@ import Capsule
 public extension URLRequestBuilder {
     // MARK: - Enums
     
-    enum Error: CaseIterable, LocalizedError, Equatable {
+    enum Error: LocalizedError, Equatable {
         case invalidURL(urlString: String)
         case invalidBody(body: [String: Any], 
                          wrappedError: Swift.Error)
         
-        // MARK: - <CaseIterable>
+        // MARK: - <LocalizedError>
         
-        public static var allCases: [Error] {
-            let emptyDictionary: [String: Any] = [:]
-            
-            return [.invalidURL(urlString: String.empty),
-                    .invalidBody(body: emptyDictionary, 
-                                 wrappedError: EmptyError.empty)]
-        }
-        
-        // MARK: - <Error>
-        
-        public var localizedDescription: String {
+        public var errorDescription: String? {
             switch self {
             case .invalidURL(let urlString):
                 return "Invalid URL: \(urlString)"
@@ -52,18 +42,12 @@ public extension URLRequestBuilder {
             }
         }
         
-        // MARK: - <LocalizedError>
-        
-        public var errorDescription: String? {
-            return localizedDescription
-        }
-        
         public var failureReason: String? {
             switch self {
             case .invalidBody:
                 return "Body cannot be serialized"
             default:
-                return localizedDescription
+                return errorDescription
             }
         }
         
@@ -79,7 +63,7 @@ public extension URLRequestBuilder {
         // MARK: - Equatable
         
         public static func == (lhs: Error, rhs: Error) -> Bool {
-            return lhs.localizedDescription == rhs.localizedDescription
+            return lhs.errorDescription == rhs.errorDescription
         }
     }
 }

@@ -130,16 +130,6 @@ open class PequenoNetworking: PequenoNetworkingProtocol {
         self.networkingEngine = networkingEngine
     }
     
-    public convenience init(userDefaults: UserDefaultsProtocol = UserDefaults.standard) {
-        guard let baseURL = userDefaults.string(forKey: Keys.BaseURLKey) else {
-            preconditionFailure("BaseURL must exist in UserDefaults")
-        }
-        
-        let headers = userDefaults.object(forKey: Keys.HeadersKey) as? [String: String]
-        
-        self.init(baseURL: baseURL, headers: headers)
-    }
-    
     // MARK: - Public methods
     
     public func get(endpoint: String,

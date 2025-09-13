@@ -12,26 +12,14 @@ final class PequenoNetworkingSpec: QuickSpec {
             var fakeNetworkingEngine: FakeNetworkingEngine!
             
             var fakeFileManager: FakeFileManagerUtensils!
-            var fakeUserDefaults: FakeUserDefaults!
             var directory: Directory!
             
             beforeEach {
                 fakeClassicNetworkingEngine = FakeClassicNetworkingEngine()
                 fakeNetworkingEngine = FakeNetworkingEngine()
                 
-                fakeUserDefaults = FakeUserDefaults()
-                fakeUserDefaults.stubbedString = "https://ghost.busters"
-                fakeUserDefaults.stubbedObject = ["city": "new-york"]
-                
                 fakeFileManager = FakeFileManagerUtensils()
                 directory = Directory(fileManager: fakeFileManager)
-            }
-            
-            it("has a convience init method that uses user defaults for baseURL and headers") {
-                subject = PequenoNetworking(userDefaults: fakeUserDefaults)
-                
-                expect(subject.baseURL).to.equal("https://ghost.busters")
-                expect(subject.headers).to.equal(["city": "new-york"])
             }
             
             it("has a baseURL") {

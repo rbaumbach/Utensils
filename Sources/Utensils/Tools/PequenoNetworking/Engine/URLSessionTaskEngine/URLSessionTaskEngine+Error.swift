@@ -25,67 +25,44 @@ import Foundation
 public extension URLSessionTaskEngine {
     // MARK: - Enums
     
-    enum Error<T>: CaseIterable, LocalizedError, Equatable {
+    enum Error: LocalizedError, Equatable {
         case invalidSessionResponse
-        case invalidStatusCode(statusCode: Int, responseData: Data?)
-        case invalidSessionItem(type: T.Type)
-        
-        // MARK: - <CaseIterable>
-        
-        public static var allCases: [Error] {
-            return [.invalidSessionResponse,
-                    .invalidStatusCode(statusCode: 0, responseData: nil),
-                    .invalidSessionItem(type: T.self)]
-        }
-        
-        // MARK: - <Error>
-        
-        public var localizedDescription: String {
-            switch self {
-            case .invalidSessionResponse:
-                return "Invalid URLSession task response"
-            case .invalidStatusCode(let statusCode, _):
-                return "Invalid status code: \(statusCode)"
-            case .invalidSessionItem(let type):
-                return "Invalid URLSession task item of type: \(type.self)"
-            }
-        }
+        case invalidStatusCode(statusCode: Int)
+        case missingResponseItem
         
         // MARK: - <LocalizedError>
         
         public var errorDescription: String? {
             switch self {
-            case .invalidStatusCode:
-                return "200 - 299 are valid status codes"
-            default:
-                return localizedDescription
+            case .invalidSessionResponse:
+                return "Invalid networking response"
+            case .invalidStatusCode(let statusCode):
+                return "Invalid status code: \(statusCode)"
+            case .missingResponseItem:
+                return "Missing response content"
             }
         }
         
         public var failureReason: String? {
             switch self {
             case .invalidSessionResponse:
-                return "HTTPURLResponse returned by URLSession task is nil"
+                return "Networking did not return a valid response"
             case .invalidStatusCode:
-                return localizedDescription
-            case .invalidSessionItem(let type):
-                return "Item returned by URLSession task of type \(type.self) is nil"
+                return "The server responded with a status code outside the 200–299 success range"
+            case .missingResponseItem:
+                return "The response content is missing"
             }
         }
         
         public var recoverySuggestion: String? {
             switch self {
+            case .invalidSessionResponse:
+                return "Verify your networking reuqest isn't malformed. The server is returning an invalid response."
             case .invalidStatusCode:
-                return "Verify your URLSession task is built appropriately as required by your API"
-            default:
-                return localizedDescription
+                return "Verify your networking request isn't malformed. The server may be rejecting your input."
+            case .missingResponseItem:
+                return "Verify that the server returns a valid response item"
             }
-        }
-        
-        // MARK: - Equatable
-        
-        public static func == (lhs: URLSessionTaskEngine.Error<T>, rhs: URLSessionTaskEngine.Error<T>) -> Bool {
-            return lhs.localizedDescription == rhs.localizedDescription
         }
     }
 }

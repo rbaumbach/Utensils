@@ -26,13 +26,15 @@ extension HTTPURLResponse: Printable {
     // MARK: - <Printable>
     
     public func print(_ printType: PrintType) -> String {
+        Swift.print("HTTPURLResponse print-printType: \(printType)")
+        
         switch printType {
         case .lite:
             return liteDescription()
         case .verbose:
             return verboseDescription()
         case .raw:
-            return "HTTPURLResponse:\n\(description)"
+            return "HTTPURLResponse:\(description)"
         }
     }
     
@@ -41,10 +43,7 @@ extension HTTPURLResponse: Printable {
     private func liteDescription() -> String {
         return """
         
-        HTTPURLResponse:
-        \(url?.absoluteString ?? String.empty)
-        Status Code: \(statusCode)
-        \(prettyPrint(dictionary: allHeaderFields, title: "HTTP Headers"))
+        \(basicInfo())
         
         """
     }
@@ -52,15 +51,21 @@ extension HTTPURLResponse: Printable {
     private func verboseDescription() -> String {
         return """
         
-        HTTPURLResponse:
-        URL: \(url?.absoluteString ?? "N/A")
-        Status Code: \(statusCode)
-        \(prettyPrint(dictionary: allHeaderFields, title: "HTTP Headers"))
+        \(basicInfo())
         Expected content length: \(expectedContentLength)
         Suggested filename: \(suggestedFilename ?? "N/A")
         MIME type: \(mimeType ?? "N/A")
         Text encoding name: \(textEncodingName ?? "N/A")
         
+        """
+    }
+    
+    private func basicInfo() -> String {
+        return """
+        HTTPURLResponse:
+        URL: \(url?.absoluteString ?? "N/A")
+        Status Code: \(statusCode)
+        \(prettyPrint(dictionary: allHeaderFields, title: "HTTP Headers"))
         """
     }
     

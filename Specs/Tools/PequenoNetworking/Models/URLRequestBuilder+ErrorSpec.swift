@@ -6,35 +6,6 @@ import Capsule
 final class URLRequestBuilder_ErrorSpec: QuickSpec {
     override class func spec() {
         describe("URLRequestBuilder+Error") {
-            describe("<CaseIterable>)") {
-                it("has all required cases") {
-                    let expectedCases: [URLRequestBuilder.Error] = [.invalidURL(urlString: String.empty),
-                                                                    .invalidBody(body: [:],
-                                                                                 wrappedError: EmptyError.empty)]
-                    
-                    expect(URLRequestBuilder.Error.allCases).to.equal(expectedCases)
-                }
-            }
-            
-            describe("<Error>") {
-                describe("#localizedDescription") {
-                    it("has proper localized description") {
-                        let invalidURLError: URLRequestBuilder.Error = .invalidURL(urlString: "filez://file.txt")
-                                                    
-                        expect(invalidURLError.localizedDescription).to.equal("Invalid URL: filez://file.txt")
-                        
-                        let someBody: [String: Any] = ["uno": 1]
-                        
-                        let invalidBodyError: URLRequestBuilder.Error = .invalidBody(body: someBody,
-                                                                                     wrappedError: FakeGenericError.whoCares)
-                        
-                        let expectedErrorDescription = "Invalid body: [\"uno\": 1], wrappedError: whoCares"
-                        
-                        expect(invalidBodyError.localizedDescription).to.equal(expectedErrorDescription)
-                    }
-                }
-            }
-            
             describe("<LocalizedError>") {
                 describe("#errorDescription") {
                     it("is the same as the localized description") {
